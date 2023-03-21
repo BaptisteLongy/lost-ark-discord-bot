@@ -1,0 +1,35 @@
+{
+  "name": "lost-ark-discord-bot",
+  "version": "1.0.0",
+  "description": "Discord Bot for some guild actions in Lost Ark",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BaptisteLongy/lost-ark-discord-bot.git"
+  },
+  "keywords": [
+    "lost",
+    "ark",
+    "discord",
+    "bot",
+    "roster",
+    "management"
+  ],
+  "author": "Baptiste Longy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BaptisteLongy/lost-ark-discord-bot/issues"
+  },
+  "homepage": "https://github.com/BaptisteLongy/lost-ark-discord-bot#readme",
+  "dependencies": {
+    "@google-cloud/vision": "^3.1.0",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.32.0"
+  }
+}
