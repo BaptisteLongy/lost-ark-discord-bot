@@ -105,3 +105,6 @@ dist
 
 # VSCode Local files
 .vscode/
+
+# Testing command
+ping.js
