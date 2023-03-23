@@ -1,8 +1,11 @@
-// Require the necessary discord.js classes
 const dotenv = require('dotenv');
 dotenv.config();
-const { Client, Events, GatewayIntentBits } = require('discord.js');
 
+// Require the necessary discord.js classes
+const fs = require('node:fs');
+const path = require('node:path');
+const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
+const { RaidMessage } = require('./tools/RaidMessage.js');
 
 // Google Vision
 const vision = require('@google-cloud/vision');
@@ -19,10 +22,71 @@ const client = new Client({
     ],
 });
 
+client.commands = new Collection();
+
+// Build the commands Collection for easy access
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	// Set a new item in the Collection with the key as the command name and the value as the exported module
+	if ('data' in command && 'execute' in command) {
+		client.commands.set(command.data.name, command);
+	} else {
+		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+	}
+}
+
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
     console.log(`Ready! Logged in as ${c.user.tag}`);
+});
+
+// Slash command listener
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isChatInputCommand()) return;
+
+    const command = interaction.client.commands.get(interaction.commandName);
+
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`);
+		return;
+	}
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		if (interaction.replied || interaction.deferred) {
+			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+		} else {
+			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		}
+	}
+});
+
+// Select menu listener
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isStringSelectMenu()) return;
+
+    if (interaction.customId === 'classSelect') {
+        await interaction.deferUpdate();
+
+        // On parse le message
+        let raidMessage = new RaidMessage(interaction.message.embeds[0]);
+
+        // On édit le parse avec l'interaction
+        raidMessage.update(interaction.member, interaction.values[0]);
+
+        // On génère le message
+        const newEmbed = raidMessage.generateEmbed();
+        // On envoie le message
+
+		await interaction.editReply({ embeds: [newEmbed] });
+	}
 });
 
 client.on('messageCreate', async (message) => {
