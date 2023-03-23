@@ -77,16 +77,16 @@ client.on(Events.InteractionCreate, async interaction => {
     if (interaction.customId === 'classSelect') {
         await interaction.deferUpdate();
 
-        // On parse le message
-        let raidMessage = new RaidMessage(interaction.message.embeds[0]);
+        // Parse the message into a RaidMessage
+        const raidMessage = new RaidMessage(interaction.message.embeds[0]);
 
-        // On édit le parse avec l'interaction
+        // Update the RaidMessage
         raidMessage.update(interaction.member, interaction.values[0]);
 
-        // On génère le message
+        // Generate the new embed
         const newEmbed = raidMessage.generateEmbed();
-        // On envoie le message
 
+		// Send the new embed
 		await interaction.editReply({ embeds: [newEmbed] });
 	}
 });
