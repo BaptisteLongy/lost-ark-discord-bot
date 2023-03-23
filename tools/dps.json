@@ -1,0 +1,78 @@
+[
+    {
+        "label": "Berserker",
+        "value": "Berserker"
+    },
+    {
+        "label": "Gunlancer",
+        "value": "Gunlancer"
+    },
+    {
+        "label": "Destroyer",
+        "value": "Destroyer"
+    },
+    {
+        "label": "Striker",
+        "value": "Striker"
+    },
+    {
+        "label": "Wardancer",
+        "value": "Wardancer"
+    },
+    {
+        "label": "Scrapper",
+        "value": "Scrapper"
+    },
+    {
+        "label": "Soulfist",
+        "value": "Soulfist"
+    },
+    {
+        "label": "Glaivier",
+        "value": "Glaivier"
+    },
+    {
+        "label": "Machinist",
+        "value": "Machinist"
+    },
+    {
+        "label": "Gunslinger",
+        "value": "Gunslinger"
+    },
+    {
+        "label": "Artillerist",
+        "value": "Artillerist"
+    },
+    {
+        "label": "Deadeye",
+        "value": "Deadeye"
+    },
+    {
+        "label": "Sharpshooter",
+        "value": "Sharpshooter"
+    },
+    {
+        "label": "Arcanist",
+        "value": "Arcanist"
+    },
+    {
+        "label": "Summoner",
+        "value": "Summoner"
+    },
+    {
+        "label": "Sorceress",
+        "value": "Sorceress"
+    },
+    {
+        "label": "Reaper",
+        "value": "Reaper"
+    },
+    {
+        "label": "Shadowhunter",
+        "value": "Shadowhunter"
+    },
+    {
+        "label": "Deathblade",
+        "value": "Deathblade"
+    }
+]
