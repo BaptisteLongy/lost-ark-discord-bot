@@ -1,10 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
 
-const raids = [
-	{ name: 'Valtan NM', value: 'Valtan NM (Normal Mode)' },
-	{ name: 'Valtan HM', value: 'Valtan HM (Hard Mode)' },
-	{ name: 'Vykas NM', value: 'Vykas NM (Normal Mode)' },
-];
+const raids = require('../tools/raidList.json');
 
 const supports = require('../tools/supports.json');
 const dps = require('../tools/dps.json');
@@ -28,9 +24,12 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply();
 
+		const selectedRaid = raids.find(raid => raid.value === interaction.options.getString('raid'));
+
 		const raidEmbed = new EmbedBuilder()
-			.setTitle(`${interaction.options.getString('raid')}`)
-			.setDescription(`${interaction.options.getString('description')}`);
+			.setTitle(selectedRaid.value)
+			.setDescription(interaction.options.getString('description'))
+			.setColor(selectedRaid.color);
 
 		const selectRow = new ActionRowBuilder()
 			.addComponents(

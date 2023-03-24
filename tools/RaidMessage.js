@@ -16,6 +16,7 @@ class RaidMessage {
 
     this.title = embed.title;
     this.description = embed.description;
+    this.color = embed.color;
 
     this.supports = this.initRoleList(embed.fields, 'Supports');
     this.dps = this.initRoleList(embed.fields, 'DPS');
@@ -91,7 +92,8 @@ class RaidMessage {
 
     const raidEmbed = new EmbedBuilder()
       .setTitle(this.title)
-      .setDescription(this.description);
+      .setDescription(this.description)
+      .setColor(this.color);
 
     if (dpsField !== '') {
       raidEmbed.addFields({ name: 'DPS', value: dpsField });
