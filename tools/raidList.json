@@ -1,8 +1,62 @@
 [
-	{ "name": "Valtan NM", "value": "Valtan NM (Normal Mode) - 1415", "color": [166, 85, 68] },
-	{ "name": "Valtan HM", "value": "Valtan HM (Hard Mode) - 1445", "color": [166, 85, 68] },
-	{ "name": "Vykas NM", "value": "Vykas NM (Normal Mode) - 1430", "color": [163, 69, 95] },
-    { "name": "Vykas HM", "value": "Vykas HM (Hard Mode) - 1460", "color": [163, 69, 95] },
-    { "name": "Kakul", "value": "Kakul-Saydon - 1475", "color": [234, 117, 0] },
-    { "name": "Brelshaza", "value": "Brelshaza - 1490", "color": [96, 101, 137] }
+    {
+        "name": "Valtan NM",
+        "value": "Valtan NM (Normal Mode) - 1415",
+        "color": [
+            166,
+            85,
+            68
+        ],
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/valtan.jpg"
+    },
+    {
+        "name": "Valtan HM",
+        "value": "Valtan HM (Hard Mode) - 1445",
+        "color": [
+            166,
+            85,
+            68
+        ],
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/valtan.jpg"
+    },
+    {
+        "name": "Vykas NM",
+        "value": "Vykas NM (Normal Mode) - 1430",
+        "color": [
+            163,
+            69,
+            95
+        ],
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/vykas.jpg"
+    },
+    {
+        "name": "Vykas HM",
+        "value": "Vykas HM (Hard Mode) - 1460",
+        "color": [
+            163,
+            69,
+            95
+        ],
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/vykas.jpg"
+    },
+    {
+        "name": "Kakul",
+        "value": "Kakul-Saydon - 1475",
+        "color": [
+            234,
+            117,
+            0
+        ],
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/kakul-saydon.jpg"
+    },
+    {
+        "name": "Brelshaza",
+        "value": "Brelshaza - 1490",
+        "color": [
+            96,
+            101,
+            137
+        ],
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/brelshaza.jpg"
+    }
 ]

@@ -2,6 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 
 const supports = require('./supports.json');
 const dps = require('./dps.json');
+const raids = require('../tools/raidList.json');
 
 function isSupport(playerClass) {
   return supports.some(globalClass => playerClass === globalClass.label);
@@ -14,9 +15,8 @@ function isDPS(playerClass) {
 class RaidMessage {
   constructor(embed) {
 
-    this.title = embed.title;
+    this.raid = raids.find(raid => raid.value === embed.title);
     this.description = embed.description;
-    this.color = embed.color;
 
     this.supports = this.initRoleList(embed.fields, 'Supports');
     this.dps = this.initRoleList(embed.fields, 'DPS');
@@ -91,9 +91,10 @@ class RaidMessage {
     const benchField = this.bench.reduce(this.reduceWaitList, '');
 
     const raidEmbed = new EmbedBuilder()
-      .setTitle(this.title)
+      .setTitle(this.raid.value)
       .setDescription(this.description)
-      .setColor(this.color);
+      .setColor(this.raid.color)
+      .setImage(this.raid.img);
 
     if (dpsField !== '') {
       raidEmbed.addFields({ name: 'DPS', value: dpsField });

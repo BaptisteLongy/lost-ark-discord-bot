@@ -29,7 +29,8 @@ module.exports = {
 		const raidEmbed = new EmbedBuilder()
 			.setTitle(selectedRaid.value)
 			.setDescription(interaction.options.getString('description'))
-			.setColor(selectedRaid.color);
+			.setColor(selectedRaid.color)
+			.setImage(selectedRaid.img);
 
 		const selectRow = new ActionRowBuilder()
 			.addComponents(
