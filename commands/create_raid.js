@@ -55,6 +55,10 @@ module.exports = {
 					.setCustomId('unsubscribe')
 					.setLabel('Se désinscrire')
 					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder()
+					.setCustomId('deleteRaid')
+					.setLabel('Supprimer le raid')
+					.setStyle(ButtonStyle.Danger),
 			);
 
 		await interaction.editReply({ content: `Nouveau raid créé par ${interaction.member}`, embeds: [raidEmbed], components: [selectRow, buttonRow] });
