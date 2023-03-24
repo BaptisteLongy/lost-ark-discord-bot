@@ -66,6 +66,6 @@ module.exports = {
 					.setStyle(ButtonStyle.Danger),
 			);
 
-		await interaction.editReply({ content: `Nouveau raid créé par ${interaction.member}`, embeds: [raidEmbed], components: [selectRow, buttonRow] });
+		await interaction.editReply({ content: `@everyone Nouveau raid créé par ${interaction.member}`, embeds: [raidEmbed], components: [selectRow, buttonRow] });
 	},
 };
