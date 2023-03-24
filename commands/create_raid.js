@@ -52,8 +52,8 @@ module.exports = {
 		const buttonRow = new ActionRowBuilder()
 			.addComponents(
 				new ButtonBuilder()
-					.setCustomId('delete')
-					.setLabel('Supprimer')
+					.setCustomId('unsubscribe')
+					.setLabel('Se désinscrire')
 					.setStyle(ButtonStyle.Primary),
 			);
 

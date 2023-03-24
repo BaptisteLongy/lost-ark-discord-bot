@@ -6,6 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
 const { RaidMessage } = require('./tools/RaidMessage.js');
+const { unsubscribe } = require('./buttons/unsubscribe.js');
 
 // For when I'll reinstate roster sniffer eventually
 // Google Vision
@@ -17,11 +18,11 @@ const token = process.env.LOST_ARK_DISCORD_BOT_TOKEN;
 
 // Create a new client instance
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-    ],
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+	],
 });
 
 client.commands = new Collection();
@@ -44,14 +45,14 @@ for (const file of commandFiles) {
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, c => {
-    console.log(`Ready! Logged in as ${c.user.tag}`);
+	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
 // Slash command listener
 client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isChatInputCommand()) return;
+	if (!interaction.isChatInputCommand()) return;
 
-    const command = interaction.client.commands.get(interaction.commandName);
+	const command = interaction.client.commands.get(interaction.commandName);
 
 	if (!command) {
 		console.error(`No command matching ${interaction.commandName} was found.`);
@@ -74,20 +75,29 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isStringSelectMenu()) return;
 
-    if (interaction.customId === 'classSelect') {
-        await interaction.deferUpdate();
+	if (interaction.customId === 'classSelect') {
+		await interaction.deferUpdate();
 
-        // Parse the message into a RaidMessage
-        const raidMessage = new RaidMessage(interaction.message.embeds[0]);
+		// Parse the message into a RaidMessage
+		const raidMessage = new RaidMessage(interaction.message.embeds[0]);
 
-        // Update the RaidMessage
-        raidMessage.update(interaction.member, interaction.values[0]);
+		// Update the RaidMessage
+		raidMessage.update(interaction.member, interaction.values[0]);
 
-        // Generate the new embed
-        const newEmbed = raidMessage.generateEmbed();
+		// Generate the new embed
+		const newEmbed = raidMessage.generateEmbed();
 
 		// Send the new embed
 		await interaction.editReply({ embeds: [newEmbed] });
+	}
+});
+
+// Buttons listener
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isButton()) return;
+
+	if (interaction.customId === 'unsubscribe') {
+		unsubscribe(interaction);
 	}
 });
 
