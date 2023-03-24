@@ -7,7 +7,8 @@
             85,
             68
         ],
-        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/valtan.jpg"
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/valtan.jpg",
+        "maxPlayer": 8
     },
     {
         "name": "Valtan HM",
@@ -17,7 +18,8 @@
             85,
             68
         ],
-        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/valtan.jpg"
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/valtan.jpg",
+        "maxPlayer": 8
     },
     {
         "name": "Vykas NM",
@@ -27,7 +29,8 @@
             69,
             95
         ],
-        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/vykas.jpg"
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/vykas.jpg",
+        "maxPlayer": 8
     },
     {
         "name": "Vykas HM",
@@ -37,7 +40,8 @@
             69,
             95
         ],
-        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/vykas.jpg"
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/vykas.jpg",
+        "maxPlayer": 8
     },
     {
         "name": "Kakul",
@@ -47,7 +51,8 @@
             117,
             0
         ],
-        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/kakul-saydon.jpg"
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/kakul-saydon.jpg",
+        "maxPlayer": 4
     },
     {
         "name": "Brelshaza",
@@ -57,6 +62,7 @@
             101,
             137
         ],
-        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-thumbnails/brelshaza.jpg"
+        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/brelshaza.jpg",
+        "maxPlayer": 8
     }
 ]

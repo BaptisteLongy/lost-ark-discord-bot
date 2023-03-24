@@ -15,17 +15,17 @@ function isDPS(playerClass) {
 class RaidMessage {
   constructor(embed) {
 
-    this.raid = raids.find(raid => raid.value === embed.title);
+    this.raid = raids.find(raid => embed.title.includes(raid.value));
     this.description = embed.description;
 
     this.supports = this.initRoleList(embed.fields, 'Supports');
     this.dps = this.initRoleList(embed.fields, 'DPS');
     this.flex = this.initRoleList(embed.fields, 'Flex');
-    this.bench = this.initRoleList(embed.fields, 'Banc de touche');
+    this.bench = this.initRoleList(embed.fields, 'Banc');
   }
 
   initRoleList(fields, roleListName) {
-    const theField = fields.find(field => field.name === roleListName);
+    const theField = fields.find(field => field.name.includes(roleListName));
     const theFieldArray = theField ? theField.value.split('\r') : [];
     const theRoleList = theFieldArray.map(item => {
       const theRoleSplit = item.split(' : ');
@@ -64,6 +64,10 @@ class RaidMessage {
     return prev;
   }
 
+  calculatePlayerNumber() {
+    return this.supports.length + this.dps.length + this.flex.length;
+  }
+
   update(player, playerClass) {
     this.removePlayer(player);
 
@@ -86,30 +90,35 @@ class RaidMessage {
 
   generateEmbed() {
     const supportField = this.supports.reduce(this.reduceClassList, '');
-    const dpsField = this.dps.reduce(this.reduceClassList, '');
+    const dpsFirstField = this.dps.slice(0, 3).reduce(this.reduceClassList, '');
+    const dpsSecondField = this.dps.length > 3 ? this.dps.slice(3).reduce(this.reduceClassList, '') : '';
     const flexField = this.flex.reduce(this.reduceWaitList, '');
     const benchField = this.bench.reduce(this.reduceWaitList, '');
 
     const raidEmbed = new EmbedBuilder()
-      .setTitle(this.raid.value)
+      .setTitle(`${this.raid.value} - ${this.calculatePlayerNumber()}/${this.raid.maxPlayer}`)
       .setDescription(this.description)
       .setColor(this.raid.color)
       .setImage(this.raid.img);
 
-    if (dpsField !== '') {
-      raidEmbed.addFields({ name: 'DPS', value: dpsField });
+    if (supportField !== '') {
+      raidEmbed.addFields({ name: `Supports : ${this.supports.length}`, value: supportField, inline: true });
     }
 
-    if (supportField !== '') {
-      raidEmbed.addFields({ name: 'Supports', value: supportField });
+    if (dpsFirstField !== '') {
+      raidEmbed.addFields({ name: `DPS : ${this.dps.length}`, value: dpsFirstField, inline: true });
+    }
+
+    if (dpsSecondField !== '') {
+      raidEmbed.addFields({ name: '\u200B', value: dpsSecondField, inline: true });
     }
 
     if (flexField !== '') {
-      raidEmbed.addFields({ name: 'Flex', value: flexField });
+      raidEmbed.addFields({ name: `Flex : ${this.flex.length}`, value: flexField });
     }
 
     if (benchField !== '') {
-      raidEmbed.addFields({ name: 'Banc', value: benchField });
+      raidEmbed.addFields({ name: `Banc : ${this.bench.length}`, value: benchField });
     }
 
     return raidEmbed;
