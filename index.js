@@ -9,6 +9,7 @@ const { RaidMessage } = require('./tools/RaidMessage.js');
 const { unsubscribe } = require('./buttons/unsubscribe.js');
 const { deleteRaid } = require('./buttons/deleteRaid.js');
 const { confirmDeleteRaid } = require('./buttons/confirmDeleteRaid.js');
+const { warn } = require('./buttons/warn.js');
 
 // For when I'll reinstate roster sniffer eventually
 // Google Vision
@@ -107,6 +108,9 @@ client.on(Events.InteractionCreate, async interaction => {
 		}
 		if (interaction.customId === 'yesDeleteRaid') {
 			await confirmDeleteRaid(interaction);
+		}
+		if (interaction.customId === 'warn') {
+			await warn(interaction);
 		}
 	} catch (error) {
 		console.error(error);

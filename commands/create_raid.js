@@ -57,6 +57,10 @@ module.exports = {
 					.setLabel('Se désinscrire')
 					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder()
+					.setCustomId('warn')
+					.setLabel('On part !')
+					.setStyle(ButtonStyle.Success),
+				new ButtonBuilder()
 					.setCustomId('deleteRaid')
 					.setLabel('Supprimer le raid')
 					.setStyle(ButtonStyle.Danger),
