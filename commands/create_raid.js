@@ -55,7 +55,7 @@ module.exports = {
 				new ButtonBuilder()
 					.setCustomId('unsubscribe')
 					.setLabel('Se désinscrire')
-					.setStyle(ButtonStyle.Primary),
+					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder()
 					.setCustomId('deleteRaid')
 					.setLabel('Supprimer le raid')
