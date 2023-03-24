@@ -96,7 +96,7 @@ class RaidMessage {
     const benchField = this.bench.reduce(this.reduceWaitList, '');
 
     const raidEmbed = new EmbedBuilder()
-      .setTitle(`${this.raid.value} - ${this.calculatePlayerNumber()}/${this.raid.maxPlayer}`)
+      .setTitle(`${this.raid.value} - ${this.calculatePlayerNumber()}${this.raid.maxPlayer !== false ? `/${this.raid.maxPlayer}` : ''}`)
       .setDescription(this.description)
       .setColor(this.raid.color)
       .setImage(this.raid.img);

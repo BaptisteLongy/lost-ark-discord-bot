@@ -64,5 +64,16 @@
         ],
         "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/brelshaza.jpg",
         "maxPlayer": 8
+    },
+    {
+        "name": "Autre",
+        "value": "Autre",
+        "color": [
+            39,
+            240,
+            86
+        ],
+        "img": "https://images.freeimages.com/cme/images/istock/previews/3567/35679130-three-question-marks-drawing.jpg",
+        "maxPlayer": false
     }
 ]
