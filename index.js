@@ -5,13 +5,13 @@ dotenv.config();
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
-const { RaidMessage } = require('./tools/RaidMessage.js');
 const { unsubscribe } = require('./buttons/unsubscribe.js');
 const { deleteRaid } = require('./buttons/deleteRaid.js');
 const { confirmDeleteRaid } = require('./buttons/confirmDeleteRaid.js');
 const { warn } = require('./buttons/warn.js');
 const { update } = require('./buttons/update.js');
 const { handleUpdateModal } = require('./modalHandlers/handleUpdateModal.js');
+const { handleClassSelect } = require('./selectMenuHandlers/handleClassSelect.js');
 
 // For when I'll reinstate roster sniffer eventually
 // Google Vision
@@ -80,20 +80,17 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isStringSelectMenu()) return;
 
-	if (interaction.customId === 'classSelect') {
-		await interaction.deferUpdate();
-
-		// Parse the message into a RaidMessage
-		const raidMessage = new RaidMessage(interaction.message.embeds[0]);
-
-		// Update the RaidMessage
-		raidMessage.update(interaction.member, interaction.values[0]);
-
-		// Generate the new embed
-		const newEmbed = raidMessage.generateEmbed();
-
-		// Send the new embed
-		await interaction.editReply({ embeds: [newEmbed] });
+	try {
+		if (interaction.customId === 'classSelect') {
+			await handleClassSelect(interaction);
+		}
+	} catch (error) {
+		console.error(error);
+		if (interaction.replied || interaction.deferred) {
+			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+		} else {
+			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		}
 	}
 });
 
