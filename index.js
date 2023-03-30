@@ -10,6 +10,8 @@ const { unsubscribe } = require('./buttons/unsubscribe.js');
 const { deleteRaid } = require('./buttons/deleteRaid.js');
 const { confirmDeleteRaid } = require('./buttons/confirmDeleteRaid.js');
 const { warn } = require('./buttons/warn.js');
+const { update } = require('./buttons/update.js');
+const { handleUpdateModal } = require('./modalHandlers/handleUpdateModal.js');
 
 // For when I'll reinstate roster sniffer eventually
 // Google Vision
@@ -111,6 +113,27 @@ client.on(Events.InteractionCreate, async interaction => {
 		}
 		if (interaction.customId === 'warn') {
 			await warn(interaction);
+		}
+		if (interaction.customId === 'update') {
+			await update(interaction);
+		}
+	} catch (error) {
+		console.error(error);
+		if (interaction.replied || interaction.deferred) {
+			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+		} else {
+			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		}
+	}
+});
+
+// Modal listener
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isModalSubmit()) return;
+
+	try {
+		if (interaction.customId === 'updateModal') {
+			await handleUpdateModal(interaction);
 		}
 	} catch (error) {
 		console.error(error);

@@ -48,6 +48,10 @@ class RaidMessage {
     return theRoleList;
   }
 
+  changeDescription(newDescription) {
+    this.description = newDescription;
+  }
+
   removePlayerFromList(player, list) {
     return list.filter(
       registration => registration.player !== player.toString(),

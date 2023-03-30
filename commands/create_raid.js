@@ -61,6 +61,10 @@ module.exports = {
 					.setLabel('On part !')
 					.setStyle(ButtonStyle.Success),
 				new ButtonBuilder()
+					.setCustomId('update')
+					.setLabel('Modifier')
+					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder()
 					.setCustomId('deleteRaid')
 					.setLabel('Supprimer le raid')
 					.setStyle(ButtonStyle.Danger),
