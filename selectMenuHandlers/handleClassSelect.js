@@ -17,5 +17,6 @@ async function handleClassSelect(interaction) {
 }
 
 module.exports = {
-    handleClassSelect,
+    name: 'classSelect',
+    execute: handleClassSelect,
 };

@@ -11,7 +11,6 @@ const { confirmDeleteRaid } = require('./buttons/confirmDeleteRaid.js');
 const { warn } = require('./buttons/warn.js');
 const { update } = require('./buttons/update.js');
 const { handleUpdateModal } = require('./modalHandlers/handleUpdateModal.js');
-const { handleClassSelect } = require('./selectMenuHandlers/handleClassSelect.js');
 
 // For when I'll reinstate roster sniffer eventually
 // Google Vision
@@ -43,6 +42,23 @@ for (const file of commandFiles) {
 		client.commands.set(command.data.name, command);
 	} else {
 		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+	}
+}
+
+
+// Build the selectMenus Collection for easy access
+client.selectMenus = new Collection();
+const selectMenusPath = path.join(__dirname, 'selectMenuHandlers');
+const selectMenusFiles = fs.readdirSync(selectMenusPath).filter(file => file.endsWith('.js'));
+
+for (const file of selectMenusFiles) {
+	const filePath = path.join(selectMenusPath, file);
+	const selectMenu = require(filePath);
+	// Set a new item in the Collection with the key as the select menu customId and the value as the exported module
+	if ('name' in selectMenu && 'execute' in selectMenu) {
+		client.selectMenus.set(selectMenu.name, selectMenu);
+	} else {
+		console.log(`[WARNING] The select menu at ${filePath} is missing a required "name" or "execute" property.`);
 	}
 }
 
@@ -79,16 +95,21 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isStringSelectMenu()) return;
 
+	const selectMenu = interaction.client.selectMenus.get(interaction.customId);
+
+	if (!selectMenu) {
+		console.error(`No select menu matching ${interaction.customId} was found.`);
+		return;
+	}
+
 	try {
-		if (interaction.customId === 'classSelect') {
-			await handleClassSelect(interaction);
-		}
+		await selectMenu.execute(interaction);
 	} catch (error) {
 		console.error(error);
 		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.followUp({ content: 'There was an error while executing this select menu!', ephemeral: true });
 		} else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.reply({ content: 'There was an error while executing this select menu!', ephemeral: true });
 		}
 	}
 });
