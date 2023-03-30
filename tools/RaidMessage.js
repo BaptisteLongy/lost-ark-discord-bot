@@ -19,13 +19,26 @@ class RaidMessage {
     this.description = embed.description;
 
     this.supports = this.initRoleList(embed.fields, 'Supports');
-    this.dps = this.initRoleList(embed.fields, 'DPS');
+    const firstDPS = this.initRoleList(embed.fields, 'DPS');
+    const secondDPS = this.initRoleListFromIndex(embed.fields, 2);
+    this.dps = [...firstDPS, ...secondDPS];
     this.flex = this.initRoleList(embed.fields, 'Flex');
     this.bench = this.initRoleList(embed.fields, 'Banc');
   }
 
   initRoleList(fields, roleListName) {
     const theField = fields.find(field => field.name.includes(roleListName));
+    const theFieldArray = theField ? theField.value.split('\r') : [];
+    const theRoleList = theFieldArray.map(item => {
+      const theRoleSplit = item.split(' : ');
+      return { player: theRoleSplit[0], class: theRoleSplit[1] };
+    });
+
+    return theRoleList;
+  }
+
+  initRoleListFromIndex(fields, index) {
+    const theField = fields[index];
     const theFieldArray = theField ? theField.value.split('\r') : [];
     const theRoleList = theFieldArray.map(item => {
       const theRoleSplit = item.split(' : ');
