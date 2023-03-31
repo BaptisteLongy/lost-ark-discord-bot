@@ -5,5 +5,6 @@ async function confirmDeleteRaid(interaction) {
 }
 
 module.exports = {
-    confirmDeleteRaid,
+    name: 'yesDeleteRaid',
+    execute: confirmDeleteRaid,
 };

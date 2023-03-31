@@ -5,11 +5,6 @@ dotenv.config();
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
-const { unsubscribe } = require('./buttons/unsubscribe.js');
-const { deleteRaid } = require('./buttons/deleteRaid.js');
-const { confirmDeleteRaid } = require('./buttons/confirmDeleteRaid.js');
-const { warn } = require('./buttons/warn.js');
-const { update } = require('./buttons/update.js');
 const { handleUpdateModal } = require('./modalHandlers/handleUpdateModal.js');
 
 // For when I'll reinstate roster sniffer eventually
@@ -58,6 +53,22 @@ for (const file of selectMenusFiles) {
 		client.selectMenus.set(selectMenu.name, selectMenu);
 	} else {
 		console.log(`[WARNING] The select menu at ${filePath} is missing a required "name" or "execute" property.`);
+	}
+}
+
+// Build the buttons Collection for easy access
+client.buttons = new Collection();
+const buttonsPath = path.join(__dirname, 'buttonHandlers');
+const buttonsFiles = fs.readdirSync(buttonsPath).filter(file => file.endsWith('.js'));
+
+for (const file of buttonsFiles) {
+	const filePath = path.join(buttonsPath, file);
+	const button = require(filePath);
+	// Set a new item in the Collection with the key as the button customId and the value as the exported module
+	if ('name' in button && 'execute' in button) {
+		client.buttons.set(button.name, button);
+	} else {
+		console.log(`[WARNING] The button at ${filePath} is missing a required "name" or "execute" property.`);
 	}
 }
 
@@ -117,28 +128,21 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isButton()) return;
 
+	const button = interaction.client.buttons.get(interaction.customId);
+
+	if (!button) {
+		console.error(`No button matching ${interaction.customId} was found.`);
+		return;
+	}
+
 	try {
-		if (interaction.customId === 'unsubscribe') {
-			await unsubscribe(interaction);
-		}
-		if (interaction.customId === 'deleteRaid') {
-			await deleteRaid(interaction);
-		}
-		if (interaction.customId === 'yesDeleteRaid') {
-			await confirmDeleteRaid(interaction);
-		}
-		if (interaction.customId === 'warn') {
-			await warn(interaction);
-		}
-		if (interaction.customId === 'update') {
-			await update(interaction);
-		}
+		await button.execute(interaction);
 	} catch (error) {
 		console.error(error);
 		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.followUp({ content: 'There was an error while executing this button!', ephemeral: true });
 		} else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.reply({ content: 'There was an error while executing this button!', ephemeral: true });
 		}
 	}
 });

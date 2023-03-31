@@ -19,5 +19,6 @@ async function update(interaction) {
 }
 
 module.exports = {
-    update,
+    name: 'update',
+    execute: update,
 };

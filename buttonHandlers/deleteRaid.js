@@ -12,5 +12,6 @@ async function deleteRaid(interaction) {
 }
 
 module.exports = {
-    deleteRaid,
+    name: 'deleteRaid',
+    execute: deleteRaid,
 };

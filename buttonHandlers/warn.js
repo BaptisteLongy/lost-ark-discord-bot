@@ -28,5 +28,6 @@ async function warn(interaction) {
 }
 
 module.exports = {
-    warn,
+    name: 'warn',
+    execute: warn,
 };
