@@ -45,7 +45,6 @@ for (const file of commandFiles) {
 	}
 }
 
-
 // Build the selectMenus Collection for easy access
 client.selectMenus = new Collection();
 const selectMenusPath = path.join(__dirname, 'selectMenuHandlers');
