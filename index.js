@@ -10,7 +10,6 @@ const { createCollection } = require('./tools/createCollection.js');
 // const vision = require('@google-cloud/vision');
 // const vision_client = new vision.ImageAnnotatorClient();
 
-// const { token } = require('./config.json');
 const token = process.env.LOST_ARK_DISCORD_BOT_TOKEN;
 
 // Create a new client instance
