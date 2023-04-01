@@ -17,13 +17,21 @@ async function warn(interaction) {
     warnMessage === '' ? warnMessage = warnFlexMessage : warnMessage = `${warnMessage} ${warnFlexMessage}`;
 
     if (warnMessage !== '') {
-        await interaction.message.reply(warnMessage + 'ça part !!!');
+        if (interaction.message.hasThread) {
+            interaction.message.thread.send(warnMessage + 'ça part !!!');
+        } else {
+            await interaction.message.reply(warnMessage + 'ça part !!!');
+        }
     }
 
     const benchMessage = raidMessage.bench.reduce(reduceForMessage, '');
 
     if (benchMessage !== '') {
-        await interaction.message.reply(benchMessage + ' on se prépare sur le banc des remplaçants...');
+        if (interaction.message.hasThread) {
+            interaction.message.thread.send(benchMessage + ' on se prépare sur le banc des remplaçants...');
+        } else {
+            await interaction.message.reply(benchMessage + ' on se prépare sur le banc des remplaçants...');
+        }
     }
 }
 
