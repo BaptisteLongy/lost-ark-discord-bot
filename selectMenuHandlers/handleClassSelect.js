@@ -14,6 +14,11 @@ async function handleClassSelect(interaction) {
 
     // Send the new embed
     await interaction.editReply({ embeds: [newEmbed] });
+
+    // Add the member to the thread
+    if (interaction.message.hasThread) {
+        interaction.message.thread.members.add(interaction.member);
+    }
 }
 
 module.exports = {
