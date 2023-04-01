@@ -8,7 +8,8 @@ async function update(interaction) {
     const newDescriptionInput = new TextInputBuilder()
         .setCustomId('newDescriptionInput')
         .setLabel('Nouvelle description')
-        .setStyle(TextInputStyle.Short);
+        .setStyle(TextInputStyle.Paragraph)
+        .setValue(interaction.message.embeds[0].description);
 
     const newDescriptionRow = new ActionRowBuilder()
         .addComponents(newDescriptionInput);
