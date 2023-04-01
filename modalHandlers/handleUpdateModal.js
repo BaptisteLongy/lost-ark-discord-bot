@@ -2,7 +2,7 @@ const { RaidMessage } = require('../tools/RaidMessage.js');
 
 async function handleUpdateModal(interaction) {
     // Get the data entered by the user
-	const newDescription = interaction.fields.getTextInputValue('newDescriptionInput');
+    const newDescription = interaction.fields.getTextInputValue('newDescriptionInput');
 
     // Parse the message into a RaidMessage
     const raidMessage = new RaidMessage(interaction.message.embeds[0]);
@@ -18,5 +18,8 @@ async function handleUpdateModal(interaction) {
 }
 
 module.exports = {
-    handleUpdateModal,
+    data: {
+        name: 'updateModal',
+    },
+    execute: handleUpdateModal,
 };

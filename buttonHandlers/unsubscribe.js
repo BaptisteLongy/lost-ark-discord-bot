@@ -17,6 +17,8 @@ async function unsubscribe(interaction) {
 }
 
 module.exports = {
-    name: 'unsubscribe',
+    data: {
+        name: 'unsubscribe',
+    },
     execute: unsubscribe,
 };

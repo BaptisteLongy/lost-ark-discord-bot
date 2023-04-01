@@ -11,7 +11,7 @@ async function update(interaction) {
         .setStyle(TextInputStyle.Short);
 
     const newDescriptionRow = new ActionRowBuilder()
-    .addComponents(newDescriptionInput);
+        .addComponents(newDescriptionInput);
 
     updateModal.addComponents(newDescriptionRow);
 
@@ -19,6 +19,8 @@ async function update(interaction) {
 }
 
 module.exports = {
-    name: 'update',
+    data: {
+        name: 'update',
+    },
     execute: update,
 };

@@ -2,10 +2,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Require the necessary discord.js classes
-const fs = require('node:fs');
-const path = require('node:path');
-const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
-const { handleUpdateModal } = require('./modalHandlers/handleUpdateModal.js');
+const { Client, Events, GatewayIntentBits } = require('discord.js');
+const { createCollection } = require('./tools/createCollection.js');
 
 // For when I'll reinstate roster sniffer eventually
 // Google Vision
@@ -25,52 +23,16 @@ const client = new Client({
 });
 
 // Build the commands Collection for easy access
-client.commands = new Collection();
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-	// Set a new item in the Collection with the key as the command name and the value as the exported module
-	if ('data' in command && 'execute' in command) {
-		client.commands.set(command.data.name, command);
-	} else {
-		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-	}
-}
+createCollection(client, 'commands');
 
 // Build the selectMenus Collection for easy access
-client.selectMenus = new Collection();
-const selectMenusPath = path.join(__dirname, 'selectMenuHandlers');
-const selectMenusFiles = fs.readdirSync(selectMenusPath).filter(file => file.endsWith('.js'));
-
-for (const file of selectMenusFiles) {
-	const filePath = path.join(selectMenusPath, file);
-	const selectMenu = require(filePath);
-	// Set a new item in the Collection with the key as the select menu customId and the value as the exported module
-	if ('name' in selectMenu && 'execute' in selectMenu) {
-		client.selectMenus.set(selectMenu.name, selectMenu);
-	} else {
-		console.log(`[WARNING] The select menu at ${filePath} is missing a required "name" or "execute" property.`);
-	}
-}
+createCollection(client, 'selectMenuHandlers');
 
 // Build the buttons Collection for easy access
-client.buttons = new Collection();
-const buttonsPath = path.join(__dirname, 'buttonHandlers');
-const buttonsFiles = fs.readdirSync(buttonsPath).filter(file => file.endsWith('.js'));
+createCollection(client, 'buttonHandlers');
 
-for (const file of buttonsFiles) {
-	const filePath = path.join(buttonsPath, file);
-	const button = require(filePath);
-	// Set a new item in the Collection with the key as the button customId and the value as the exported module
-	if ('name' in button && 'execute' in button) {
-		client.buttons.set(button.name, button);
-	} else {
-		console.log(`[WARNING] The button at ${filePath} is missing a required "name" or "execute" property.`);
-	}
-}
+// Build the modals Collection for easy access
+createCollection(client, 'modalHandlers');
 
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
@@ -105,7 +67,7 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isStringSelectMenu()) return;
 
-	const selectMenu = interaction.client.selectMenus.get(interaction.customId);
+	const selectMenu = interaction.client.selectMenuHandlers.get(interaction.customId);
 
 	if (!selectMenu) {
 		console.error(`No select menu matching ${interaction.customId} was found.`);
@@ -128,7 +90,7 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isButton()) return;
 
-	const button = interaction.client.buttons.get(interaction.customId);
+	const button = interaction.client.buttonHandlers.get(interaction.customId);
 
 	if (!button) {
 		console.error(`No button matching ${interaction.customId} was found.`);
@@ -151,16 +113,21 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isModalSubmit()) return;
 
+	const modal = interaction.client.modalHandlers.get(interaction.customId);
+
+	if (!modal) {
+		console.error(`No modal matching ${interaction.customId} was found.`);
+		return;
+	}
+
 	try {
-		if (interaction.customId === 'updateModal') {
-			await handleUpdateModal(interaction);
-		}
+		await modal.execute(interaction);
 	} catch (error) {
 		console.error(error);
 		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.followUp({ content: 'There was an error while executing this modal!', ephemeral: true });
 		} else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.reply({ content: 'There was an error while executing this modal!', ephemeral: true });
 		}
 	}
 });
