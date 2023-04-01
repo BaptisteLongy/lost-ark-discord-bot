@@ -76,7 +76,7 @@ async function execute(interaction) {
 	})
 	.then(async (message) => {
 		await message.startThread({
-			name: `${selectedRaid.value} - créé par ${interaction.member.nickname ? interaction.member.nickname : interaction.member.user.username}`,
+			name: `${interaction.options.getString('raid')} - créé par ${interaction.member.nickname ? interaction.member.nickname : interaction.member.user.username}`,
 		});
 	});
 }
