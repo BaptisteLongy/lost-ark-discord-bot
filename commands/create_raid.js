@@ -70,7 +70,15 @@ async function execute(interaction) {
 				.setStyle(ButtonStyle.Danger),
 		);
 
-	await interaction.editReply({ content: `@everyone Nouveau raid créé par ${interaction.member}`, embeds: [raidEmbed], components: [selectRow, buttonRow] });
+	await interaction.editReply({
+		content: `@everyone Nouveau raid créé par ${interaction.member}`,
+		embeds: [raidEmbed], components: [selectRow, buttonRow],
+	})
+	.then(async (message) => {
+		await message.startThread({
+			name: `${selectedRaid.value} - créé par ${interaction.member.nickname ? interaction.member.nickname : interaction.member.user.username}`,
+		});
+	});
 }
 
 module.exports = {

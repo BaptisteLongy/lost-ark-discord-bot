@@ -1,6 +1,13 @@
 async function confirmDeleteRaid(interaction) {
     await interaction.deferUpdate();
-    interaction.channel.messages.delete(interaction.message.reference.messageId);
+
+    const theOriginalMessage = await interaction.channel.messages.fetch(interaction.message.reference.messageId);
+
+    if (theOriginalMessage.hasThread) {
+        theOriginalMessage.thread.delete();
+    }
+    theOriginalMessage.delete();
+
     await interaction.editReply({ content: 'C\'est fait', components: [] });
 }
 
