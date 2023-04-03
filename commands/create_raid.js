@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
 
 const raids = require('../tools/raidList.json');
-
+const { RaidMessage } = require('../tools/RaidMessage.js');
 const supports = require('../tools/supports.json');
 const dps = require('../tools/dps.json');
 const classList = [...supports, ...dps].sort((classA, classB) => {
@@ -17,6 +17,10 @@ const data = new SlashCommandBuilder()
 			.setRequired(true)
 			.addChoices(...raids))
 	.addStringOption(option =>
+		option.setName('gate')
+			.setDescription('Quelle gate ? Sert aussi de complément de titre si tu fais un raid "Autre"')
+			.setRequired(true))
+	.addStringOption(option =>
 		option.setName('description')
 			.setDescription('Raconte ta vie')
 			.setRequired(true));
@@ -24,13 +28,12 @@ const data = new SlashCommandBuilder()
 async function execute(interaction) {
 	await interaction.deferReply();
 
-	const selectedRaid = raids.find(raid => raid.value === interaction.options.getString('raid'));
+	const raidMessage = new RaidMessage();
+	raidMessage.raid = raids.find(raid => raid.value === interaction.options.getString('raid'));
+	raidMessage.gate = interaction.options.getString('gate');
+	raidMessage.description = interaction.options.getString('description');
 
-	const raidEmbed = new EmbedBuilder()
-		.setTitle(selectedRaid.value)
-		.setDescription(interaction.options.getString('description'))
-		.setColor(selectedRaid.color)
-		.setImage(selectedRaid.img);
+	const raidEmbed = raidMessage.generateEmbed();
 
 	const selectRow = new ActionRowBuilder()
 		.addComponents(
@@ -74,11 +77,11 @@ async function execute(interaction) {
 		content: `@everyone Nouveau raid créé par ${interaction.member}`,
 		embeds: [raidEmbed], components: [selectRow, buttonRow],
 	})
-	.then(async (message) => {
-		await message.startThread({
-			name: `${interaction.options.getString('raid')} - créé par ${interaction.member.nickname ? interaction.member.nickname : interaction.member.user.username}`,
+		.then(async (message) => {
+			await message.startThread({
+				name: `${interaction.options.getString('raid')} - ${interaction.options.getString('gate')} créé par ${interaction.member.nickname ? interaction.member.nickname : interaction.member.user.username}`,
+			});
 		});
-	});
 }
 
 module.exports = {

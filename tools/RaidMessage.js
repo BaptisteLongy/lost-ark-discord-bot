@@ -24,16 +24,24 @@ class RaidMessage {
   }
 
   initWithEmbed(embed) {
+    const raidSplit = embed.title.split(' - ');
 
-    this.raid = raids.find(raid => embed.title.includes(raid.value));
+    this.raid = raids.find(raid => raid.value === raidSplit[0]);
+    this.gate = this.getGateFromSplit(raidSplit);
     this.description = embed.description;
-
     this.supports = this.initRoleList(embed.fields, 'Supports');
     const firstDPS = this.initRoleList(embed.fields, 'DPS');
     const secondDPS = this.initRoleList(embed.fields, '');
     this.dps = [...firstDPS, ...secondDPS];
     this.flex = this.initRoleList(embed.fields, 'Flex');
     this.bench = this.initRoleList(embed.fields, 'Banc');
+  }
+
+  getGateFromSplit(split) {
+    split.shift();
+    split.pop();
+
+    return split.join(' - ');
   }
 
   initRoleList(fields, roleListName) {
@@ -122,7 +130,7 @@ class RaidMessage {
     const benchField = this.bench.reduce(this.reduceWaitList, '');
 
     const raidEmbed = new EmbedBuilder()
-      .setTitle(`${this.raid.value} - ${this.calculatePlayerNumber()}${this.raid.maxPlayer !== false ? `/${this.raid.maxPlayer}` : ''}`)
+      .setTitle(`${this.raid.value} - ${this.gate} - ${this.calculatePlayerNumber()}${this.raid.maxPlayer !== false ? `/${this.raid.maxPlayer}` : ''}`)
       .setDescription(this.description)
       .setColor(this.raid.color)
       .setImage(this.raid.img);

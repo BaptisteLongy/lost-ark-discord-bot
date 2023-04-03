@@ -1,7 +1,7 @@
 [
     {
         "name": "Argos",
-        "value": "Argos - 1370",
+        "value": "Argos",
         "color": [
             39,
             240,
@@ -12,7 +12,7 @@
     },
     {
         "name": "Valtan NM",
-        "value": "Valtan NM (Normal Mode) - 1415",
+        "value": "Valtan NM (Normal Mode)",
         "color": [
             166,
             85,
@@ -23,7 +23,7 @@
     },
     {
         "name": "Valtan HM",
-        "value": "Valtan HM (Hard Mode) - 1445",
+        "value": "Valtan HM (Hard Mode)",
         "color": [
             166,
             85,
@@ -34,7 +34,7 @@
     },
     {
         "name": "Vykas NM",
-        "value": "Vykas NM (Normal Mode) - 1430",
+        "value": "Vykas NM (Normal Mode)",
         "color": [
             163,
             69,
@@ -45,7 +45,7 @@
     },
     {
         "name": "Vykas HM",
-        "value": "Vykas HM (Hard Mode) - 1460",
+        "value": "Vykas HM (Hard Mode)",
         "color": [
             163,
             69,
@@ -56,7 +56,7 @@
     },
     {
         "name": "Kakul",
-        "value": "Kakul-Saydon - 1475",
+        "value": "Kakul-Saydon",
         "color": [
             234,
             117,
@@ -67,7 +67,7 @@
     },
     {
         "name": "Brelshaza",
-        "value": "Brelshaza - 1490",
+        "value": "Brelshaza",
         "color": [
             96,
             101,
