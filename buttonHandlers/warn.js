@@ -7,7 +7,8 @@ function reduceForMessage(previous, current) {
 async function warn(interaction) {
     await interaction.deferUpdate();
 
-    const raidMessage = new RaidMessage(interaction.message.embeds[0]);
+    const raidMessage = new RaidMessage();
+    raidMessage.initWithEmbed(interaction.message.embeds[0]);
 
     const warnSupportMessage = raidMessage.supports.reduce(reduceForMessage, '');
     const warnDPSMessage = raidMessage.dps.reduce(reduceForMessage, '');

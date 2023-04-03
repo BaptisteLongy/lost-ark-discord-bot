@@ -4,7 +4,8 @@ async function handleClassSelect(interaction) {
     await interaction.deferUpdate();
 
     // Parse the message into a RaidMessage
-    const raidMessage = new RaidMessage(interaction.message.embeds[0]);
+    const raidMessage = new RaidMessage();
+    raidMessage.initWithEmbed(interaction.message.embeds[0]);
 
     // Update the RaidMessage
     raidMessage.update(interaction.member, interaction.values[0]);

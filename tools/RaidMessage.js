@@ -13,7 +13,17 @@ function isDPS(playerClass) {
 }
 
 class RaidMessage {
-  constructor(embed) {
+  constructor() {
+    this.raid = '';
+    this.gate = '';
+    this.description = '';
+    this.supports = [];
+    this.dps = [];
+    this.flex = [];
+    this.bench = [];
+  }
+
+  initWithEmbed(embed) {
 
     this.raid = raids.find(raid => embed.title.includes(raid.value));
     this.description = embed.description;

@@ -5,7 +5,8 @@ async function handleUpdateModal(interaction) {
     const newDescription = interaction.fields.getTextInputValue('newDescriptionInput');
 
     // Parse the message into a RaidMessage
-    const raidMessage = new RaidMessage(interaction.message.embeds[0]);
+    const raidMessage = new RaidMessage();
+    raidMessage.initWithEmbed(interaction.message.embeds[0]);
 
     // Change Raid description
     raidMessage.changeDescription(newDescription);
