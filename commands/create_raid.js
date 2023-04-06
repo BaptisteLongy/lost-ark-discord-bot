@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
 
 const raids = require('../tools/raidList.json');
 const { RaidMessage } = require('../tools/RaidMessage.js');
@@ -25,8 +25,46 @@ const data = new SlashCommandBuilder()
 			.setDescription('Raconte ta vie')
 			.setRequired(true));
 
+const selectRow = new ActionRowBuilder()
+	.addComponents(
+		new StringSelectMenuBuilder()
+			.setCustomId('classSelect')
+			.setPlaceholder('Tu viens avec quoi ?')
+			.addOptions(
+				...classList,
+				{
+					label: 'Flex',
+					value: 'Flex',
+				},
+				{
+					label: 'Banc de touche',
+					value: 'Banc de touche',
+				},
+			),
+	);
+
+const buttonRow = new ActionRowBuilder()
+	.addComponents(
+		new ButtonBuilder()
+			.setCustomId('unsubscribe')
+			.setLabel('Se désinscrire')
+			.setStyle(ButtonStyle.Secondary),
+		new ButtonBuilder()
+			.setCustomId('warn')
+			.setLabel('On part !')
+			.setStyle(ButtonStyle.Success),
+		new ButtonBuilder()
+			.setCustomId('update')
+			.setLabel('Modifier')
+			.setStyle(ButtonStyle.Primary),
+		new ButtonBuilder()
+			.setCustomId('deleteRaid')
+			.setLabel('Supprimer le raid')
+			.setStyle(ButtonStyle.Danger),
+	);
+
 async function execute(interaction) {
-	await interaction.deferReply();
+	// await interaction.deferReply();
 
 	const raidMessage = new RaidMessage();
 	raidMessage.raid = raids.find(raid => raid.value === interaction.options.getString('raid'));
@@ -35,49 +73,12 @@ async function execute(interaction) {
 
 	const raidEmbed = raidMessage.generateEmbed();
 
-	const selectRow = new ActionRowBuilder()
-		.addComponents(
-			new StringSelectMenuBuilder()
-				.setCustomId('classSelect')
-				.setPlaceholder('Tu viens avec quoi ?')
-				.addOptions(
-					...classList,
-					{
-						label: 'Flex',
-						value: 'Flex',
-					},
-					{
-						label: 'Banc de touche',
-						value: 'Banc de touche',
-					},
-				),
-		);
-
-	const buttonRow = new ActionRowBuilder()
-		.addComponents(
-			new ButtonBuilder()
-				.setCustomId('unsubscribe')
-				.setLabel('Se désinscrire')
-				.setStyle(ButtonStyle.Secondary),
-			new ButtonBuilder()
-				.setCustomId('warn')
-				.setLabel('On part !')
-				.setStyle(ButtonStyle.Success),
-			new ButtonBuilder()
-				.setCustomId('update')
-				.setLabel('Modifier')
-				.setStyle(ButtonStyle.Primary),
-			new ButtonBuilder()
-				.setCustomId('deleteRaid')
-				.setLabel('Supprimer le raid')
-				.setStyle(ButtonStyle.Danger),
-		);
-
-	await interaction.editReply({
+	await interaction.reply({
 		content: `@everyone Nouveau raid créé par ${interaction.member}`,
 		embeds: [raidEmbed], components: [selectRow, buttonRow],
 	})
-		.then(async (message) => {
+		.then(async (response) => {
+			const message = await response.fetch();
 			await message.startThread({
 				name: `${interaction.options.getString('raid')} - ${interaction.options.getString('gate')} créé par ${interaction.member.nickname ? interaction.member.nickname : interaction.member.user.username}`,
 			});
