@@ -15,6 +15,7 @@ function isDPS(playerClass) {
 class RaidMessage {
   constructor() {
     this.raid = '';
+    this.mode = '';
     this.gate = '';
     this.description = '';
     this.supports = [];
@@ -26,7 +27,8 @@ class RaidMessage {
   initWithEmbed(embed) {
     const raidSplit = embed.title.split(' - ');
 
-    this.raid = raids.find(raid => raid.value === raidSplit[0]);
+    this.raid = raids.find(raid => raidSplit[0].startsWith(raid.value));
+    this.mode = Array.isArray(this.raid.modes) ? this.getModeFromTitleSplit(raidSplit[0]) : undefined;
     this.gate = this.getGateFromSplit(raidSplit);
     this.description = embed.description;
     this.supports = this.initRoleList(embed.fields, 'Supports');
@@ -35,6 +37,13 @@ class RaidMessage {
     this.dps = [...firstDPS, ...secondDPS];
     this.flex = this.initRoleList(embed.fields, 'Flex');
     this.bench = this.initRoleList(embed.fields, 'Banc');
+  }
+
+  getModeFromTitleSplit(titleSplit) {
+    const stringSplit = titleSplit.split(' ');
+    stringSplit.shift();
+
+    return stringSplit.join(' ');
   }
 
   getGateFromSplit(split) {
@@ -130,7 +139,7 @@ class RaidMessage {
     const benchField = this.bench.reduce(this.reduceWaitList, '');
 
     const raidEmbed = new EmbedBuilder()
-      .setTitle(`${this.raid.value} - ${this.gate} - ${this.calculatePlayerNumber()}${this.raid.maxPlayer !== false ? `/${this.raid.maxPlayer}` : ''}`)
+      .setTitle(`${this.raid.value}${this.mode === undefined ? '' : ` ${this.mode}`} - ${this.gate} - ${this.calculatePlayerNumber()}${this.raid.maxPlayer !== false ? `/${this.raid.maxPlayer}` : ''}`)
       .setDescription(this.description)
       .setColor(this.raid.color)
       .setImage(this.raid.img);

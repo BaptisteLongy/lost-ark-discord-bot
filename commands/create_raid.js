@@ -10,20 +10,31 @@ const classList = [...supports, ...dps].sort((classA, classB) => {
 
 const data = new SlashCommandBuilder()
 	.setName('creer')
-	.setDescription('Crée ton propre raid !')
-	.addStringOption(option =>
-		option.setName('raid')
-			.setDescription('Tu pars faire quoi ?')
-			.setRequired(true)
-			.addChoices(...raids))
-	.addStringOption(option =>
-		option.setName('gate')
-			.setDescription('Quelle gate ? Sert aussi de complément de titre si tu fais un raid "Autre"')
-			.setRequired(true))
-	.addStringOption(option =>
-		option.setName('description')
-			.setDescription('Raconte ta vie')
-			.setRequired(true));
+	.setDescription('Crée ton propre raid !');
+
+raids.forEach(raid => {
+	data.addSubcommand(raidCommand => {
+		raidCommand
+			.setName(raid.name.toLowerCase())
+			.setDescription(raid.value);
+		if (Array.isArray(raid.modes)) {
+			raidCommand.addStringOption(option =>
+				option.setName('mode')
+					.setDescription('Quel mode ?')
+					.setRequired(true)
+					.addChoices(...raid.modes));
+		}
+		raidCommand.addStringOption(option =>
+			option.setName('gate')
+				.setDescription('Quelle gate ? Sert aussi de complément de titre si tu fais un raid "Autre"')
+				.setRequired(true))
+			.addStringOption(option =>
+				option.setName('description')
+					.setDescription('Raconte ta vie')
+					.setRequired(true));
+		return raidCommand;
+	});
+});
 
 const selectRow = new ActionRowBuilder()
 	.addComponents(
@@ -64,10 +75,12 @@ const buttonRow = new ActionRowBuilder()
 	);
 
 async function execute(interaction) {
-	// await interaction.deferReply();
-
 	const raidMessage = new RaidMessage();
-	raidMessage.raid = raids.find(raid => raid.value === interaction.options.getString('raid'));
+	const chosenRaid = raids.find(raid => raid.name === interaction.options.getSubcommand());
+	raidMessage.raid = chosenRaid;
+	if (Array.isArray(chosenRaid.modes)) {
+		raidMessage.mode = interaction.options.getString('mode');
+	}
 	raidMessage.gate = interaction.options.getString('gate');
 	raidMessage.description = interaction.options.getString('description');
 
@@ -79,8 +92,14 @@ async function execute(interaction) {
 	})
 		.then(async (response) => {
 			const message = await response.fetch();
+			let raidName = '';
+			if (interaction.options.getString('mode')) {
+				raidName = `${chosenRaid.value} ${raidMessage.mode}`;
+			} else {
+				raidName = chosenRaid.value;
+			}
 			await message.startThread({
-				name: `${interaction.options.getString('raid')} - ${interaction.options.getString('gate')} créé par ${interaction.member.nickname ? interaction.member.nickname : interaction.member.user.username}`,
+				name: `${raidName} - ${interaction.options.getString('gate')} créé par ${interaction.member.nickname ? interaction.member.nickname : interaction.member.user.username}`,
 			});
 		});
 }

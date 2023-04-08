@@ -1,6 +1,6 @@
 [
     {
-        "name": "Argos",
+        "name": "argos",
         "value": "Argos",
         "color": [
             39,
@@ -11,51 +11,57 @@
         "maxPlayer": 8
     },
     {
-        "name": "Valtan NM",
-        "value": "Valtan NM (Normal Mode)",
+        "name": "valtan",
+        "value": "Valtan",
         "color": [
             166,
             85,
             68
         ],
         "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/valtan.jpg",
-        "maxPlayer": 8
+        "maxPlayer": 8,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "HM",
+                "value": "Hard Mode"
+            },
+            {
+                "name": "Hell",
+                "value": "Hell Mode"
+            }
+        ]
     },
     {
-        "name": "Valtan HM",
-        "value": "Valtan HM (Hard Mode)",
-        "color": [
-            166,
-            85,
-            68
-        ],
-        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/valtan.jpg",
-        "maxPlayer": 8
-    },
-    {
-        "name": "Vykas NM",
-        "value": "Vykas NM (Normal Mode)",
-        "color": [
-            163,
-            69,
-            95
-        ],
-        "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/vykas.jpg",
-        "maxPlayer": 8
-    },
-    {
-        "name": "Vykas HM",
-        "value": "Vykas HM (Hard Mode)",
+        "name": "vykas",
+        "value": "Vykas",
         "color": [
             163,
             69,
             95
         ],
         "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/vykas.jpg",
-        "maxPlayer": 8
+        "maxPlayer": 8,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "HM",
+                "value": "Hard Mode"
+            },
+            {
+                "name": "Hell",
+                "value": "Hell Mode"
+            }
+        ]
     },
     {
-        "name": "Kakul",
+        "name": "kakul",
         "value": "Kakul-Saydon",
         "color": [
             234,
@@ -66,7 +72,7 @@
         "maxPlayer": 4
     },
     {
-        "name": "Brelshaza",
+        "name": "brelshaza",
         "value": "Brelshaza",
         "color": [
             96,
@@ -77,7 +83,7 @@
         "maxPlayer": 8
     },
     {
-        "name": "Autre",
+        "name": "autre",
         "value": "Autre",
         "color": [
             39,
