@@ -80,7 +80,17 @@
             137
         ],
         "img": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-horizontal/brelshaza.jpg",
-        "maxPlayer": 8
+        "maxPlayer": 8,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "HM",
+                "value": "Hard Mode"
+            }
+        ]
     },
     {
         "name": "autre",
