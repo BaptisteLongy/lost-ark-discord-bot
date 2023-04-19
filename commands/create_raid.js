@@ -89,6 +89,7 @@ async function execute(interaction) {
 	await interaction.reply({
 		content: `@everyone Nouveau raid créé par ${interaction.member}`,
 		embeds: [raidEmbed], components: [selectRow, buttonRow],
+		allowedMentions: { parse:['everyone'] },
 	})
 		.then(async (response) => {
 			const message = await response.fetch();
