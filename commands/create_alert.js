@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const logger = require('../tools/logger.js');
 
 const adminRoleId = process.env.DISCORD_SERVER_ADMIN_ROLE;
 
@@ -36,16 +37,20 @@ async function execute(interaction) {
         });
     } else {
         const title = interaction.options.getString('titre');
+        let messageId;
+
         await interaction.reply({
             content: `**${title}** - Pour s'inscrire c'est en dessous.`,
             components: [buttonRow],
         })
-        .then(async (response) => {
-			const message = await response.fetch();
-			await message.startThread({
-				name: `${title} - Alertes`,
-			});
-		});
+            .then(async (response) => {
+                const message = await response.fetch();
+                messageId = message.id;
+                await message.startThread({
+                    name: `${title} - Alertes`,
+                });
+            });
+        logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé une alerte ${title} dans le channel ${interaction.channel}`);
     }
 }
 
