@@ -1,3 +1,5 @@
+const logger = require ('../tools/logger.js');
+
 async function confirmDeleteRaid(interaction) {
     await interaction.deferUpdate();
 
@@ -9,6 +11,8 @@ async function confirmDeleteRaid(interaction) {
     theOriginalMessage.delete();
 
     await interaction.editReply({ content: 'C\'est fait', components: [] });
+
+    logger.logAction(interaction, `Id: ${theOriginalMessage.id} : ${interaction.member.displayName} a supprimé le raid`);
 }
 
 module.exports = {

@@ -1,9 +1,10 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
 
-const raids = require('../tools/raidList.json');
 const { RaidMessage } = require('../tools/RaidMessage.js');
+const raids = require('../tools/raidList.json');
 const supports = require('../tools/supports.json');
 const dps = require('../tools/dps.json');
+const logger = require ('../tools/logger.js');
 const classList = [...supports, ...dps].sort((classA, classB) => {
 	return classA.value.localeCompare(classB.value);
 });
@@ -85,6 +86,7 @@ async function execute(interaction) {
 	raidMessage.description = interaction.options.getString('description');
 
 	const raidEmbed = raidMessage.generateEmbed();
+	let messageId;
 
 	await interaction.reply({
 		content: `@everyone Nouveau raid créé par ${interaction.member}`,
@@ -93,6 +95,7 @@ async function execute(interaction) {
 	})
 		.then(async (response) => {
 			const message = await response.fetch();
+			messageId = message.id;
 			let raidName = '';
 			if (interaction.options.getString('mode')) {
 				raidName = `${chosenRaid.value} ${raidMessage.mode}`;
@@ -100,9 +103,10 @@ async function execute(interaction) {
 				raidName = chosenRaid.value;
 			}
 			await message.startThread({
-				name: `${raidName} - ${interaction.options.getString('gate')} créé par ${interaction.member.nickname ? interaction.member.nickname : interaction.member.user.username}`,
+				name: `${raidName} - ${interaction.options.getString('gate')} créé par ${interaction.member.displayName}`,
 			});
 		});
+	logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value}`);
 }
 
 module.exports = {

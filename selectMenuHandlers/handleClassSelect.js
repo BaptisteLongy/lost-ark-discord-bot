@@ -1,4 +1,5 @@
 const { RaidMessage } = require('../tools/RaidMessage.js');
+const logger = require ('../tools/logger.js');
 
 async function handleClassSelect(interaction) {
     await interaction.deferUpdate();
@@ -20,6 +21,8 @@ async function handleClassSelect(interaction) {
     if (interaction.message.hasThread) {
         interaction.message.thread.members.add(interaction.member);
     }
+
+    logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} s'est ajouté au raid ${raidMessage.raid.value} - Role : ${interaction.values[0]}`);
 }
 
 module.exports = {

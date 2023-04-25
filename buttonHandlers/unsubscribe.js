@@ -1,4 +1,5 @@
 const { RaidMessage } = require('../tools/RaidMessage.js');
+const logger = require ('../tools/logger.js');
 
 async function unsubscribe(interaction) {
     await interaction.deferUpdate();
@@ -15,6 +16,8 @@ async function unsubscribe(interaction) {
 
     // Send the new embed
     await interaction.editReply({ embeds: [newEmbed] });
+
+    logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} s'est désinscrit du raid ${raidMessage.raid.value}`);
 }
 
 module.exports = {

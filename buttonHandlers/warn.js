@@ -1,4 +1,5 @@
 const { RaidMessage } = require('../tools/RaidMessage.js');
+const logger = require ('../tools/logger.js');
 
 function reduceForMessage(previous, current) {
     return previous === '' ? current.player : `${previous} ${current.player}`;
@@ -34,6 +35,8 @@ async function warn(interaction) {
             await interaction.message.reply(benchMessage + ' on se prépare sur le banc des remplaçants...');
         }
     }
+
+    logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} lance le raid ${raidMessage.raid.value}`);
 }
 
 module.exports = {

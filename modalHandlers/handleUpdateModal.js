@@ -1,4 +1,5 @@
 const { RaidMessage } = require('../tools/RaidMessage.js');
+const logger = require ('../tools/logger.js');
 
 async function handleUpdateModal(interaction) {
     // Get the data entered by the user
@@ -16,6 +17,8 @@ async function handleUpdateModal(interaction) {
 
     // Send the new embed
     await interaction.update({ embeds: [newEmbed] });
+
+    logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} a modifié le raid ${raidMessage.raid.value}`);
 }
 
 module.exports = {
