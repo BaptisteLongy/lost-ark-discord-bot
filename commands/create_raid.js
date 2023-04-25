@@ -106,7 +106,7 @@ async function execute(interaction) {
 				name: `${raidName} - ${interaction.options.getString('gate')} créé par ${interaction.member.displayName}`,
 			});
 		});
-	logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value}`);
+	logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value} dans le channel ${interaction.channel}`);
 }
 
 module.exports = {
