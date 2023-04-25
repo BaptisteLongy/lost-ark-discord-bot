@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
+const logger = require ('./tools/logger.js');
 
 // Require the necessary discord.js classes
 const { Client, Events, GatewayIntentBits } = require('discord.js');
@@ -49,6 +50,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
+		logger.logError(interaction.guild, error, interaction.member, `/${interaction.commandName}`);
 		if (interaction.replied || interaction.deferred) {
 			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
 		} else {
@@ -72,6 +74,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		await selectMenu.execute(interaction);
 	} catch (error) {
 		console.error(error);
+		logger.logError(interaction.guild, error, interaction.member, `/${interaction.customId}`);
 		if (interaction.replied || interaction.deferred) {
 			await interaction.followUp({ content: 'There was an error while executing this select menu!', ephemeral: true });
 		} else {
@@ -95,6 +98,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		await button.execute(interaction);
 	} catch (error) {
 		console.error(error);
+		logger.logError(interaction.guild, error, interaction.member, `/${interaction.customId}`);
 		if (interaction.replied || interaction.deferred) {
 			await interaction.followUp({ content: 'There was an error while executing this button!', ephemeral: true });
 		} else {
@@ -118,6 +122,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		await modal.execute(interaction);
 	} catch (error) {
 		console.error(error);
+		logger.logError(interaction.guild, error, interaction.member, `/${interaction.customId}`);
 		if (interaction.replied || interaction.deferred) {
 			await interaction.followUp({ content: 'There was an error while executing this modal!', ephemeral: true });
 		} else {
