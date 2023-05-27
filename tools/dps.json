@@ -74,5 +74,9 @@
     {
         "label": "Deathblade",
         "value": "Deathblade"
+    },
+    {
+        "label": "Slayer",
+        "value": "Slayer"
     }
 ]
