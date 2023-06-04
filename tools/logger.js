@@ -12,8 +12,18 @@ function logAction(interaction, message) {
 function logError(guild, error, member, interaction) {
     guild.channels.fetch(logChannelId)
         .then(channel => {
+            const errorMessage = ''.concat(
+                `Discord Error Code: ${error.code}\n`,
+                `URL: ${error.url}\n`,
+                `Method: ${error.method}\n`,
+                `Status: ${error.status}\n`,
+                `Message: ${error.message}\n`,
+                'Stack:\n',
+                error.stack,
+            );
+
             channel.send(`${member} a fait planter le bot sur une commande ${interaction}`);
-            channel.send(error.stack);
+            channel.send(errorMessage);
         })
         .catch(console.error);
 }
