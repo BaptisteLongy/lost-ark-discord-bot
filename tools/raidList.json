@@ -114,6 +114,27 @@
         ]
     },
     {
+        "name": "akkan",
+        "value": "Akkan",
+        "color": [
+            136,
+            203,
+            126
+        ],
+        "img": "https://images.ctfassets.net/umhrp0op95v1/57OYCK7pwzkNxob3COs9XM/d567816e0e03c7f966fb892c15ce78b9/LA_Aug_Press_Screenshots_Legion_Commander_Akkan_001_740.jpeg",
+        "maxPlayer": 8,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "HM",
+                "value": "Hard Mode"
+            }
+        ]
+    },
+    {
         "name": "autre",
         "value": "Autre",
         "color": [
