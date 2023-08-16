@@ -1,7 +1,7 @@
 const { RaidMessage } = require('../tools/RaidMessage.js');
 const logger = require ('../tools/logger.js');
 
-async function handleClassSelect(interaction) {
+async function registerBench(interaction) {
     await interaction.deferUpdate();
 
     // Parse the message into a RaidMessage
@@ -12,7 +12,7 @@ async function handleClassSelect(interaction) {
     raidMessage.initWithEmbed(initialMessage.embeds[0]);
 
     // Update the RaidMessage
-    raidMessage.update(interaction.member, interaction.values[0]);
+    raidMessage.update(interaction.member, 'Banc de touche');
 
     // Generate the new embed
     const newEmbed = raidMessage.generateEmbed();
@@ -25,12 +25,12 @@ async function handleClassSelect(interaction) {
         initialMessage.thread.members.add(interaction.member);
     }
 
-    logger.logAction(interaction, `Id: ${initialMessage.id} : ${interaction.member.displayName} s'est ajouté au raid ${raidMessage.raid.value} - Role : ${interaction.values[0]}`);
+    logger.logAction(interaction, `Id: ${initialMessage.id} : ${interaction.member.displayName} s'est ajouté au raid ${raidMessage.raid.value} - Role : Banc de touche`);
 }
 
 module.exports = {
     data: {
-        name: 'classSelect',
+        name: 'register_bench',
     },
-    execute: handleClassSelect,
+    execute: registerBench,
 };

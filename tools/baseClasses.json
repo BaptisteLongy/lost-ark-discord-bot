@@ -1,0 +1,26 @@
+[
+    {
+        "label": "Warrior",
+        "value": "warrior"
+    },
+    {
+        "label": "Martial Artist",
+        "value": "martialArtist"
+    },
+    {
+        "label": "Gunner",
+        "value": "Gunner"
+    },
+    {
+        "label": "Mage",
+        "value": "mage"
+    },
+    {
+        "label": "Assassin",
+        "value": "assassin"
+    },
+    {
+        "label": "Specialist",
+        "value": "specialist"
+    }
+]

@@ -1,13 +1,8 @@
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 const { RaidMessage } = require('../tools/RaidMessage.js');
 const raids = require('../tools/raidList.json');
-const supports = require('../tools/supports.json');
-const dps = require('../tools/dps.json');
 const logger = require ('../tools/logger.js');
-const classList = [...supports, ...dps].sort((classA, classB) => {
-	return classA.value.localeCompare(classB.value);
-});
 
 const data = new SlashCommandBuilder()
 	.setName('creer')
@@ -37,37 +32,27 @@ raids.forEach(raid => {
 	});
 });
 
-const selectRow = new ActionRowBuilder()
+const firstButtonRow = new ActionRowBuilder()
 	.addComponents(
-		new StringSelectMenuBuilder()
-			.setCustomId('classSelect')
-			.setPlaceholder('Tu viens avec quoi ?')
-			.addOptions(
-				...classList,
-				{
-					label: 'Flex',
-					value: 'Flex',
-				},
-				{
-					label: 'Banc de touche',
-					value: 'Banc de touche',
-				},
-			),
-	);
-
-const buttonRow = new ActionRowBuilder()
-	.addComponents(
+		new ButtonBuilder()
+			.setCustomId('subscribeToRaid')
+			.setLabel('Je viens/Je change')
+			.setStyle(ButtonStyle.Primary),
 		new ButtonBuilder()
 			.setCustomId('unsubscribe')
 			.setLabel('Se désinscrire')
 			.setStyle(ButtonStyle.Secondary),
+	);
+
+	const secondButtonRow = new ActionRowBuilder()
+	.addComponents(
 		new ButtonBuilder()
 			.setCustomId('warn')
 			.setLabel('On part !')
 			.setStyle(ButtonStyle.Success),
 		new ButtonBuilder()
 			.setCustomId('update')
-			.setLabel('Modifier')
+			.setLabel('Modifier le raid')
 			.setStyle(ButtonStyle.Primary),
 		new ButtonBuilder()
 			.setCustomId('deleteRaid')
@@ -90,7 +75,7 @@ async function execute(interaction) {
 
 	await interaction.reply({
 		content: `@everyone Nouveau raid créé par ${interaction.member}`,
-		embeds: [raidEmbed], components: [selectRow, buttonRow],
+		embeds: [raidEmbed], components: [firstButtonRow, secondButtonRow],
 		allowedMentions: { parse:['everyone'] },
 	})
 		.then(async (response) => {

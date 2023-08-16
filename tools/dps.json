@@ -1,82 +1,107 @@
 [
     {
         "label": "Berserker",
-        "value": "Berserker"
+        "value": "Berserker",
+        "baseClass": "Warrior"
     },
     {
         "label": "Gunlancer",
-        "value": "Gunlancer"
+        "value": "Gunlancer",
+        "baseClass": "Warrior"
     },
     {
         "label": "Destroyer",
-        "value": "Destroyer"
+        "value": "Destroyer",
+        "baseClass": "Warrior"
     },
     {
         "label": "Striker",
-        "value": "Striker"
+        "value": "Striker",
+        "baseClass": "Martial Artist"
     },
     {
         "label": "Wardancer",
-        "value": "Wardancer"
+        "value": "Wardancer",
+        "baseClass": "Martial Artist"
     },
     {
         "label": "Scrapper",
-        "value": "Scrapper"
+        "value": "Scrapper",
+        "baseClass": "Martial Artist"
     },
     {
         "label": "Soulfist",
-        "value": "Soulfist"
+        "value": "Soulfist",
+        "baseClass": "Martial Artist"
     },
     {
         "label": "Glaivier",
-        "value": "Glaivier"
+        "value": "Glaivier",
+        "baseClass": "Martial Artist"
     },
     {
         "label": "Machinist",
-        "value": "Machinist"
+        "value": "Machinist",
+        "baseClass": "Gunner"
     },
     {
         "label": "Gunslinger",
-        "value": "Gunslinger"
+        "value": "Gunslinger",
+        "baseClass": "Gunner"
     },
     {
         "label": "Artillerist",
-        "value": "Artillerist"
+        "value": "Artillerist",
+        "baseClass": "Gunner"
     },
     {
         "label": "Deadeye",
-        "value": "Deadeye"
+        "value": "Deadeye",
+        "baseClass": "Gunner"
     },
     {
         "label": "Sharpshooter",
-        "value": "Sharpshooter"
+        "value": "Sharpshooter",
+        "baseClass": "Gunner"
     },
     {
         "label": "Arcanist",
-        "value": "Arcanist"
+        "value": "Arcanist",
+        "baseClass": "Mage"
     },
     {
         "label": "Summoner",
-        "value": "Summoner"
+        "value": "Summoner",
+        "baseClass": "Mage"
     },
     {
         "label": "Sorceress",
-        "value": "Sorceress"
+        "value": "Sorceress",
+        "baseClass": "Mage"
     },
     {
         "label": "Reaper",
-        "value": "Reaper"
+        "value": "Reaper",
+        "baseClass": "Assassin"
     },
     {
         "label": "Shadowhunter",
-        "value": "Shadowhunter"
+        "value": "Shadowhunter",
+        "baseClass": "Assassin"
     },
     {
         "label": "Deathblade",
-        "value": "Deathblade"
+        "value": "Deathblade",
+        "baseClass": "Assassin"
     },
     {
         "label": "Slayer",
-        "value": "Slayer"
+        "value": "Slayer",
+        "baseClass": "Warrior"
+    },
+    {
+        "label": "Aeromancer",
+        "value": "Aeromancer",
+        "baseClass": "Specialist"
     }
 ]

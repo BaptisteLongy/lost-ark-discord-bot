@@ -1,14 +1,17 @@
 [
     {
         "label": "Bard",
-        "value": "Bard"
+        "value": "Bard",
+        "baseClass": "Mage"
     },
     {
         "label": "Paladin",
-        "value": "Paladin"
+        "value": "Paladin",
+        "baseClass": "Warrior"
     },
     {
         "label": "Artist",
-        "value": "Artist"
+        "value": "Artist",
+        "baseClass": "Specialist"
     }
 ]
