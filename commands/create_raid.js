@@ -51,6 +51,14 @@ const firstButtonRow = new ActionRowBuilder()
 			.setLabel('On part !')
 			.setStyle(ButtonStyle.Success),
 		new ButtonBuilder()
+			.setCustomId('dice_for_all')
+			.setLabel('Un dé pour tous')
+			.setStyle(ButtonStyle.Danger),
+	);
+
+	const thirdButtonRow = new ActionRowBuilder()
+	.addComponents(
+		new ButtonBuilder()
 			.setCustomId('update')
 			.setLabel('Modifier le raid')
 			.setStyle(ButtonStyle.Primary),
@@ -75,7 +83,7 @@ async function execute(interaction) {
 
 	await interaction.reply({
 		content: `@everyone Nouveau raid créé par ${interaction.member}`,
-		embeds: [raidEmbed], components: [firstButtonRow, secondButtonRow],
+		embeds: [raidEmbed], components: [firstButtonRow, secondButtonRow, thirdButtonRow],
 		allowedMentions: { parse:['everyone'] },
 	})
 		.then(async (response) => {
