@@ -2,7 +2,8 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 
 const { RaidMessage } = require('../tools/RaidMessage.js');
 const raids = require('../tools/raidList.json');
-const logger = require ('../tools/logger.js');
+const days = require('../tools/days.json');
+const logger = require('../tools/logger.js');
 
 const data = new SlashCommandBuilder()
 	.setName('creer')
@@ -25,6 +26,19 @@ raids.forEach(raid => {
 				.setDescription('Quelle gate ? Sert aussi de complément de titre si tu fais un raid "Autre"')
 				.setRequired(true))
 			.addStringOption(option =>
+				option.setName('jour')
+					.setDescription('Jour')
+					.setRequired(true)
+					.addChoices(...days))
+			.addStringOption(option =>
+				option.setName('heure')
+					.setDescription('Heure')
+					.setRequired(true))
+			.addBooleanOption(option =>
+				option.setName('learning')
+					.setDescription('Si tu crées une pearning party')
+					.setRequired(true))
+			.addStringOption(option =>
 				option.setName('description')
 					.setDescription('Raconte ta vie')
 					.setRequired(true));
@@ -44,7 +58,7 @@ const firstButtonRow = new ActionRowBuilder()
 			.setStyle(ButtonStyle.Secondary),
 	);
 
-	const secondButtonRow = new ActionRowBuilder()
+const secondButtonRow = new ActionRowBuilder()
 	.addComponents(
 		new ButtonBuilder()
 			.setCustomId('warn')
@@ -56,7 +70,7 @@ const firstButtonRow = new ActionRowBuilder()
 			.setStyle(ButtonStyle.Danger),
 	);
 
-	const thirdButtonRow = new ActionRowBuilder()
+const thirdButtonRow = new ActionRowBuilder()
 	.addComponents(
 		new ButtonBuilder()
 			.setCustomId('update')
@@ -68,7 +82,13 @@ const firstButtonRow = new ActionRowBuilder()
 			.setStyle(ButtonStyle.Danger),
 	);
 
+async function getIDForTag(tagName, tagList) {
+	return tagList.find(tag => tag.name === tagName).id;
+}
+
 async function execute(interaction) {
+	await interaction.deferReply({ ephemeral: true });
+
 	const raidMessage = new RaidMessage();
 	const chosenRaid = raids.find(raid => raid.name === interaction.options.getSubcommand());
 	raidMessage.raid = chosenRaid;
@@ -81,25 +101,49 @@ async function execute(interaction) {
 	const raidEmbed = raidMessage.generateEmbed();
 	let messageId;
 
-	await interaction.reply({
-		content: `@everyone Nouveau raid créé par ${interaction.member}`,
-		embeds: [raidEmbed], components: [firstButtonRow, secondButtonRow, thirdButtonRow],
-		allowedMentions: { parse:['everyone'] },
-	})
-		.then(async (response) => {
-			const message = await response.fetch();
-			messageId = message.id;
-			let raidName = '';
-			if (interaction.options.getString('mode')) {
-				raidName = `${chosenRaid.value} ${raidMessage.mode}`;
-			} else {
-				raidName = chosenRaid.value;
-			}
-			await message.startThread({
-				name: `${raidName} - ${interaction.options.getString('gate')} créé par ${interaction.member.displayName}`,
-			});
-		});
-	logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value} dans le channel ${interaction.channel}`);
+	const forum = interaction.client.channels.cache.get('1146513545807265914');
+	const tags = [
+		await getIDForTag(interaction.options.getString('jour'), forum.availableTags),
+		await getIDForTag(chosenRaid.name, forum.availableTags),
+	];
+
+	if (interaction.options.getBoolean('learning')) {
+		tags.push(await getIDForTag('learning', forum.availableTags));
+	}
+
+	await forum.threads.create(
+		{
+			name: raidMessage.generateForumThreadTitle(interaction.options.getString('jour'), interaction.options.getString('heure')),
+			message: {
+				content: `Nouveau raid créé par ${interaction.member}`,
+				embeds: [raidEmbed], components: [firstButtonRow, secondButtonRow, thirdButtonRow],
+				allowedMentions: { parse: ['everyone'] },
+			},
+			appliedTags: tags,
+		},
+	).then(async (response) => {
+		await interaction.followUp('C\'est fait !');
+	});
+
+	// await forum.threads.reply({
+	// 	content: `@everyone Nouveau raid créé par ${interaction.member}`,
+	// 	embeds: [raidEmbed], components: [firstButtonRow, secondButtonRow, thirdButtonRow],
+	// 	allowedMentions: { parse:['everyone'] },
+	// })
+	// .then(async (response) => {
+	// 	const message = await response.fetch();
+	// 	messageId = message.id;
+	// 	let raidName = '';
+	// 	if (interaction.options.getString('mode')) {
+	// 		raidName = `${chosenRaid.value} ${raidMessage.mode}`;
+	// 	} else {
+	// 		raidName = chosenRaid.value;
+	// 	}
+	// 	await message.startThread({
+	// 		name: `${raidName} - ${interaction.options.getString('gate')} créé par ${interaction.member.displayName}`,
+	// 	});
+	// });
+	// logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value} dans le channel ${interaction.channel}`);
 }
 
 module.exports = {

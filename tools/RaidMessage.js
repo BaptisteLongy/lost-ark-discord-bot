@@ -131,6 +131,10 @@ class RaidMessage {
     }
   }
 
+  generateForumThreadTitle(day, time) {
+    return `${this.raid.value}${this.mode === undefined ? '' : ` ${this.mode}`} - ${this.gate} - ${day} ${time}`;
+  }
+
   generateEmbed() {
     const supportField = this.supports.reduce(this.reduceClassList, '');
     const dpsFirstField = this.dps.slice(0, 3).reduce(this.reduceClassList, '');
