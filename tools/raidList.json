@@ -125,6 +125,10 @@
         "maxPlayer": 8,
         "modes": [
             {
+                "name": "Facile",
+                "value": "Mode Facile"
+            },
+            {
                 "name": "NM",
                 "value": "Normal Mode"
             },
