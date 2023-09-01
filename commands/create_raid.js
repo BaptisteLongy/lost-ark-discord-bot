@@ -99,9 +99,9 @@ async function execute(interaction) {
 	raidMessage.description = interaction.options.getString('description');
 
 	const raidEmbed = raidMessage.generateEmbed();
-	let messageId;
 
 	const forum = interaction.client.channels.cache.get('1146513545807265914');
+	const threadName = raidMessage.generateForumThreadTitle(interaction.options.getString('jour'), interaction.options.getString('heure'));
 	const tags = [
 		await getIDForTag(interaction.options.getString('jour'), forum.availableTags),
 		await getIDForTag(chosenRaid.name, forum.availableTags),
@@ -113,7 +113,7 @@ async function execute(interaction) {
 
 	await forum.threads.create(
 		{
-			name: raidMessage.generateForumThreadTitle(interaction.options.getString('jour'), interaction.options.getString('heure')),
+			name: threadName,
 			message: {
 				content: `Nouveau raid créé par ${interaction.member}`,
 				embeds: [raidEmbed], components: [firstButtonRow, secondButtonRow, thirdButtonRow],
@@ -122,28 +122,11 @@ async function execute(interaction) {
 			appliedTags: tags,
 		},
 	).then(async (response) => {
+		const message = await response.fetch();
+		const messageId = message.id;
+		logger.logAction(interaction, `Id: ${messageId} : ${interaction.member} a créé un raid ${raidMessage.raid.value} - Nom : ${threadName}`);
 		await interaction.followUp('C\'est fait !');
 	});
-
-	// await forum.threads.reply({
-	// 	content: `@everyone Nouveau raid créé par ${interaction.member}`,
-	// 	embeds: [raidEmbed], components: [firstButtonRow, secondButtonRow, thirdButtonRow],
-	// 	allowedMentions: { parse:['everyone'] },
-	// })
-	// .then(async (response) => {
-	// 	const message = await response.fetch();
-	// 	messageId = message.id;
-	// 	let raidName = '';
-	// 	if (interaction.options.getString('mode')) {
-	// 		raidName = `${chosenRaid.value} ${raidMessage.mode}`;
-	// 	} else {
-	// 		raidName = chosenRaid.value;
-	// 	}
-	// 	await message.startThread({
-	// 		name: `${raidName} - ${interaction.options.getString('gate')} créé par ${interaction.member.displayName}`,
-	// 	});
-	// });
-	// logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value} dans le channel ${interaction.channel}`);
 }
 
 module.exports = {

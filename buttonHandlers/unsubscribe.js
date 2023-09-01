@@ -17,7 +17,7 @@ async function unsubscribe(interaction) {
     // Send the new embed
     await interaction.editReply({ embeds: [newEmbed] });
 
-    logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} s'est désinscrit du raid ${raidMessage.raid.value}`);
+    logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member} s'est désinscrit du raid ${raidMessage.raid.value}`);
 }
 
 module.exports = {

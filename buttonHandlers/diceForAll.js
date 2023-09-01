@@ -21,20 +21,20 @@ async function diceForAll(interaction) {
 
     raidMessage.initWithEmbed(interaction.message.embeds[0]);
 
-    if (interaction.message.hasThread) {
+    // if (interaction.message.hasThread) {
         if (Array.isArray(raidMessage.supports) && raidMessage.supports.length > 0) {
-            diceForList(raidMessage.supports, interaction.message.thread, '**Les supports en premier**');
+            diceForList(raidMessage.supports, interaction.channel, '**Les supports en premier**');
         }
         if (Array.isArray(raidMessage.dps) && raidMessage.dps.length > 0) {
-            diceForList(raidMessage.dps, interaction.message.thread, '**De la chance chez les DPS ?**');
+            diceForList(raidMessage.dps, interaction.channel, '**De la chance chez les DPS ?**');
         }
         if (Array.isArray(raidMessage.flex) && raidMessage.flex.length > 0) {
-            diceForList(raidMessage.flex, interaction.message.thread, '**Des flex peut-être**');
+            diceForList(raidMessage.flex, interaction.channel, '**Des flex peut-être**');
         }
         if (Array.isArray(raidMessage.bench) && raidMessage.bench.length > 0) {
-            diceForList(raidMessage.bench, interaction.message.thread, '**Au tour du banc de touche**');
+            diceForList(raidMessage.bench, interaction.channel, '**Au tour du banc de touche**');
         }
-    }
+    // }
 
     logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} lance les dés pour tout le monde`);
 }
