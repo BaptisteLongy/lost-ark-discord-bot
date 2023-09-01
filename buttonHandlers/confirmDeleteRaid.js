@@ -5,13 +5,7 @@ async function confirmDeleteRaid(interaction) {
 
     const theOriginalMessage = await interaction.channel.messages.fetch(interaction.message.reference.messageId);
 
-    // if (theOriginalMessage.hasThread) {
-    //     theOriginalMessage.thread.delete();
-    // }
-    // theOriginalMessage.delete();
     await interaction.channel.delete();
-
-    // await interaction.editReply({ content: 'C\'est fait', components: [] });
 
     logger.logAction(interaction, `Id: ${theOriginalMessage.id} : ${interaction.member.displayName} a supprimé le raid`);
 }

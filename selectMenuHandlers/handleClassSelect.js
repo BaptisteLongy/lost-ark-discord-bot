@@ -23,7 +23,7 @@ async function handleClassSelect(interaction) {
     // Add the member to the thread
     initialMessage.channel.members.add(interaction.member);
 
-    logger.logAction(interaction, `Id: ${initialMessage.id} : ${interaction.member} s'est ajouté au raid ${raidMessage.raid.value} - Role : ${interaction.values[0]}`);
+    logger.logAction(interaction, `Id: ${initialMessage.id} : ${interaction.member.displayName} s'est ajouté au raid ${raidMessage.raid.value} - Role : ${interaction.values[0]}`);
 }
 
 module.exports = {

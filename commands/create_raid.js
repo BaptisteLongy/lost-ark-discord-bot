@@ -100,7 +100,7 @@ async function execute(interaction) {
 
 	const raidEmbed = raidMessage.generateEmbed();
 
-	const forum = interaction.client.channels.cache.get('1146513545807265914');
+	const forum = interaction.client.channels.cache.get(process.env.DISCORD_RAID_FORUM_CHANNEL);
 	const threadName = raidMessage.generateForumThreadTitle(interaction.options.getString('jour'), interaction.options.getString('heure'));
 	const tags = [
 		await getIDForTag(interaction.options.getString('jour'), forum.availableTags),
@@ -124,7 +124,7 @@ async function execute(interaction) {
 	).then(async (response) => {
 		const message = await response.fetch();
 		const messageId = message.id;
-		logger.logAction(interaction, `Id: ${messageId} : ${interaction.member} a créé un raid ${raidMessage.raid.value} - Nom : ${threadName}`);
+		logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value} - Nom : ${threadName}`);
 		await interaction.followUp('C\'est fait !');
 	});
 }

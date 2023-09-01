@@ -48,7 +48,6 @@ async function handleBaseClassSelect(interaction) {
 
     // Send the new embed
     await interaction.editReply({ components: [baseClassSelectRow, classSelectRow, buttonRow] });
-
 }
 
 module.exports = {
