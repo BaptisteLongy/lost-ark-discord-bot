@@ -3,9 +3,9 @@
         "name": "argos",
         "value": "Argos",
         "color": [
-            39,
-            240,
-            227
+            255,
+            255,
+            255
         ],
         "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_epic_09_3.png",
         "maxPlayer": 8
@@ -142,9 +142,9 @@
         "name": "autre",
         "value": "Autre",
         "color": [
-            39,
-            240,
-            45
+            255,
+            223,
+            0
         ],
         "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_legend_00_3.png",
         "maxPlayer": false
