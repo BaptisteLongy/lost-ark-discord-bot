@@ -91,6 +91,26 @@ async function execute(interaction) {
 
 	const raidMessage = new RaidMessage();
 	const chosenRaid = raids.find(raid => raid.name === interaction.options.getSubcommand());
+
+	const components = [
+		firstButtonRow,
+		secondButtonRow,
+		thirdButtonRow,
+	];
+
+	if (chosenRaid.specialRoles !== undefined) {
+		const fourthButtonRow = new ActionRowBuilder();
+		for (const role of chosenRaid.specialRoles) {
+			fourthButtonRow.addComponents(
+				new ButtonBuilder()
+					.setCustomId(`special_role_${role.value}`)
+					.setLabel(role.name)
+					.setStyle(ButtonStyle.Danger),
+			);
+		}
+		components.push(fourthButtonRow);
+	}
+
 	raidMessage.raid = chosenRaid;
 	if (Array.isArray(chosenRaid.modes)) {
 		raidMessage.mode = interaction.options.getString('mode');
@@ -116,7 +136,7 @@ async function execute(interaction) {
 			name: threadName,
 			message: {
 				content: `Nouveau raid créé par ${interaction.member}`,
-				embeds: [raidEmbed], components: [firstButtonRow, secondButtonRow, thirdButtonRow],
+				embeds: [raidEmbed], components: components,
 				allowedMentions: { parse: ['everyone'] },
 			},
 			appliedTags: tags,

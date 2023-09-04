@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
-const logger = require ('./tools/logger.js');
+const logger = require('./tools/logger.js');
 
 // Require the necessary discord.js classes
 const { Client, Events, GatewayIntentBits } = require('discord.js');
@@ -87,11 +87,15 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isButton()) return;
 
-	const button = interaction.client.buttonHandlers.get(interaction.customId);
+	let button = interaction.client.buttonHandlers.get(interaction.customId);
 
 	if (!button) {
-		console.error(`No button matching ${interaction.customId} was found.`);
-		return;
+		if (interaction.customId.startsWith('special_role_')) {
+			button = interaction.client.buttonHandlers.get('special_role');
+		} else {
+			console.error(`No button matching ${interaction.customId} was found.`);
+			return;
+		}
 	}
 
 	try {
