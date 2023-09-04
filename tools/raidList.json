@@ -69,7 +69,25 @@
             0
         ],
         "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_legend_00_7.png",
-        "maxPlayer": 4
+        "maxPlayer": 4,
+        "specialRoles": [
+            {
+                "name": "Mario 1",
+                "value": "mario1"
+            },
+            {
+                "name": "Mario 2",
+                "value": "mario2"
+            },
+            {
+                "name": "Mario 3",
+                "value": "mario3"
+            },
+            {
+                "name": "Mario 4",
+                "value": "mario4"
+            }
+        ]
     },
     {
         "name": "brelshaza",
@@ -89,6 +107,12 @@
             {
                 "name": "HM",
                 "value": "Hard Mode"
+            }
+        ],
+        "specialRoles": [
+            {
+                "name": "Prokel Killer",
+                "value": "prokelKiller"
             }
         ]
     },
