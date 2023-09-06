@@ -38,12 +38,14 @@ class RaidMessage {
     this.dps = [...firstDPS, ...secondDPS];
     this.flex = this.initRoleList(embed.fields, 'Flex');
     this.bench = this.initRoleList(embed.fields, 'Banc');
-    for (const specialRole of this.raid.specialRoles) {
-      const newSpecialRole = {
-        'title': specialRole.name,
-        'list': this.initRoleList(embed.fields, specialRole.name),
-      };
-      this.specialRoles.push(newSpecialRole);
+    if (Array.isArray(this.raid.specialRoles)) {
+      for (const specialRole of this.raid.specialRoles) {
+        const newSpecialRole = {
+          'title': specialRole.name,
+          'list': this.initRoleList(embed.fields, specialRole.name),
+        };
+        this.specialRoles.push(newSpecialRole);
+      }
     }
   }
 
