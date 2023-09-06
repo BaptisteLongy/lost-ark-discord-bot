@@ -28,7 +28,16 @@ function logError(guild, error, member, interaction) {
         .catch(console.error);
 }
 
+function logMessage(guild, message) {
+    guild.channels.fetch(logChannelId)
+        .then(channel => {
+            channel.send(message);
+        })
+        .catch(console.error);
+}
+
 module.exports = {
     logAction,
     logError,
+    logMessage,
 };
