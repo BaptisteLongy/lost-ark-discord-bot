@@ -176,10 +176,14 @@ class RaidMessage {
       raidEmbed.addFields({ name: `Banc : ${this.bench.length}`, value: benchField });
     }
 
-    for (const specialRole of this.specialRoles) {
-      const specialRoleField = specialRole.list.reduce(this.reduceWaitList, '');
-      if (specialRoleField !== '') {
-        raidEmbed.addFields({ name: `${specialRole.title} : ${specialRole.list.length}`, value: specialRoleField, inline: true });
+    if (this.specialRoles.length !== 0) {
+      raidEmbed.addFields({ name: ' ', value: ' ' });
+
+      for (const specialRole of this.specialRoles) {
+        const specialRoleField = specialRole.list.reduce(this.reduceWaitList, '');
+        if (specialRoleField !== '') {
+          raidEmbed.addFields({ name: `${specialRole.title} : ${specialRole.list.length}`, value: specialRoleField, inline: true });
+        }
       }
     }
 
