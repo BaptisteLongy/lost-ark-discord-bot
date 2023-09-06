@@ -22,6 +22,7 @@ class RaidMessage {
     this.dps = [];
     this.flex = [];
     this.bench = [];
+    this.specialRoles = [];
   }
 
   initWithEmbed(embed) {
@@ -33,10 +34,17 @@ class RaidMessage {
     this.description = embed.description;
     this.supports = this.initRoleList(embed.fields, 'Supports');
     const firstDPS = this.initRoleList(embed.fields, 'DPS');
-    const secondDPS = this.initRoleList(embed.fields, '');
+    const secondDPS = this.initRoleList(embed.fields, 'DPS (Suite)');
     this.dps = [...firstDPS, ...secondDPS];
     this.flex = this.initRoleList(embed.fields, 'Flex');
     this.bench = this.initRoleList(embed.fields, 'Banc');
+    for (const specialRole of this.raid.specialRoles) {
+      const newSpecialRole = {
+        'title': specialRole.name,
+        'list': this.initRoleList(embed.fields, specialRole.name),
+      };
+      this.specialRoles.push(newSpecialRole);
+    }
   }
 
   getModeFromTitleSplit(titleSplit) {
@@ -54,17 +62,7 @@ class RaidMessage {
   }
 
   initRoleList(fields, roleListName) {
-    let theField;
-    if (roleListName === '') {
-      theField = fields.find(field => {
-        return !field.name.startsWith('Supports')
-          && !field.name.startsWith('DPS')
-          && !field.name.startsWith('Flex')
-          && !field.name.startsWith('Banc');
-      });
-    } else {
-      theField = fields.find(field => field.name.startsWith(roleListName));
-    }
+    const theField = fields.find(field => field.name.startsWith(roleListName));
     const theFieldArray = theField ? theField.value.split('\r') : [];
     const theRoleList = theFieldArray.map(item => {
       const theRoleSplit = item.split(' : ');
@@ -131,6 +129,16 @@ class RaidMessage {
     }
   }
 
+  toggleSpecialRole(player, specialRole) {
+    const selectedRole = this.raid.specialRoles.find(role => role.value === specialRole);
+    const selectedRoleList = this.specialRoles.find(roleList => roleList.title === selectedRole.name);
+    if (selectedRoleList.list.find(listPlayer => listPlayer.player === player.toString()) === undefined) {
+      selectedRoleList.list.push({ player: player });
+    } else {
+      selectedRoleList.list = selectedRoleList.list.filter(listPlayer => listPlayer.player !== player.toString());
+    }
+  }
+
   generateForumThreadTitle(day, time) {
     return `${this.raid.value}${this.mode === undefined ? '' : ` ${this.mode}`} - ${this.gate} - ${day} ${time}`;
   }
@@ -157,7 +165,7 @@ class RaidMessage {
     }
 
     if (dpsSecondField !== '') {
-      raidEmbed.addFields({ name: '\u200B', value: dpsSecondField, inline: true });
+      raidEmbed.addFields({ name: 'DPS (Suite)', value: dpsSecondField, inline: true });
     }
 
     if (flexField !== '') {
@@ -166,6 +174,13 @@ class RaidMessage {
 
     if (benchField !== '') {
       raidEmbed.addFields({ name: `Banc : ${this.bench.length}`, value: benchField });
+    }
+
+    for (const specialRole of this.specialRoles) {
+      const specialRoleField = specialRole.list.reduce(this.reduceWaitList, '');
+      if (specialRoleField !== '') {
+        raidEmbed.addFields({ name: `${specialRole.title} : ${specialRole.list.length}`, value: specialRoleField, inline: true });
+      }
     }
 
     return raidEmbed;
