@@ -146,9 +146,9 @@ function getTagIDForDayBefore(tagList) {
 }
 
 const reminderJob = new CronJob(
-	// '* * 8 * * *',
+	'* * 8 * * *',
 	// For Dev - every 10 seconds
-	'0,10,20,30,40,50 * * * * *',
+	// '0,10,20,30,40,50 * * * * *',
 	async function() {
 		// Init the work
 		const forum = await client.channels.cache.get(process.env.DISCORD_RAID_FORUM_CHANNEL);
