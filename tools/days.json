@@ -1,30 +1,37 @@
 [
     {
         "name": "lundi",
-        "value": "lundi"
+        "value": "lundi",
+        "index": 1
     },
     {
         "name": "mardi",
-        "value": "mardi"
+        "value": "mardi",
+        "index": 2
     },
     {
         "name": "mercredi",
-        "value": "mercredi"
+        "value": "mercredi",
+        "index": 3
     },
     {
         "name": "jeudi",
-        "value": "jeudi"
+        "value": "jeudi",
+        "index": 4
     },
     {
         "name": "vendredi",
-        "value": "vendredi"
+        "value": "vendredi",
+        "index": 5
     },
     {
         "name": "samedi",
-        "value": "samedi"
+        "value": "samedi",
+        "index": 6
     },
     {
         "name": "dimanche",
-        "value": "dimanche"
+        "value": "dimanche",
+        "index": 7
     }
 ]
