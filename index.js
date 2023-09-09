@@ -141,34 +141,35 @@ function getIDForTag(tagName, tagList) {
 	return tagList.find(tag => tag.name === tagName).id;
 }
 
-function getTagIDForDayBefore(tagList) {
-	let dayBefore = new Date().getDay() - 1;
-	if (dayBefore === -1) { dayBefore = 6; }
+function getTagIDForDayBefore(tagList, numberOfDaysBefore) {
+	let dayBefore = new Date().getDay() - numberOfDaysBefore;
+	if (dayBefore < 0) { dayBefore = dayBefore + 7; }
 	const dayBeforeName = days.find(day => day.index === dayBefore).name;
 	const dayBeforeTagId = getIDForTag(dayBeforeName, tagList);
 	return dayBeforeTagId;
 }
 
 const reminderJob = new CronJob(
-	'* * 8 * * *',
+	'* * 6 * * *',
 	// For Dev - every 10 seconds
 	// '0,10,20,30,40,50 * * * * *',
 	async function() {
 		// Init the work
 		const forum = await client.channels.cache.get(process.env.DISCORD_RAID_FORUM_CHANNEL);
 		await forum.threads.fetch();
-		const dayBeforeTagId = getTagIDForDayBefore(forum.availableTags);
+		const dayBeforeTagId = getTagIDForDayBefore(forum.availableTags, 1);
+		const twoDaysBeforeTagId = getTagIDForDayBefore(forum.availableTags, 2);
 
 		for (const cacheObject of forum.threads.cache) {
 			// Get channel and last message of the channel
 			const channel = await cacheObject[1].fetch();
 			const lastMessage = await channel.messages.fetch(channel.lastMessageId);
 
-			if (lastMessage.content.includes('Vous avez toujours besoin de ce raid ?')) {
+			if (channel.appliedTags.find(tag => tag === twoDaysBeforeTagId) && lastMessage.content.includes('Vous avez toujours besoin de ce raid ?')) {
 				await channel.delete();
 				logger.logMessage(channel.guild, `Id: ${channel.id} : raid supprimé automatiquement pour délai dépassé + inactivité`);
 			} else if (channel.appliedTags.find(tag => tag === dayBeforeTagId)) {
-				channel.send('@here Vous avez toujours besoin de ce raid ?\nSans activité d\'ici demain, je le supprimerai automatiquement.\nPour empécher la supression, il suffit d\'envoyer un message sur le thread.');
+				channel.send('@here Vous avez toujours besoin de ce raid ?\nSans activité d\'ici demain, je le supprimerai automatiquement.\nPour empécher la suppression, il suffit d\'envoyer un message sur le thread.');
 				logger.logMessage(channel.guild, `Id: ${channel.id} : message de suppression programmée envoyé`);
 			}
 		}
