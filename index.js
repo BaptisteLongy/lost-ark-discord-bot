@@ -143,19 +143,20 @@ function getIDForTag(tagName, tagList) {
 
 function getTagIDForDayBefore(tagList, numberOfDaysBefore) {
 	let dayBefore = new Date().getDay() - numberOfDaysBefore;
-	if (dayBefore < 0) { dayBefore = dayBefore + 7; }
+	if (dayBefore <= 0) { dayBefore = dayBefore + 7; }
 	const dayBeforeName = days.find(day => day.index === dayBefore).name;
 	const dayBeforeTagId = getIDForTag(dayBeforeName, tagList);
 	return dayBeforeTagId;
 }
 
 const reminderJob = new CronJob(
-	'* * 6 * * *',
+	'0 0 6 * * *',
 	// For Dev - every 10 seconds
 	// '0,10,20,30,40,50 * * * * *',
 	async function() {
 		// Init the work
 		const forum = await client.channels.cache.get(process.env.DISCORD_RAID_FORUM_CHANNEL);
+		logger.logMessage(forum.guild, 'Processus de nettoyage démarré');
 		await forum.threads.fetch();
 		const dayBeforeTagId = getTagIDForDayBefore(forum.availableTags, 1);
 		const twoDaysBeforeTagId = getTagIDForDayBefore(forum.availableTags, 2);
@@ -173,6 +174,7 @@ const reminderJob = new CronJob(
 				logger.logMessage(channel.guild, `Id: ${channel.id} : message de suppression programmée envoyé`);
 			}
 		}
+		logger.logMessage(forum.guild, 'Processus de nettoyage terminé');
 	},
 	null,
 	false,
