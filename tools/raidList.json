@@ -164,15 +164,12 @@
             }
         ],
         "G1": {
-            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/kyangelgate1.png"
-        },
-        "G2": {
             "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/kyangelgate2.png"
         },
-        "G3": {
+        "G2": {
             "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/kyangel3v2.png"
         },
-        "G4": {
+        "G3": {
             "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/kyangelgate4.png"
         }
     },
