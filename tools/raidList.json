@@ -58,7 +58,16 @@
                 "name": "Hell",
                 "value": "Hell Mode"
             }
-        ]
+        ],
+        "G1": {
+            "cheatsheet": "https://cdnportal.mobalytics.gg/production/2022/06/0ea0ce78-vykas-1.png"
+        },
+        "G2": {
+            "cheatsheet": "https://cdnportal.mobalytics.gg/production/2022/06/ec26f1df-vykas2-1.png"
+        },
+        "G3": {
+            "cheatsheet": "https://cdnportal.mobalytics.gg/production/2022/06/39839196-vykas3-1.png"
+        }
     },
     {
         "name": "kakul",
@@ -87,7 +96,16 @@
                 "name": "Mario 4",
                 "value": "mario4"
             }
-        ]
+        ],
+        "G1": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/misc/kakul-saydon-gate-1.jpg"
+        },
+        "G2": {
+            "cheatsheet": "https://cdnportal.mobalytics.gg/production/2022/09/3271784a-kakul2.jpg"
+        },
+        "G3": {
+            "cheatsheet": "https://cdnportal.mobalytics.gg/production/2022/09/076e90b6-kakul3.jpg"
+        }
     },
     {
         "name": "brelshaza",
@@ -114,7 +132,25 @@
                 "name": "Prokel Killer",
                 "value": "prokelKiller"
             }
-        ]
+        ],
+        "G1": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/brel-gate1-new.jpg"
+        },
+        "G2": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/brel-gate2-new.jpg"
+        },
+        "G3": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-moves/brel-gate3/gate3-cheatsheet.jpg"
+        },
+        "G4": {
+            "cheatsheet": "https://app.mobalytics.gg/lost-ark/boss-guides/legion-raids/brelshaza-gate-4"
+        },
+        "G5": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/brel-gate5-new.jpg"
+        },
+        "G6": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/brel-gate6-new.jpg"
+        }
     },
     {
         "name": "kayangel",
@@ -135,7 +171,19 @@
                 "name": "HM",
                 "value": "Hard Mode"
             }
-        ]
+        ],
+        "G1": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/kyangelgate1.png"
+        },
+        "G2": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/kyangelgate2.png"
+        },
+        "G3": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/kyangel3v2.png"
+        },
+        "G4": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/kyangelgate4.png"
+        }
     },
     {
         "name": "akkan",
@@ -160,7 +208,16 @@
                 "name": "HM",
                 "value": "Hard Mode"
             }
-        ]
+        ],
+        "G1": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/akkan-gate1small.png"
+        },
+        "G2": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/akkan-gate2new.png"
+        },
+        "G3": {
+            "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/akkan-gate3new.png"
+        }
     },
     {
         "name": "autre",
