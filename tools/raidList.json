@@ -60,12 +60,9 @@
             }
         ],
         "G1": {
-            "cheatsheet": "https://cdnportal.mobalytics.gg/production/2022/06/0ea0ce78-vykas-1.png"
-        },
-        "G2": {
             "cheatsheet": "https://cdnportal.mobalytics.gg/production/2022/06/ec26f1df-vykas2-1.png"
         },
-        "G3": {
+        "G2": {
             "cheatsheet": "https://cdnportal.mobalytics.gg/production/2022/06/39839196-vykas3-1.png"
         }
     },
