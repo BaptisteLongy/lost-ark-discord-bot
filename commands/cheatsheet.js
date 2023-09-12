@@ -20,10 +20,10 @@ async function execute(interaction) {
         if (raid[gate] !== undefined) {
             await interaction.reply(raid[gate].cheatsheet);
             await interaction.channel.messages.fetch();
-            logger.logAction(interaction, `Id: ${interaction.channel} : ${interaction.member.displayName} a demandé la cheatsheet pour la ${gate}`);
+            logger.logAction(interaction, `Id: ${interaction.channel.id} : ${interaction.member.displayName} a demandé la cheatsheet pour la ${gate}`);
         } else {
             await interaction.reply({ content: `Désolé, je n'ai pas de cheatsheet pour la ${gate}.\nSi c'est un oubli, laisse un message à Bugs ;)`, ephemeral: true });
-            logger.logAction(interaction, `Id: ${interaction.channel} : ${interaction.member.displayName} a demandé la cheatsheet pour la ${gate}, mais la cheatsheet n'existe pas`);
+            logger.logAction(interaction, `Id: ${interaction.channel.id} : ${interaction.member.displayName} a demandé la cheatsheet pour la ${gate}, mais la cheatsheet n'existe pas`);
         }
     } else {
         await interaction.reply({ content: 'Désolé, cette commande ne s\'utilise que dans le thread d\'un raid', ephemeral: true });
