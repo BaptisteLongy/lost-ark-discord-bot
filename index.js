@@ -17,6 +17,9 @@ const client = new Client({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
 	],
+	rest: {
+		rejectOnRateLimit: ['/channels/:id'],
+	},
 });
 
 // Build the commands Collection for easy access
