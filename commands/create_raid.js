@@ -36,7 +36,7 @@ raids.forEach(raid => {
 					.setRequired(true))
 			.addBooleanOption(option =>
 				option.setName('learning')
-					.setDescription('Si tu crées une pearning party')
+					.setDescription('Si tu crées une learning party')
 					.setRequired(true))
 			.addStringOption(option =>
 				option.setName('description')
@@ -121,7 +121,11 @@ async function execute(interaction) {
 	const raidEmbed = raidMessage.generateEmbed();
 
 	const forum = interaction.client.channels.cache.get(process.env.DISCORD_RAID_FORUM_CHANNEL);
-	const threadName = raidMessage.generateForumThreadTitle(interaction.options.getString('jour'), interaction.options.getString('heure'));
+
+	raidMessage.setDay(interaction.options.getString('jour'));
+	raidMessage.setTime(interaction.options.getString('heure'));
+
+	const threadName = raidMessage.generateForumThreadTitle();
 	const tags = [
 		await getIDForTag(interaction.options.getString('jour'), forum.availableTags),
 		await getIDForTag(chosenRaid.name, forum.availableTags),

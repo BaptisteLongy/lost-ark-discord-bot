@@ -23,6 +23,8 @@ class RaidMessage {
     this.flex = [];
     this.bench = [];
     this.specialRoles = [];
+    this.day = '';
+    this.time = '';
   }
 
   initWithEmbed(embed) {
@@ -47,6 +49,21 @@ class RaidMessage {
         this.specialRoles.push(newSpecialRole);
       }
     }
+  }
+
+  setDay(day) {
+    this.day = day;
+  }
+
+  setTime(time) {
+    this.time = time;
+  }
+
+  initDayTime(threadTitle) {
+    const threadTitleSplit = threadTitle.split(' - ');
+    const dateTime = threadTitleSplit.pop().split(' ');
+    this.day = dateTime[0];
+    this.time = dateTime[1];
   }
 
   getModeFromTitleSplit(titleSplit) {
@@ -141,8 +158,8 @@ class RaidMessage {
     }
   }
 
-  generateForumThreadTitle(day, time) {
-    return `${this.raid.value}${this.mode === undefined ? '' : ` ${this.mode}`} - ${this.gate} - ${day} ${time}`;
+  generateForumThreadTitle() {
+    return `${this.raid.value}${this.mode === undefined ? '' : ` ${this.mode}`} - ${this.gate} - ${this.day} ${this.time}`;
   }
 
   generateEmbed() {
