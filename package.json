@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "update:commands": "node deploy-commands.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,12 +27,12 @@
   },
   "homepage": "https://github.com/BaptisteLongy/lost-ark-discord-bot#readme",
   "dependencies": {
-    "@google-cloud/vision": "^3.1.0",
     "cron": "^2.4.3",
     "discord.js": "^14.8.0",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
-    "eslint": "^8.32.0"
+    "eslint": "^8.32.0",
+    "jest": "^29.7.0"
   }
 }
