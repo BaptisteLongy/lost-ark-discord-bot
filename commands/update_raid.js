@@ -38,6 +38,36 @@ function updateDayTag(threadTagsList, day, availableTags) {
     return threadTagsList;
 }
 
+function updateChangelog(changelog, newChangelog) {
+    return changelog === '' ? newChangelog : `${changelog} - ${newChangelog}`;
+}
+
+function generateChangelog(interaction) {
+    let changelog = '';
+
+    const day = interaction.options.getString('jour');
+    if (day !== null) {
+        changelog = updateChangelog(changelog, `Nouveau jour : ${day}`);
+    }
+
+    const time = interaction.options.getString('heure');
+    if (time !== null) {
+        changelog = updateChangelog(changelog, `Nouvelle heure : ${time}`);
+    }
+
+    const gate = interaction.options.getString('gate');
+    if (gate !== null) {
+        changelog = updateChangelog(changelog, `Nouvelle gate : ${gate}`);
+    }
+
+    const learning = interaction.options.getBoolean('learning');
+    if (learning !== null) {
+        changelog = learning ? updateChangelog(changelog, 'Le raid devient un learning') : updateChangelog(changelog, 'Le raid n\'est plus un learning');
+    }
+
+    return changelog;
+}
+
 function initRaid(raidMessage, interaction, message, thread) {
     raidMessage.initWithEmbed(message.embeds[0]);
     raidMessage.initDayTime(thread.name);
@@ -64,12 +94,14 @@ function updateLearningTag(threadTagsList, learning, availableTags) {
 function generateNewTags(thread, interaction) {
     let tags = thread.appliedTags;
 
-    if (interaction.options.getString('jour') !== null) {
-        tags = updateDayTag(tags, interaction.options.getString('jour'), thread.parent.availableTags);
+    const day = interaction.options.getString('jour');
+    if (day !== null) {
+        tags = updateDayTag(tags, day, thread.parent.availableTags);
     }
 
-    if (interaction.options.getBoolean('learning') !== null) {
-        tags = updateLearningTag(tags, interaction.options.getBoolean('learning'), thread.parent.availableTags);
+    const learning = interaction.options.getBoolean('learning');
+    if (learning !== null) {
+        tags = updateLearningTag(tags, learning, thread.parent.availableTags);
     }
 
     return tags;
@@ -101,10 +133,12 @@ async function execute(interaction) {
         if (canChangeRaid(interaction.member, initialMessage)) {
             await updateRaid(interaction, initialMessage, interaction.channel).then(
                 async () => {
+                    const changelog = generateChangelog(interaction);
                     await interaction.reply({
-                        content: `@here: ${interaction.member} a modifié le raid`,
+                        content: `@here: ${interaction.member} a modifié le raid\n${changelog}`,
                         allowedMentions: { parse: ['everyone'] },
                     });
+                    logger.logAction(interaction, `Id: ${initialMessage.id} : ${interaction.member.displayName} a modifié le raid\n${changelog}`);
                 })
                 .catch(async (e) => {
                     if (e instanceof RateLimitError) {
