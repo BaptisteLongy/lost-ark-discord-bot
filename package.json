@@ -28,7 +28,7 @@
   "homepage": "https://github.com/BaptisteLongy/lost-ark-discord-bot#readme",
   "dependencies": {
     "cron": "^2.4.3",
-    "discord.js": "^14.8.0",
+    "discord.js": "^14.13.0",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
