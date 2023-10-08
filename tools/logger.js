@@ -22,7 +22,9 @@ function logError(guild, error, member, interaction) {
                 error.stack,
             );
 
-            channel.send(`${member} a fait planter le bot sur une commande ${interaction}`);
+            if (interaction !== undefined && member !== undefined) {
+                channel.send(`${member} a fait planter le bot sur une commande ${interaction}`);
+            }
             channel.send(errorMessage);
         })
         .catch(console.error);

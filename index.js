@@ -147,11 +147,16 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
-	if (newState.channelId === process.env.DISCORD_VOICE_CHANNEL_CREATOR_ID) {
-		await createNewVoiceChannelAndMoveUser(newState);
-	}
-	if (oldState.channel && oldState.channel.name.startsWith('Chez ') && newState.members === undefined) {
-		await deleteVoiceChannel(oldState);
+	try {
+		if (newState.channelId === process.env.DISCORD_VOICE_CHANNEL_CREATOR_ID) {
+			await createNewVoiceChannelAndMoveUser(newState);
+		}
+		if (oldState.channel && oldState.channel.name.startsWith('Chez ') && newState.members === undefined) {
+			await deleteVoiceChannel(oldState);
+		}
+	} catch (error) {
+		console.error(error);
+		logger.logError(oldState.guild, error);
 	}
 
 });
@@ -189,7 +194,7 @@ const reminderJob = new CronJob(
 				await channel.delete();
 				logger.logMessage(channel.guild, `Id: ${channel.id} : raid supprimé automatiquement pour délai dépassé + inactivité`);
 			} else if (channel.appliedTags.find(tag => tag === dayBeforeTagId)) {
-				channel.send('@here Vous avez toujours besoin de ce raid ?\nSans activité d\'ici demain, je le supprimerai automatiquement.\nPour empécher la suppression, il suffit d\'envoyer un message sur le thread.');
+				channel.send('@here Vous avez toujours besoin de ce raid ?\nSans activité d\'ici demain, je le supprimerai automatiquement.\nPour empécher la suppression, il suffit d\'envoyer un message sur le thread.\nLe créateur ou un admin peut également utiliser /update pour mettre à jour la date et l\'heure');
 				logger.logMessage(channel.guild, `Id: ${channel.id} : message de suppression programmée envoyé`);
 			}
 		}
