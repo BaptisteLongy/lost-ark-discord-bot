@@ -6,7 +6,11 @@ const CronJob = require('cron').CronJob;
 
 // Require the necessary discord.js classes
 const { Client, Events, GatewayIntentBits } = require('discord.js');
+
+// Personal imports
 const { createCollection } = require('./tools/createCollection.js');
+const { createNewVoiceChannelAndMoveUser } = require('./voiceCreatorManager/newVoiceChannel.js');
+const { deleteVoiceChannel } = require('./voiceCreatorManager/deleteVoiceChannel.js');
 
 const token = process.env.LOST_ARK_DISCORD_BOT_TOKEN;
 
@@ -16,6 +20,8 @@ const client = new Client({
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.GuildMembers,
 	],
 	rest: {
 		rejectOnRateLimit: ['/channels/:id'],
@@ -138,6 +144,16 @@ client.on(Events.InteractionCreate, async interaction => {
 			await interaction.reply({ content: 'There was an error while executing this modal!', ephemeral: true });
 		}
 	}
+});
+
+client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
+	if (newState.channelId === process.env.DISCORD_VOICE_CHANNEL_CREATOR_ID) {
+		await createNewVoiceChannelAndMoveUser(newState);
+	}
+	if (oldState.channel && oldState.channel.name.startsWith('Chez ') && newState.members === undefined) {
+		await deleteVoiceChannel(oldState);
+	}
+
 });
 
 function getIDForTag(tagName, tagList) {
