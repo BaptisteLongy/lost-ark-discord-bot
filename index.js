@@ -178,27 +178,33 @@ const reminderJob = new CronJob(
 	// For Dev - every 10 seconds
 	// '0,10,20,30,40,50 * * * * *',
 	async function() {
-		// Init the work
-		const forum = await client.channels.cache.get(process.env.DISCORD_RAID_FORUM_CHANNEL);
-		logger.logMessage(forum.guild, 'Processus de nettoyage démarré');
-		await forum.threads.fetch();
-		const dayBeforeTagId = getTagIDForDayBefore(forum.availableTags, 1);
-		const twoDaysBeforeTagId = getTagIDForDayBefore(forum.availableTags, 2);
+		try {
+			// Init the work
+			const forum = await client.channels.cache.get(process.env.DISCORD_RAID_FORUM_CHANNEL);
+			logger.logMessage(forum.guild, 'Processus de nettoyage démarré');
+			await forum.threads.fetch();
+			const dayBeforeTagId = getTagIDForDayBefore(forum.availableTags, 1);
+			const twoDaysBeforeTagId = getTagIDForDayBefore(forum.availableTags, 2);
 
-		for (const cacheObject of forum.threads.cache) {
-			// Get channel and last message of the channel
-			const channel = await cacheObject[1].fetch();
-			const lastMessage = await channel.messages.fetch(channel.lastMessageId);
+			for (const cacheObject of forum.threads.cache) {
+				// Get channel and last message of the channel
+				const channel = await cacheObject[1].fetch();
+				const lastMessage = await channel.messages.fetch(channel.lastMessageId);
 
-			if (channel.appliedTags.find(tag => tag === twoDaysBeforeTagId) && lastMessage.content.includes('Vous avez toujours besoin de ce raid ?')) {
-				await channel.delete();
-				logger.logMessage(channel.guild, `Id: ${channel.id} : raid supprimé automatiquement pour délai dépassé + inactivité`);
-			} else if (channel.appliedTags.find(tag => tag === dayBeforeTagId)) {
-				channel.send('@here Vous avez toujours besoin de ce raid ?\nSans activité d\'ici demain, je le supprimerai automatiquement.\nPour empécher la suppression, il suffit d\'envoyer un message sur le thread.\nLe créateur ou un admin peut également utiliser /update pour mettre à jour la date et l\'heure');
-				logger.logMessage(channel.guild, `Id: ${channel.id} : message de suppression programmée envoyé`);
+				if (channel.appliedTags.find(tag => tag === twoDaysBeforeTagId) && lastMessage.content.includes('Vous avez toujours besoin de ce raid ?')) {
+					await channel.delete();
+					logger.logMessage(channel.guild, `Id: ${channel.id} : raid supprimé automatiquement pour délai dépassé + inactivité`);
+				} else if (channel.appliedTags.find(tag => tag === dayBeforeTagId)) {
+					channel.send('@here Vous avez toujours besoin de ce raid ?\nSans activité d\'ici demain, je le supprimerai automatiquement.\nPour empécher la suppression, il suffit d\'envoyer un message sur le thread.\nLe créateur ou un admin peut également utiliser /update pour mettre à jour la date et l\'heure');
+					logger.logMessage(channel.guild, `Id: ${channel.id} : message de suppression programmée envoyé`);
+				}
 			}
+			logger.logMessage(forum.guild, 'Processus de nettoyage terminé');
+		} catch (error) {
+			const forum = await client.channels.cache.get(process.env.DISCORD_RAID_FORUM_CHANNEL);
+			console.error(error);
+			logger.logError(forum.guild, error);
 		}
-		logger.logMessage(forum.guild, 'Processus de nettoyage terminé');
 	},
 	null,
 	false,
