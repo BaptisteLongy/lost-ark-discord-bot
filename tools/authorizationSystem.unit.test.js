@@ -1,4 +1,4 @@
-const { isAdmin, isRaidCreator } = require('../../tools/authorizationSystem');
+const { isAdmin, isRaidCreator } = require('./authorizationSystem');
 
 describe('authorizationSystem', () => {
     beforeAll(() => {

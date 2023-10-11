@@ -1,4 +1,4 @@
-const { happensInRaid } = require('../../tools/happensInRaid');
+const { happensInRaid } = require('./happensInRaid');
 
 describe('happensInRaid', () => {
     beforeAll(() => {
