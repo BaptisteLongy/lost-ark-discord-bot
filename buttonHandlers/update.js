@@ -1,11 +1,9 @@
 const { ActionRowBuilder, ModalBuilder, TextInputStyle, TextInputBuilder } = require('discord.js');
 
-const adminRoleId = process.env.DISCORD_SERVER_ADMIN_ROLE;
-
 async function update(interaction) {
-    const adminRole = interaction.member.roles.cache.get(adminRoleId);
+    const adminRoleId = process.env.DISCORD_SERVER_ADMIN_ROLE;
 
-    if (adminRole === undefined && interaction.member.toString() !== interaction.message.content.split(' ').pop()) {
+    if (!interaction.member.roles.cache.has(adminRoleId) && interaction.member.toString() !== interaction.message.content.split(' ').pop()) {
         await interaction.reply({ content: 'Oh Bebou... tu peux pas modifier le raid de quelqu\'un d\'autre...', ephemeral: true });
     } else {
         const updateModal = new ModalBuilder()

@@ -28,9 +28,7 @@ const buttonRow = new ActionRowBuilder()
     );
 
 async function execute(interaction) {
-    const adminRole = interaction.member.roles.cache.get(adminRoleId);
-
-    if (adminRole === undefined) {
+    if (!interaction.member.roles.cache.has(adminRoleId)) {
         await interaction.reply({
             content: 'T\'as sans doute une super idée mais l\'ajout d\'alerte est réservé aux admins.\nPropose leur ton idée !',
             ephemeral: true,
