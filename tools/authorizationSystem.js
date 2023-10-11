@@ -1,6 +1,5 @@
 function isAdmin(member) {
-    const adminRole = member.roles.cache.get(process.env.DISCORD_SERVER_ADMIN_ROLE);
-    return adminRole !== undefined;
+    return member.roles.cache.has(process.env.DISCORD_SERVER_ADMIN_ROLE);
 }
 
 function isRaidCreator(member, raidMessage) {
