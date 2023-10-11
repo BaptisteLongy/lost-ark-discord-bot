@@ -182,7 +182,7 @@ const reminderJob = new CronJob(
 			// Init the work
 			const forum = await client.channels.cache.get(process.env.DISCORD_RAID_FORUM_CHANNEL);
 			logger.logMessage(forum.guild, 'Processus de nettoyage démarré');
-			await forum.threads.fetch();
+			await forum.fetch();
 			const dayBeforeTagId = getTagIDForDayBefore(forum.availableTags, 1);
 			const twoDaysBeforeTagId = getTagIDForDayBefore(forum.availableTags, 2);
 
