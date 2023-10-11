@@ -6,7 +6,7 @@ function createCollection(client, collectionName) {
 	// Build the commands Collection for easy access
 	client[collectionName] = new Collection();
 	const collectionPath = path.join(path.dirname(__dirname), collectionName);
-	const collectionFiles = fs.readdirSync(collectionPath).filter(file => file.endsWith('.js'));
+	const collectionFiles = fs.readdirSync(collectionPath).filter(file => file.endsWith('.js') && !file.endsWith('test.js'));
 
 	for (const file of collectionFiles) {
 		const filePath = path.join(collectionPath, file);
