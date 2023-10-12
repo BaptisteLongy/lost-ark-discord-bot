@@ -12,7 +12,8 @@ async function execute(interaction) {
     const adminRoleId = process.env.DISCORD_SERVER_ADMIN_ROLE;
 
     if (happensInRaid(interaction)) {
-        if (!interaction.member.roles.cache.has(adminRoleId) && interaction.member.toString() !== interaction.message.content.split(' ').pop()) {
+        const initialMessage = await interaction.channel.messages.fetch(interaction.channel.id);
+        if (!interaction.member.roles.cache.has(adminRoleId) && interaction.member.toString() !== initialMessage.content.split(' ').pop()) {
             await interaction.reply({ content: 'Oh Bebou... tu peux pas supprimer le raid de quelqu\'un d\'autre...', ephemeral: true });
         } else {
             const yesNoButtons = new ActionRowBuilder()
