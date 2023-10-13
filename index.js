@@ -151,8 +151,12 @@ client.on(Events.VoiceStateUpdate, async (oldState, newState) => {
 		if (newState.channelId === process.env.DISCORD_VOICE_CHANNEL_CREATOR_ID) {
 			await createNewVoiceChannelAndMoveUser(newState);
 		}
-		if (oldState.channel && oldState.channel.name.startsWith('Chez ') && newState.members === undefined) {
-			await deleteVoiceChannel(oldState);
+		if (oldState.channel && oldState.channel.name.startsWith('Chez ')) {
+			const voiceChannel = await oldState.guild.channels.fetch(oldState.channelId);
+
+			if (!(voiceChannel.members && voiceChannel.members.size > 0)) {
+				await deleteVoiceChannel(oldState);
+			}
 		}
 	} catch (error) {
 		console.error(error);
