@@ -11,6 +11,7 @@ const { Client, Events, GatewayIntentBits } = require('discord.js');
 const { createCollection } = require('./tools/createCollection.js');
 const { createNewVoiceChannelAndMoveUser } = require('./voiceCreatorManager/newVoiceChannel.js');
 const { deleteVoiceChannel } = require('./voiceCreatorManager/deleteVoiceChannel.js');
+const { initCronJobs } = require('./cronJobs/initCronJobs.js');
 
 const token = process.env.LOST_ARK_DISCORD_BOT_TOKEN;
 
@@ -218,3 +219,5 @@ const reminderJob = new CronJob(
 client.login(token);
 
 reminderJob.start();
+
+initCronJobs(client);
