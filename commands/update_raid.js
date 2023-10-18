@@ -3,6 +3,7 @@ const { RaidMessage } = require('../tools/RaidMessage.js');
 
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');
+const rairTypes = require('../tools/raidTypes.json');
 const { happensInRaid } = require('../tools/happensInRaid.js');
 const { canChangeRaid } = require('../tools/authorizationSystem.js');
 
@@ -19,9 +20,10 @@ const data = new SlashCommandBuilder()
     .addStringOption(option =>
         option.setName('heure')
             .setDescription('Si tu veux changer l\'heure'))
-    .addBooleanOption(option =>
-        option.setName('learning')
-            .setDescription('Si tu veux changer le statut learning'));
+    .addStringOption(option =>
+        option.setName('type')
+            .setDescription('Si tu veux changer le type')
+            .addChoices(...rairTypes));
 
 function getIDForTag(tagName, tagList) {
     return tagList.find(tag => tag.name === tagName).id;
@@ -60,9 +62,9 @@ function generateChangelog(interaction) {
         changelog = updateChangelog(changelog, `Nouvelle gate : ${gate}`);
     }
 
-    const learning = interaction.options.getBoolean('learning');
-    if (learning !== null) {
-        changelog = learning ? updateChangelog(changelog, 'Le raid devient un learning') : updateChangelog(changelog, 'Le raid n\'est plus un learning');
+    const type = interaction.options.getString('type');
+    if (type !== null) {
+        changelog = updateChangelog(changelog, `Nouveau type : ${type}`);
     }
 
     return changelog;
@@ -82,12 +84,14 @@ function initRaid(raidMessage, interaction, message, thread) {
     }
 }
 
-function updateLearningTag(threadTagsList, learning, availableTags) {
-    const learningTagId = getIDForTag('learning', availableTags);
-    threadTagsList = threadTagsList.filter((tag) => { return tag !== learningTagId; });
-    if (learning) {
-        threadTagsList.push(learningTagId);
+function updateTypeTag(threadTagsList, type, availableTags) {
+    for (const uniqueType of rairTypes) {
+        const typeTagId = getIDForTag(uniqueType.value, availableTags);
+        threadTagsList = threadTagsList.filter((tag) => { return tag !== typeTagId; });
     }
+
+    threadTagsList.push(getIDForTag(type, availableTags));
+
     return threadTagsList;
 }
 
@@ -99,9 +103,9 @@ function generateNewTags(thread, interaction) {
         tags = updateDayTag(tags, day, thread.parent.availableTags);
     }
 
-    const learning = interaction.options.getBoolean('learning');
-    if (learning !== null) {
-        tags = updateLearningTag(tags, learning, thread.parent.availableTags);
+    const type = interaction.options.getString('type');
+    if (type !== null) {
+        tags = updateTypeTag(tags, type, thread.parent.availableTags);
     }
 
     return tags;

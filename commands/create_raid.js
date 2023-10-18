@@ -4,6 +4,7 @@ const { RaidMessage } = require('../tools/RaidMessage.js');
 const raids = require('../tools/raidList.json');
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');
+const rairTypes = require('../tools/raidTypes.json');
 
 const data = new SlashCommandBuilder()
 	.setName('creer')
@@ -34,10 +35,11 @@ raids.forEach(raid => {
 				option.setName('heure')
 					.setDescription('Heure')
 					.setRequired(true))
-			.addBooleanOption(option =>
-				option.setName('learning')
-					.setDescription('Si tu crées une learning party')
-					.setRequired(true))
+			.addStringOption(option =>
+				option.setName('type')
+					.setDescription('Plutôt learning ou card run ?')
+					.setRequired(true)
+					.addChoices(...rairTypes))
 			.addStringOption(option =>
 				option.setName('description')
 					.setDescription('Raconte ta vie')
@@ -129,11 +131,8 @@ async function execute(interaction) {
 	const tags = [
 		await getIDForTag(interaction.options.getString('jour'), forum.availableTags),
 		await getIDForTag(chosenRaid.name, forum.availableTags),
+		await getIDForTag(interaction.options.getString('type'), forum.availableTags),
 	];
-
-	if (interaction.options.getBoolean('learning')) {
-		tags.push(await getIDForTag('learning', forum.availableTags));
-	}
 
 	await forum.threads.create(
 		{
