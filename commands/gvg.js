@@ -22,8 +22,10 @@ function generatePubliciteMessage(numberParticipants, roleToMention) {
         return (`${roleToMention} Uniquement ${numberParticipants} pour la GVG, il nous faut du monde. N'oubliez psa qu'on clôture les inscriptions dimanche à midi pour savoir sur quelle île on va.`);
     } else if (numberParticipants < 8) {
         return (`${roleToMention} On est ${numberParticipants} pour la GVG, il manque plus grand monde ! Allez vous inscrire in game si c'est pas déjà fait !`);
+    } else if (numberParticipants < 16) {
+        return (`${roleToMention} Waouh ! Déjà ${numberParticipants} inscrits en GVG ! On continue comme ça et avec plus de participants on pourra viser encore plus de golds !`);
     } else {
-        return (`${roleToMention} Waouh ! Déjà ${numberParticipants} inscrits ! On continue comme ça et avec plus de participants on pourra viser encore plus de golds !`);
+        return (`${roleToMention} On est ${numberParticipants} inscrits en GVG ! :tada: Si certains ne se sont pas inscrits, ils peuvent toujours le faire bien entendu`);
     }
 }
 
