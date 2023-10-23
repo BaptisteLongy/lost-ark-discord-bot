@@ -3,7 +3,7 @@ const logger = require('../tools/logger.js');
 
 function reminderGVGRegistration(client) {
 	new CronJob(
-		'0 0 16 0 * 0',
+		'0 0 16 * * 0',
 		// For Dev - every 10 seconds
 		// '0,10,20,30,40,50 * * * * *',
 		async function() {
