@@ -31,7 +31,8 @@ function reminderJob(client) {
                 for (const cacheObject of forum.threads.cache) {
                     // Get channel and last message of the channel
                     const channel = await cacheObject[1].fetch();
-                    const lastMessage = await channel.messages.fetch(channel.lastMessageId);
+                    const fetchedMessage = await channel.messages.fetch({ limit: 1, around: channel.lastMessageId });
+                    const lastMessage = fetchedMessage.values().next().value;
 
                     if (channel.appliedTags.find(tag => tag === twoDaysBeforeTagId) && lastMessage.content.includes('Vous avez toujours besoin de ce raid ?')) {
                         await channel.delete();
