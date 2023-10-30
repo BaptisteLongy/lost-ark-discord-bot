@@ -5,7 +5,7 @@ WORKDIR /usr/lost-ark-bot
 
 # Node dependencies / install
 COPY package*.json ./
-RUN npm install --production
+RUN npm ci --omit=dev
 
 # Code transfer
 COPY . .
