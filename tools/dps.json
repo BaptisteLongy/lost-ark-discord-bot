@@ -103,5 +103,10 @@
         "label": "Aeromancer",
         "value": "Aeromancer",
         "baseClass": "Specialist"
+    },
+    {
+        "label": "Soul Eater",
+        "value": "Soul Eater",
+        "baseClass": "Assassin"
     }
 ]
