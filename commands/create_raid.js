@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-const { RaidMessage } = require('../tools/RaidMessage.js');
+const { RaidMessage } = require('../tools/message/RaidMessage.js');
+const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
 const raids = require('../tools/raidList.json');
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');

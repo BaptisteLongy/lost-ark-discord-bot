@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, RateLimitError } = require('discord.js');
-const { RaidMessage } = require('../tools/RaidMessage.js');
+const { RaidMessage } = require('../tools/message/RaidMessage.js');
 
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');

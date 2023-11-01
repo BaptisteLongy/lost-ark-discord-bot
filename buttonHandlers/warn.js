@@ -1,4 +1,4 @@
-const { RaidMessage } = require('../tools/RaidMessage.js');
+const { RaidMessage } = require('../tools/message/RaidMessage.js');
 const logger = require ('../tools/logger.js');
 
 function reduceForMessage(previous, current) {
