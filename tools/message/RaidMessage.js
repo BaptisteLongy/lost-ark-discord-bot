@@ -84,10 +84,6 @@ class RaidMessage extends Message {
     }
   }
 
-  generateForumThreadTitle() {
-    return `${this.raid.value}${this.mode === undefined ? '' : ` ${this.mode}`} - ${this.gate} - ${this.day} ${this.time}`;
-  }
-
   generateEmbed() {
     const supportField = this.supports.reduce(this.reduceClassList, '');
     const dpsFirstField = this.dps.slice(0, 3).reduce(this.reduceClassList, '');

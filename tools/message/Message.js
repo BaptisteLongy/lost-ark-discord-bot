@@ -31,6 +31,10 @@ class Message {
         }
     }
 
+    generateForumThreadTitle() {
+        return `${this.raid.value}${this.mode === undefined ? '' : ` ${this.mode}`} - ${this.gate} - ${this.day} ${this.time}`;
+    }
+
     getModeFromTitleSplit(titleSplit) {
         const stringSplit = titleSplit.split(' ');
         stringSplit.shift();

@@ -92,7 +92,13 @@ async function getIDForTag(tagName, tagList) {
 async function execute(interaction) {
 	await interaction.deferReply({ ephemeral: true });
 
-	const raidMessage = new RaidMessage();
+	let raidMessage;
+	const raidType = interaction.options.getString('type');
+	if (raidType === 'card run') {
+		raidMessage = new CardRunMessage();
+	} else {
+		raidMessage = new RaidMessage();
+	}
 	const chosenRaid = raids.find(raid => raid.name === interaction.options.getSubcommand());
 
 	const components = [
