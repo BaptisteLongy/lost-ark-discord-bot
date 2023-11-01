@@ -3,7 +3,7 @@ const { RaidMessage } = require('../tools/message/RaidMessage.js');
 
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');
-const rairTypes = require('../tools/raidTypes.json');
+const raidTypes = require('../tools/raidTypes.json');
 const { happensInRaid } = require('../tools/happensInRaid.js');
 const { canChangeRaid } = require('../tools/authorizationSystem.js');
 
@@ -23,7 +23,7 @@ const data = new SlashCommandBuilder()
     .addStringOption(option =>
         option.setName('type')
             .setDescription('Si tu veux changer le type')
-            .addChoices(...rairTypes));
+            .addChoices(...raidTypes));
 
 function getIDForTag(tagName, tagList) {
     return tagList.find(tag => tag.name === tagName).id;
@@ -85,7 +85,7 @@ function initRaid(raidMessage, interaction, message, thread) {
 }
 
 function updateTypeTag(threadTagsList, type, availableTags) {
-    for (const uniqueType of rairTypes) {
+    for (const uniqueType of raidTypes) {
         const typeTagId = getIDForTag(uniqueType.value, availableTags);
         threadTagsList = threadTagsList.filter((tag) => { return tag !== typeTagId; });
     }
