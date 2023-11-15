@@ -24,7 +24,7 @@ const data = new SlashCommandBuilder()
     .addStringOption(option =>
         option.setName('type')
             .setDescription('Si tu veux changer le type')
-            .addChoices(...raidTypes));
+            .addChoices(...raidTypes.filter(type => type.name !== 'card run')));
 
 function updateDayTag(threadTagsList, day, availableTags) {
     for (const uniqueDay of days) {
@@ -102,7 +102,12 @@ function generateNewTags(thread, interaction) {
 
     const type = interaction.options.getString('type');
     if (type !== null) {
-        tags = updateTypeTag(tags, type, thread.parent.availableTags);
+        const cardRunTagId = getIDForTag('card run', interaction.channel.parent.availableTags);
+        if (interaction.channel.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
+            tags = updateTypeTag(tags, type, thread.parent.availableTags);
+        } else {
+            throw new Error('Cannot change type of card run');
+        }
     }
 
     return tags;
@@ -147,11 +152,15 @@ async function execute(interaction) {
                             content: 'Désolé, Discord m\'empèche de modifier un thread plus de 2 fois en 10 minutes, reviens plus tard !',
                             ephemeral: true,
                         });
+                    } else if (e.message === 'Cannot change type of card run') {
+                        await interaction.reply({
+                            content: 'Désolé, il n\'est pas possible de changer le type d\'un card run',
+                            ephemeral: true,
+                        });
                     } else {
                         throw e;
                     }
                 });
-
         } else {
             await interaction.reply({ content: 'Oh Bebou... tu peux pas modifier le raid de quelqu\'un d\'autre...', ephemeral: true });
         }
