@@ -75,6 +75,12 @@ class Message {
         this.time = dateTime[1];
     }
 
+    removePlayerFromList(player, list) {
+        return list.filter(
+            registration => registration.player !== player.toString(),
+        );
+    }
+
     changeDescription(newDescription) {
         this.description = newDescription;
     }

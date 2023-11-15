@@ -31,12 +31,6 @@ class RaidMessage extends Message {
     this.bench = this.initRoleList(embed.fields, 'Banc');
   }
 
-  removePlayerFromList(player, list) {
-    return list.filter(
-      registration => registration.player !== player.toString(),
-    );
-  }
-
   removePlayer(player) {
     this.supports = this.removePlayerFromList(player, this.supports);
     this.dps = this.removePlayerFromList(player, this.dps);
