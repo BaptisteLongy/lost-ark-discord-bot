@@ -24,7 +24,7 @@ class Message {
             for (const specialRole of this.raid.specialRoles) {
                 const newSpecialRole = {
                     'title': specialRole.name,
-                    'list': this.initRoleList(embed.fields, specialRole.name),
+                    'list': this.initList(embed.fields, specialRole.name),
                 };
                 this.specialRoles.push(newSpecialRole);
             }
@@ -49,15 +49,14 @@ class Message {
         return split.join(' - ');
     }
 
-    initRoleList(fields, roleListName) {
-        const theField = fields.find(field => field.name.startsWith(roleListName));
+    initList(fields, listName) {
+        const theField = fields.find(field => field.name.startsWith(listName));
         const theFieldArray = theField ? theField.value.split('\r') : [];
-        const theRoleList = theFieldArray.map(item => {
-            const theRoleSplit = item.split(' : ');
-            return { player: theRoleSplit[0], class: theRoleSplit[1] };
+        const theList = theFieldArray.map(item => {
+            return { player: item };
         });
 
-        return theRoleList;
+        return theList;
     }
 
     setDay(day) {

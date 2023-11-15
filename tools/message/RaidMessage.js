@@ -31,6 +31,17 @@ class RaidMessage extends Message {
     this.bench = this.initRoleList(embed.fields, 'Banc');
   }
 
+  initRoleList(fields, roleListName) {
+    const theField = fields.find(field => field.name.startsWith(roleListName));
+    const theFieldArray = theField ? theField.value.split('\r') : [];
+    const theRoleList = theFieldArray.map(item => {
+      const theRoleSplit = item.split(' : ');
+      return { player: theRoleSplit[0], class: theRoleSplit[1] };
+    });
+
+    return theRoleList;
+  }
+
   removePlayer(player) {
     this.supports = this.removePlayerFromList(player, this.supports);
     this.dps = this.removePlayerFromList(player, this.dps);
