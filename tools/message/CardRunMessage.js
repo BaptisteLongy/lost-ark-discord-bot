@@ -1,4 +1,5 @@
 const { Message } = require('./Message.js');
+const { getRandomInt } = require('../getRandomInt.js');
 
 class CardRunMessage extends Message {
     constructor() {
@@ -77,7 +78,7 @@ class CardRunMessage extends Message {
 
     reduceForMessage(previous, current) {
         return previous === '' ? current : `${previous} ${current}`;
-      }
+    }
 
     async warn(interaction) {
         let warnMessage;
@@ -86,7 +87,18 @@ class CardRunMessage extends Message {
         }
 
         if (warnMessage !== '') {
-          await interaction.channel.send(warnMessage + ' ça part !!!');
+            await interaction.channel.send(warnMessage + ' ça part !!!');
+        }
+    }
+
+    diceForAll(channel) {
+        channel.send({
+            content: '**P\'tit jet de dés pour tout le monde**',
+        });
+        for (const member of this.generateSetOfMembers().values()) {
+            channel.send({
+                content: `${member} fait un **${getRandomInt(100)}**`,
+            });
         }
     }
 

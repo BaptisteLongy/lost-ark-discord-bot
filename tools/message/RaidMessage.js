@@ -1,6 +1,7 @@
 const { Message } = require('./Message.js');
 
 const supports = require('../supports.json');
+const { getRandomInt } = require('../getRandomInt.js');
 const dps = require('../dps.json');
 
 function isSupport(playerClass) {
@@ -80,6 +81,32 @@ class RaidMessage extends Message {
 
     if (playerClass === 'Banc de touche') {
       this.bench.push({ player: player });
+    }
+  }
+
+  diceForList(memberList, thread, introMessage) {
+    thread.send({
+      content: introMessage,
+    });
+    memberList.forEach(member => {
+      thread.send({
+        content: `${member.player} fait un **${getRandomInt(100)}**`,
+      });
+    });
+  }
+
+  diceForAll(channel) {
+    if (Array.isArray(this.supports) && this.supports.length > 0) {
+      this.diceForList(this.supports, channel, '**Les supports en premier**');
+    }
+    if (Array.isArray(this.dps) && this.dps.length > 0) {
+      this.diceForList(this.dps, channel, '**De la chance chez les DPS ?**');
+    }
+    if (Array.isArray(this.flex) && this.flex.length > 0) {
+      this.diceForList(this.flex, channel, '**Des flex peut-être**');
+    }
+    if (Array.isArray(this.bench) && this.bench.length > 0) {
+      this.diceForList(this.bench, channel, '**Au tour du banc de touche**');
     }
   }
 

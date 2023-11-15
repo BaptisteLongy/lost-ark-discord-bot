@@ -1,40 +1,29 @@
 const { RaidMessage } = require('../tools/message/RaidMessage.js');
+const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
 const logger = require('../tools/logger.js');
-const { getRandomInt } = require('../tools/getRandomInt.js');
-
-function diceForList(memberList, thread, introMessage) {
-    thread.send({
-        content: introMessage,
-    });
-    memberList.forEach(member => {
-        thread.send({
-            content: `${member.player} fait un **${getRandomInt(100)}**`,
-        });
-    });
-}
+const { happensInRaid } = require('../tools/happensInRaid.js');
+const { getIDForTag } = require('../tools/getIDForTag.js');
 
 async function diceForAll(interaction) {
-    await interaction.deferUpdate();
+    if (happensInRaid(interaction)) {
+        const cardRunTagId = getIDForTag('card run', interaction.channel.parent.availableTags);
 
-    // Parse the message into a RaidMessage
-    const raidMessage = new RaidMessage();
+        await interaction.deferUpdate();
 
-    raidMessage.initWithEmbed(interaction.message.embeds[0]);
+        // Parse the message into a RaidMessage
+        let raidMessage;
+        if (interaction.channel.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
+            raidMessage = new RaidMessage();
+        } else {
+            raidMessage = new CardRunMessage();
+        }
 
-    if (Array.isArray(raidMessage.supports) && raidMessage.supports.length > 0) {
-        diceForList(raidMessage.supports, interaction.channel, '**Les supports en premier**');
-    }
-    if (Array.isArray(raidMessage.dps) && raidMessage.dps.length > 0) {
-        diceForList(raidMessage.dps, interaction.channel, '**De la chance chez les DPS ?**');
-    }
-    if (Array.isArray(raidMessage.flex) && raidMessage.flex.length > 0) {
-        diceForList(raidMessage.flex, interaction.channel, '**Des flex peut-être**');
-    }
-    if (Array.isArray(raidMessage.bench) && raidMessage.bench.length > 0) {
-        diceForList(raidMessage.bench, interaction.channel, '**Au tour du banc de touche**');
-    }
+        raidMessage.initWithEmbed(interaction.message.embeds[0]);
 
-    logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} lance les dés pour tout le monde`);
+        raidMessage.diceForAll(interaction.channel);
+
+        logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} lance les dés pour tout le monde`);
+    }
 }
 
 module.exports = {
