@@ -75,9 +75,17 @@ class Message {
     }
 
     removePlayerFromList(player, list) {
-        return list.filter(
-            registration => registration.player !== player.toString(),
-        );
+        if (Array.isArray(list)) {
+            return list.filter(
+                registration => registration.player !== player.toString(),
+            );
+        }
+    }
+
+    removePlayer(player) {
+        for (const specialRoleList of this.specialRoles) {
+            specialRoleList.list = this.removePlayerFromList(player, specialRoleList.list);
+        }
     }
 
     changeDescription(newDescription) {

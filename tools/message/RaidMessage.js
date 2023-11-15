@@ -43,6 +43,8 @@ class RaidMessage extends Message {
   }
 
   removePlayer(player) {
+    super.removePlayer(player);
+
     this.supports = this.removePlayerFromList(player, this.supports);
     this.dps = this.removePlayerFromList(player, this.dps);
     this.flex = this.removePlayerFromList(player, this.flex);
