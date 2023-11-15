@@ -1,24 +1,35 @@
 const { RaidMessage } = require('../tools/message/RaidMessage.js');
-const logger = require ('../tools/logger.js');
+const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
+const logger = require('../tools/logger.js');
+const { happensInRaid } = require('../tools/happensInRaid.js');
+const { getIDForTag } = require('../tools/getIDForTag.js');
 
 async function registerAsSpecialRole(interaction) {
-    await interaction.deferUpdate();
+    if (happensInRaid(interaction)) {
+        const cardRunTagId = getIDForTag('card run', interaction.channel.parent.availableTags);
 
-    // Parse the message into a RaidMessage
-    const raidMessage = new RaidMessage();
-    raidMessage.initWithEmbed(interaction.message.embeds[0]);
+        await interaction.deferUpdate();
 
-    // Toggle the user in the special role
-    raidMessage.toggleSpecialRole(interaction.member, interaction.customId.split('_').pop());
+        // Parse the message into a RaidMessage
+        let raidMessage;
+        if (interaction.channel.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
+            raidMessage = new RaidMessage();
+        } else {
+            raidMessage = new CardRunMessage();
+        }
+        raidMessage.initWithEmbed(interaction.message.embeds[0]);
 
-    // Generate the new embed
-    const newEmbed = raidMessage.generateEmbed();
+        // Toggle the user in the special role
+        raidMessage.toggleSpecialRole(interaction.member, interaction.customId.split('_').pop());
 
-    // Send the new embed
-    await interaction.editReply({ embeds: [newEmbed] });
+        // Generate the new embed
+        const newEmbed = raidMessage.generateEmbed();
 
-    // TO DO ----- Special role à trouver pour logger ----
-    logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} s'est ajouté/retiré du role ${raidMessage.raid.specialRoles.find(role => role.value === interaction.customId.split('_').pop()).name}`);
+        // Send the new embed
+        await interaction.editReply({ embeds: [newEmbed] });
+
+        logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} s'est ajouté/retiré du role ${raidMessage.raid.specialRoles.find(role => role.value === interaction.customId.split('_').pop()).name}`);
+    }
 }
 
 module.exports = {
