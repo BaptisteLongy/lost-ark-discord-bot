@@ -41,8 +41,8 @@ function generateCardRunAvailabilityModal() {
         .setStyle(TextInputStyle.Short)
         .setValue('0');
 
-    const supportInput = new TextInputBuilder()
-        .setCustomId('supportInput')
+    const supportsInput = new TextInputBuilder()
+        .setCustomId('supportsInput')
         .setLabel('Combien de supports ?')
         .setStyle(TextInputStyle.Short)
         .setValue('0');
@@ -53,10 +53,10 @@ function generateCardRunAvailabilityModal() {
     const smallDPSRow = new ActionRowBuilder()
         .addComponents([smallDPSInput]);
 
-    const supportRow = new ActionRowBuilder()
-        .addComponents([supportInput]);
+    const supportsRow = new ActionRowBuilder()
+        .addComponents([supportsInput]);
 
-    cardRunAvailabilityModal.addComponents([bigDPSRow, smallDPSRow, supportRow]);
+    cardRunAvailabilityModal.addComponents([bigDPSRow, smallDPSRow, supportsRow]);
 
     return cardRunAvailabilityModal;
 }
