@@ -55,7 +55,7 @@ class CardRunMessage extends Message {
         return prev + parseInt(current.number);
     }
 
-    calculatePlayerNumber() {
+    generateSetOfMembers() {
         const theSet = new Set();
 
         for (const item of this.bigDPS) {
@@ -68,7 +68,26 @@ class CardRunMessage extends Message {
             theSet.add(item.player);
         }
 
-        return theSet.size;
+        return theSet;
+    }
+
+    calculatePlayerNumber() {
+        return this.generateSetOfMembers().size;
+    }
+
+    reduceForMessage(previous, current) {
+        return previous === '' ? current : `${previous} ${current}`;
+      }
+
+    async warn(interaction) {
+        let warnMessage;
+        for (const member of this.generateSetOfMembers().values()) {
+            warnMessage = warnMessage === undefined ? member : `${warnMessage} ${member}`;
+        }
+
+        if (warnMessage !== '') {
+          await interaction.channel.send(warnMessage + ' ça part !!!');
+        }
     }
 
     generateEmbed() {

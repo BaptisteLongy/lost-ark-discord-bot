@@ -83,6 +83,29 @@ class RaidMessage extends Message {
     }
   }
 
+  reduceForMessage(previous, current) {
+    return previous === '' ? current.player : `${previous} ${current.player}`;
+  }
+
+  async warn(interaction) {
+    const warnSupportMessage = this.supports.reduce(this.reduceForMessage, '');
+    const warnDPSMessage = this.dps.reduce(this.reduceForMessage, '');
+    const warnFlexMessage = this.flex.reduce(this.reduceForMessage, '');
+    let warnMessage = warnSupportMessage;
+    warnMessage === '' ? warnMessage = warnDPSMessage : warnMessage = `${warnMessage} ${warnDPSMessage}`;
+    warnMessage === '' ? warnMessage = warnFlexMessage : warnMessage = `${warnMessage} ${warnFlexMessage}`;
+
+    if (warnMessage !== '') {
+      await interaction.channel.send(warnMessage + ' ça part !!!');
+    }
+
+    const benchMessage = this.bench.reduce(this.reduceForMessage, '');
+
+    if (benchMessage !== '') {
+      await interaction.channel.send(benchMessage + ' on se prépare sur le banc des remplaçants...');
+    }
+  }
+
   generateEmbed() {
     const supportField = this.supports.reduce(this.reduceClassList, '');
     const dpsFirstField = this.dps.slice(0, 3).reduce(this.reduceClassList, '');

@@ -1,34 +1,29 @@
 const { RaidMessage } = require('../tools/message/RaidMessage.js');
-const logger = require ('../tools/logger.js');
-
-function reduceForMessage(previous, current) {
-    return previous === '' ? current.player : `${previous} ${current.player}`;
-}
+const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
+const logger = require('../tools/logger.js');
+const { happensInRaid } = require('../tools/happensInRaid.js');
+const { getIDForTag } = require('../tools/getIDForTag.js');
 
 async function warn(interaction) {
-    await interaction.deferUpdate();
+    if (happensInRaid(interaction)) {
+        const cardRunTagId = getIDForTag('card run', interaction.channel.parent.availableTags);
 
-    const raidMessage = new RaidMessage();
-    raidMessage.initWithEmbed(interaction.message.embeds[0]);
+        await interaction.deferUpdate();
 
-    const warnSupportMessage = raidMessage.supports.reduce(reduceForMessage, '');
-    const warnDPSMessage = raidMessage.dps.reduce(reduceForMessage, '');
-    const warnFlexMessage = raidMessage.flex.reduce(reduceForMessage, '');
-    let warnMessage = warnSupportMessage;
-    warnMessage === '' ? warnMessage = warnDPSMessage : warnMessage = `${warnMessage} ${warnDPSMessage}`;
-    warnMessage === '' ? warnMessage = warnFlexMessage : warnMessage = `${warnMessage} ${warnFlexMessage}`;
+        // Parse the message into a RaidMessage
+        let raidMessage;
+        if (interaction.channel.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
+            raidMessage = new RaidMessage();
+        } else {
+            raidMessage = new CardRunMessage();
+        }
 
-    if (warnMessage !== '') {
-        await interaction.channel.send(warnMessage + 'ça part !!!');
+        raidMessage.initWithEmbed(interaction.message.embeds[0]);
+
+        await raidMessage.warn(interaction);
+
+        logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} lance le raid ${raidMessage.raid.value}`);
     }
-
-    const benchMessage = raidMessage.bench.reduce(reduceForMessage, '');
-
-    if (benchMessage !== '') {
-        await interaction.channel.send(benchMessage + ' on se prépare sur le banc des remplaçants...');
-    }
-
-    logger.logAction(interaction, `Id: ${interaction.message.id} : ${interaction.member.displayName} lance le raid ${raidMessage.raid.value}`);
 }
 
 module.exports = {
