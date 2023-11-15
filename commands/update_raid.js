@@ -6,6 +6,7 @@ const logger = require('../tools/logger.js');
 const raidTypes = require('../tools/raidTypes.json');
 const { happensInRaid } = require('../tools/happensInRaid.js');
 const { canChangeRaid } = require('../tools/authorizationSystem.js');
+const { getIDForTag } = require('../tools/getIDForTag.js');
 
 const data = new SlashCommandBuilder()
     .setName('update')
@@ -24,10 +25,6 @@ const data = new SlashCommandBuilder()
         option.setName('type')
             .setDescription('Si tu veux changer le type')
             .addChoices(...raidTypes));
-
-function getIDForTag(tagName, tagList) {
-    return tagList.find(tag => tag.name === tagName).id;
-}
 
 function updateDayTag(threadTagsList, day, availableTags) {
     for (const uniqueDay of days) {
