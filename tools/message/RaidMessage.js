@@ -52,14 +52,6 @@ class RaidMessage extends Message {
     return prev;
   }
 
-  reduceWaitList(prev, current) {
-    if (prev !== '') {
-      prev = prev + '\r';
-    }
-    prev = prev + current.player.toString();
-    return prev;
-  }
-
   calculatePlayerNumber() {
     return this.supports.length + this.dps.length + this.flex.length;
   }
@@ -88,8 +80,8 @@ class RaidMessage extends Message {
     const supportField = this.supports.reduce(this.reduceClassList, '');
     const dpsFirstField = this.dps.slice(0, 3).reduce(this.reduceClassList, '');
     const dpsSecondField = this.dps.length > 3 ? this.dps.slice(3).reduce(this.reduceClassList, '') : '';
-    const flexField = this.flex.reduce(this.reduceWaitList, '');
-    const benchField = this.bench.reduce(this.reduceWaitList, '');
+    const flexField = this.flex.reduce(this.reduceMemberList, '');
+    const benchField = this.bench.reduce(this.reduceMemberList, '');
 
     const raidEmbed = this.initEmbed()
       .setTitle(`${this.raid.value}${this.mode === undefined ? '' : ` ${this.mode}`} - ${this.gate} - ${this.calculatePlayerNumber()}${this.raid.maxPlayer !== false ? `/${this.raid.maxPlayer}` : ''}`);

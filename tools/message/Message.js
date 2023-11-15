@@ -93,6 +93,14 @@ class Message {
         return 0;
     }
 
+    reduceMemberList(prev, current) {
+        if (prev !== '') {
+            prev = prev + '\r';
+        }
+        prev = prev + current.player.toString();
+        return prev;
+    }
+
     initEmbed() {
         const raidEmbed = new EmbedBuilder()
             .setTitle(`${this.raid.value}${this.mode === undefined ? '' : ` ${this.mode}`} - ${this.gate} - ${this.calculatePlayerNumber()}`)
@@ -108,7 +116,7 @@ class Message {
             embed.addFields({ name: ' ', value: ' ' });
 
             for (const specialRole of this.specialRoles) {
-                const specialRoleField = specialRole.list.reduce(this.reduceWaitList, '');
+                const specialRoleField = specialRole.list.reduce(this.reduceMemberList, '');
                 if (specialRoleField !== '') {
                     embed.addFields({ name: `${specialRole.title} : ${specialRole.list.length}`, value: specialRoleField, inline: true });
                 }
