@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, RateLimitError } = require('discord.js');
 const { RaidMessage } = require('../tools/message/RaidMessage.js');
+const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
 
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');
@@ -114,7 +115,16 @@ function generateNewTags(thread, interaction) {
 }
 
 async function updateRaid(interaction, message, thread) {
-    const raidMessage = new RaidMessage();
+    const cardRunTagId = getIDForTag('card run', interaction.channel.parent.availableTags);
+
+    // Parse the message into a RaidMessage
+    let raidMessage;
+    if (interaction.channel.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
+        raidMessage = new RaidMessage();
+    } else {
+        raidMessage = new CardRunMessage();
+    }
+
     initRaid(raidMessage, interaction, message, thread);
 
     const tags = generateNewTags(thread, interaction);
