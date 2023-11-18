@@ -19,7 +19,7 @@ function generatePubliciteMessage(numberParticipants, roleToMention) {
     if (numberParticipants < 1) {
         return (`${roleToMention} Le reset a eu lieu, il est temps d'aller s'inscrire in game pour la GVG, venez ramasser des golds facilement !`);
     } else if (numberParticipants < 4) {
-        return (`${roleToMention} Uniquement ${numberParticipants} pour la GVG, il nous faut du monde. N'oubliez psa qu'on clôture les inscriptions dimanche à midi pour savoir sur quelle île on va.`);
+        return (`${roleToMention} Uniquement ${numberParticipants} pour la GVG, il nous faut du monde. N'oubliez pas qu'on clôture les inscriptions dimanche à midi pour savoir sur quelle île on va.`);
     } else if (numberParticipants < 8) {
         return (`${roleToMention} On est ${numberParticipants} pour la GVG, il manque plus grand monde ! Allez vous inscrire in game si c'est pas déjà fait !`);
     } else if (numberParticipants < 16) {
