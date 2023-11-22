@@ -37,7 +37,9 @@ class CardRunMessage extends Message {
     }
 
     update(player, bigDPS, smallDPS, supports) {
-        this.removePlayer(player);
+        this.bigDPS = this.removePlayerFromList(player, this.bigDPS);
+        this.smallDPS = this.removePlayerFromList(player, this.smallDPS);
+        this.supports = this.removePlayerFromList(player, this.supports);
 
         this.bigDPS.push({ player: player, number: bigDPS });
         this.smallDPS.push({ player: player, number: smallDPS });
