@@ -211,5 +211,16 @@
         ],
         "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_legend_00_3.png",
         "maxPlayer": false
+    },
+    {
+        "name": "yornoreha",
+        "value": "To Yorn + Oreha",
+        "color": [
+            161,
+            200,
+            231
+        ],
+        "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_legend_02_6.png",
+        "maxPlayer": 4
     }
 ]
