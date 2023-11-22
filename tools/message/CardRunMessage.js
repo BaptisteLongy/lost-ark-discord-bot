@@ -86,7 +86,7 @@ class CardRunMessage extends Message {
             warnMessage = warnMessage === undefined ? member : `${warnMessage} ${member}`;
         }
 
-        if (warnMessage !== '') {
+        if (warnMessage !== undefined) {
             await interaction.channel.send(warnMessage + ' ça part !!!');
         }
     }
