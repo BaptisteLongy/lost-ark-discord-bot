@@ -1,11 +1,13 @@
 const { SlashCommandBuilder, RateLimitError } = require('discord.js');
-const { RaidMessage } = require('../tools/RaidMessage.js');
+const { RaidMessage } = require('../tools/message/RaidMessage.js');
+const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
 
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');
-const rairTypes = require('../tools/raidTypes.json');
+const raidTypes = require('../tools/raidTypes.json');
 const { happensInRaid } = require('../tools/happensInRaid.js');
 const { canChangeRaid } = require('../tools/authorizationSystem.js');
+const { getIDForTag } = require('../tools/getIDForTag.js');
 
 const data = new SlashCommandBuilder()
     .setName('update')
@@ -23,11 +25,7 @@ const data = new SlashCommandBuilder()
     .addStringOption(option =>
         option.setName('type')
             .setDescription('Si tu veux changer le type')
-            .addChoices(...rairTypes));
-
-function getIDForTag(tagName, tagList) {
-    return tagList.find(tag => tag.name === tagName).id;
-}
+            .addChoices(...raidTypes.filter(type => type.name !== 'card run')));
 
 function updateDayTag(threadTagsList, day, availableTags) {
     for (const uniqueDay of days) {
@@ -85,7 +83,7 @@ function initRaid(raidMessage, interaction, message, thread) {
 }
 
 function updateTypeTag(threadTagsList, type, availableTags) {
-    for (const uniqueType of rairTypes) {
+    for (const uniqueType of raidTypes) {
         const typeTagId = getIDForTag(uniqueType.value, availableTags);
         threadTagsList = threadTagsList.filter((tag) => { return tag !== typeTagId; });
     }
@@ -105,14 +103,28 @@ function generateNewTags(thread, interaction) {
 
     const type = interaction.options.getString('type');
     if (type !== null) {
-        tags = updateTypeTag(tags, type, thread.parent.availableTags);
+        const cardRunTagId = getIDForTag('card run', interaction.channel.parent.availableTags);
+        if (interaction.channel.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
+            tags = updateTypeTag(tags, type, thread.parent.availableTags);
+        } else {
+            throw new Error('Cannot change type of card run');
+        }
     }
 
     return tags;
 }
 
 async function updateRaid(interaction, message, thread) {
-    const raidMessage = new RaidMessage();
+    const cardRunTagId = getIDForTag('card run', interaction.channel.parent.availableTags);
+
+    // Parse the message into a RaidMessage
+    let raidMessage;
+    if (interaction.channel.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
+        raidMessage = new RaidMessage();
+    } else {
+        raidMessage = new CardRunMessage();
+    }
+
     initRaid(raidMessage, interaction, message, thread);
 
     const tags = generateNewTags(thread, interaction);
@@ -150,11 +162,15 @@ async function execute(interaction) {
                             content: 'Désolé, Discord m\'empèche de modifier un thread plus de 2 fois en 10 minutes, reviens plus tard !',
                             ephemeral: true,
                         });
+                    } else if (e.message === 'Cannot change type of card run') {
+                        await interaction.reply({
+                            content: 'Désolé, il n\'est pas possible de changer le type d\'un card run',
+                            ephemeral: true,
+                        });
                     } else {
                         throw e;
                     }
                 });
-
         } else {
             await interaction.reply({ content: 'Oh Bebou... tu peux pas modifier le raid de quelqu\'un d\'autre...', ephemeral: true });
         }

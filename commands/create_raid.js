@@ -1,10 +1,12 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-const { RaidMessage } = require('../tools/RaidMessage.js');
+const { RaidMessage } = require('../tools/message/RaidMessage.js');
+const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
 const raids = require('../tools/raidList.json');
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');
 const rairTypes = require('../tools/raidTypes.json');
+const { getIDForTag } = require('../tools/getIDForTag.js');
 
 const data = new SlashCommandBuilder()
 	.setName('creer')
@@ -84,14 +86,16 @@ const thirdButtonRow = new ActionRowBuilder()
 			.setStyle(ButtonStyle.Danger),
 	);
 
-async function getIDForTag(tagName, tagList) {
-	return tagList.find(tag => tag.name === tagName).id;
-}
-
 async function execute(interaction) {
 	await interaction.deferReply({ ephemeral: true });
 
-	const raidMessage = new RaidMessage();
+	let raidMessage;
+	const raidType = interaction.options.getString('type');
+	if (raidType === 'card run') {
+		raidMessage = new CardRunMessage();
+	} else {
+		raidMessage = new RaidMessage();
+	}
 	const chosenRaid = raids.find(raid => raid.name === interaction.options.getSubcommand());
 
 	const components = [
@@ -129,9 +133,9 @@ async function execute(interaction) {
 
 	const threadName = raidMessage.generateForumThreadTitle();
 	const tags = [
-		await getIDForTag(interaction.options.getString('jour'), forum.availableTags),
-		await getIDForTag(chosenRaid.name, forum.availableTags),
-		await getIDForTag(interaction.options.getString('type'), forum.availableTags),
+		getIDForTag(await interaction.options.getString('jour'), forum.availableTags),
+		getIDForTag(chosenRaid.name, forum.availableTags),
+		getIDForTag(await interaction.options.getString('type'), forum.availableTags),
 	];
 
 	await forum.threads.create(

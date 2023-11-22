@@ -1,10 +1,7 @@
 const CronJob = require('cron').CronJob;
 const logger = require('../tools/logger.js');
 const days = require('../tools/days.json');
-
-function getIDForTag(tagName, tagList) {
-    return tagList.find(tag => tag.name === tagName).id;
-}
+const { getIDForTag } = require('../tools/getIDForTag.js');
 
 function getTagIDForDayBefore(tagList, numberOfDaysBefore) {
     let dayBefore = new Date().getDay() - numberOfDaysBefore;
