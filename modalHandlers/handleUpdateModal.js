@@ -1,12 +1,20 @@
 const { RaidMessage } = require('../tools/message/RaidMessage.js');
-const logger = require ('../tools/logger.js');
+const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
+const logger = require('../tools/logger.js');
+const { getIDForTag } = require('../tools/getIDForTag.js');
 
 async function handleUpdateModal(interaction) {
     // Get the data entered by the user
     const newDescription = interaction.fields.getTextInputValue('newDescriptionInput');
 
     // Parse the message into a RaidMessage
-    const raidMessage = new RaidMessage();
+    const cardRunTagId = getIDForTag('card run', interaction.channel.parent.availableTags);
+    let raidMessage;
+    if (interaction.channel.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
+        raidMessage = new RaidMessage();
+    } else {
+        raidMessage = new CardRunMessage();
+    }
     raidMessage.initWithEmbed(interaction.message.embeds[0]);
 
     // Change Raid description
