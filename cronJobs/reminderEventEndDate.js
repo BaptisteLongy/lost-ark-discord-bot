@@ -7,22 +7,30 @@ function reminderEventEndDate(client) {
 	// Don't forget to substract 1 to month - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date#monthindex
 	const d = new Date(2023, 11, 12, 17);
 
-	new CronJob(
-		d,
-		// For Dev - every 10 seconds
-		// '0,10,20,30,40,50 * * * * *',
-		async function() {
-			try {
-				const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
-				notificationChannel.send('@here **L\'event se finit demain, n\'oubliez pas d\'échanger toutes les pièces qu\'il vous reste  !!!**');
-			} catch (error) {
-				const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
-				logger.logError(notificationChannel.guild, error);
-			}
-		},
-		null,
-		true,
-	);
+	try {
+		new CronJob(
+			d,
+			// For Dev - every 10 seconds
+			// '0,10,20,30,40,50 * * * * *',
+			async function() {
+				try {
+					const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
+					notificationChannel.send('@here **L\'event se finit demain, n\'oubliez pas d\'échanger toutes les pièces qu\'il vous reste  !!!**');
+				} catch (error) {
+					const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
+					logger.logError(notificationChannel.guild, error);
+				}
+			},
+			null,
+			true,
+		);
+	} catch (e) {
+		if (e.message === 'WARNING: Date in past. Will never be fired.') {
+			console.log(e.message);
+		} else {
+			throw e;
+		}
+	}
 }
 
 module.exports = {
