@@ -245,7 +245,6 @@
             21
         ],
         "img": "https://assets-ng.maxroll.gg/laplanner/webp/card_rare_15_4.webp",
-        "maxPlayer": 4,
-        "otherTag": true
+        "maxPlayer": 4
     }
 ]
