@@ -223,5 +223,17 @@
         "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_legend_02_6.png",
         "maxPlayer": 4,
         "otherTag" : true
+    },
+    {
+        "name": "platine",
+        "value": "Gisement de platine",
+        "color": [
+            115,
+            135,
+            54
+        ],
+        "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_uncommon_04_1.png",
+        "maxPlayer": 4,
+        "otherTag" : true
     }
 ]
