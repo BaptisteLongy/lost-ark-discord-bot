@@ -5,7 +5,7 @@ function reminderEventEndDate(client) {
 
 	// 5pm the day before the end of the event
 	// Don't forget to substract 1 to month - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date#monthindex
-	const d = new Date(2023, 11, 12, 17);
+	const d = new Date(2024, 1, 6, 17);
 
 	try {
 		new CronJob(
