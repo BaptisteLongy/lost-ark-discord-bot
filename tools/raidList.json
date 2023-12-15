@@ -221,6 +221,7 @@
             231
         ],
         "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_legend_02_6.png",
-        "maxPlayer": 4
+        "maxPlayer": 4,
+        "otherTag" : true
     }
 ]

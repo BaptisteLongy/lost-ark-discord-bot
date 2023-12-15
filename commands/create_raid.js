@@ -134,7 +134,7 @@ async function execute(interaction) {
 	const threadName = raidMessage.generateForumThreadTitle();
 	const tags = [
 		getIDForTag(await interaction.options.getString('jour'), forum.availableTags),
-		getIDForTag(chosenRaid.name, forum.availableTags),
+		getIDForTag(chosenRaid.otherTag ? 'autre' : chosenRaid.name, forum.availableTags),
 		getIDForTag(await interaction.options.getString('type'), forum.availableTags),
 	];
 
