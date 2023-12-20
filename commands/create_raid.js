@@ -152,7 +152,7 @@ async function execute(interaction) {
 		const message = await response.fetch();
 		const messageId = message.id;
 		logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value} - Nom : ${threadName}`);
-		await interaction.followUp('C\'est fait !');
+		await interaction.followUp(`Ton raid est là => https://discord.com/channels/${response.guildId}/${response.id}`);
 	});
 }
 
