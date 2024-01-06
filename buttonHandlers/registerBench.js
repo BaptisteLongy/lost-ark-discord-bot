@@ -23,6 +23,8 @@ async function registerBench(interaction) {
     // Add the member to the thread
     initialMessage.channel.members.add(interaction.member);
 
+    await interaction.editReply({ content: '**Tu es ajouté sur le banc de touche !**\nTu peux encore changer bien sûr' });
+
     logger.logAction(interaction, `Id: ${initialMessage.id} : ${interaction.member.displayName} s'est ajouté au raid ${raidMessage.raid.value} - Role : Banc de touche`);
 }
 

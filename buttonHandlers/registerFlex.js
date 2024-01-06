@@ -23,6 +23,8 @@ async function registerFlex(interaction) {
     // Add the member to the thread
     initialMessage.channel.members.add(interaction.member);
 
+    await interaction.editReply({ content: '**Tu es ajouté en tant que Flex !**\nTu peux encore changer bien sûr' });
+
     logger.logAction(interaction, `Id: ${initialMessage.id} : ${interaction.member.displayName} s'est ajouté au raid ${raidMessage.raid.value} - Role : Flex`);
 }
 
