@@ -37,9 +37,12 @@ class Message {
 
     getModeFromTitleSplit(titleSplit) {
         const stringSplit = titleSplit.split(' ');
-        stringSplit.shift();
 
-        return stringSplit.join(' ');
+        const modeFiltered = stringSplit.filter((item, index, array) => {
+            return index === array.length - 1 || index === array.length - 2;
+        });
+
+        return modeFiltered.join(' ');
     }
 
     getGateFromSplit(split) {
