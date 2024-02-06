@@ -32,6 +32,10 @@
             {
                 "name": "Hell",
                 "value": "Hell Mode"
+            },
+            {
+                "name": "Extreme",
+                "value": "Extreme Mode"
             }
         ]
     },
@@ -76,6 +80,16 @@
         ],
         "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_legend_00_7.png",
         "maxPlayer": 4,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "Hell",
+                "value": "Hell Mode"
+            }
+        ],
         "specialRoles": [
             {
                 "name": "Mario 1",
@@ -122,6 +136,10 @@
             {
                 "name": "HM",
                 "value": "Hard Mode"
+            },
+            {
+                "name": "Hell",
+                "value": "Hell Mode"
             }
         ],
         "G1": {
