@@ -34,8 +34,12 @@
                 "value": "Hell Mode"
             },
             {
-                "name": "Extreme",
-                "value": "Extreme Mode"
+                "name": "Extreme NM",
+                "value": "Extreme Normal"
+            },
+            {
+                "name": "Extreme HM",
+                "value": "Extreme Hard"
             }
         ]
     },
