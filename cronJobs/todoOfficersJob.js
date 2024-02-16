@@ -4,11 +4,12 @@ const logger = require('../tools/logger.js');
 async function generateArrayWithMessages(guild) {
 	const todoList = [];
 
+	// GVG disabled for now
 	// Check GVG Status
-	const today = new Date();
-	if (today.getDay() === 0 || today.getDay() > 3) {
-		todoList.push('   :white_check_mark:   Il faut recruter pour la GVG. Checkez le nombre d\'inscrits in game puis utilisez `/gvg publicite`');
-	}
+	// const today = new Date();
+	// if (today.getDay() === 0 || today.getDay() > 3) {
+	// 	todoList.push('   :white_check_mark:   Il faut recruter pour la GVG. Checkez le nombre d\'inscrits in game puis utilisez `/gvg publicite`');
+	// }
 
 	// Check awaiting members
 	await guild.members.fetch();
