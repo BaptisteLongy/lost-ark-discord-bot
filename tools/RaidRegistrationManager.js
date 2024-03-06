@@ -3,6 +3,8 @@ const { RaidMessage } = require('./message/RaidMessage.js');
 const logger = require('./logger.js');
 const { getIDForTag } = require('./getIDForTag.js');
 const baseClassList = require('./baseClasses.json');
+const supports = require('./supports.json');
+const dps = require('./dps.json');
 
 class RaidRegistrationManager {
     constructor(interaction, isRaidCreationInteraction, raidThread) {
@@ -23,6 +25,21 @@ class RaidRegistrationManager {
                     .setCustomId('baseClassSelect')
                     .setPlaceholder('Archetype')
                     .addOptions(...baseClassList),
+            );
+    }
+
+    generateSelectMenuForBaseClass(baseClass) {
+        const selectOptions = [...supports, ...dps].filter(uniqueClass => uniqueClass.baseClass === baseClass.label)
+            .sort((classA, classB) => {
+                return classA.value.localeCompare(classB.value);
+            });
+
+        return new ActionRowBuilder()
+            .addComponents(
+                new StringSelectMenuBuilder()
+                    .setCustomId('classSelect')
+                    .setPlaceholder(baseClass.label)
+                    .addOptions(...selectOptions),
             );
     }
 
@@ -90,6 +107,13 @@ class RaidRegistrationManager {
                 content: `Ton raid est là => ${this.thread}\nN'oubile pas d'aller inscrire ton roster pour le card run`,
             });
         }
+    }
+
+    async updateRegistrationOnBaseClassPick() {
+        const baseClass = baseClassList.find(baseClassTemp => baseClassTemp.value === this.interaction.values[0]);
+
+        // Send the new embed
+        await this.interaction.editReply({ components: [this.generateBaseClassSelectRow(), this.generateSelectMenuForBaseClass(baseClass), this.generateButtonsRow()] });
     }
 
     async initRegisterInteraction() {
