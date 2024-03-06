@@ -7,6 +7,7 @@ const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');
 const rairTypes = require('../tools/raidTypes.json');
 const { getIDForTag } = require('../tools/getIDForTag.js');
+const { RaidRegistrationManager } = require('../tools/RaidRegistrationManager.js');
 
 const data = new SlashCommandBuilder()
 	.setName('creer')
@@ -152,7 +153,9 @@ async function execute(interaction) {
 		const message = await response.fetch();
 		const messageId = message.id;
 		logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value} - Nom : ${threadName}`);
-		await interaction.followUp(`Ton raid est là => https://discord.com/channels/${response.guildId}/${response.id}`);
+
+		const registrationManager = new RaidRegistrationManager(interaction, true, response);
+		registrationManager.initCreationInteraction();
 	});
 }
 
