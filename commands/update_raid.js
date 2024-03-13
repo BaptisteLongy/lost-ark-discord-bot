@@ -70,7 +70,7 @@ function generateChangelog(interaction) {
 
 function initRaid(raidMessage, interaction, message, thread) {
     raidMessage.initWithEmbed(message.embeds[0]);
-    raidMessage.initDayTime(thread.name);
+    raidMessage.initDayTime(thread);
     if (interaction.options.getString('jour') !== null) {
         raidMessage.setDay(interaction.options.getString('jour'));
     }

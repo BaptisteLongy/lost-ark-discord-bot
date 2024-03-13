@@ -1,6 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 
 const raids = require('../raidList.json');
+const days = require('../days.json');
+const { getIDForTag } = require('../getIDForTag.js');
 
 class Message {
     constructor() {
@@ -70,11 +72,15 @@ class Message {
         this.time = time;
     }
 
-    initDayTime(threadTitle) {
-        const threadTitleSplit = threadTitle.split(' - ');
-        const dateTime = threadTitleSplit.pop().split(' ');
-        this.day = dateTime[0];
-        this.time = dateTime[1];
+    initDayTime(thread) {
+        for (const uniqueDay of days) {
+            const dayTagId = getIDForTag(uniqueDay.value, thread.parent.availableTags);
+            if (thread.appliedTags.some((tag) => {return tag === dayTagId;})) {
+                this.day = uniqueDay.value;
+            }
+        }
+
+        this.time = thread.name.split(`${this.day} `).pop();
     }
 
     removePlayerFromList(player, list) {
