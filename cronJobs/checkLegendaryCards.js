@@ -15,6 +15,11 @@ async function pingCardRolesIfNecessary(cardList, client) {
         }
     }
 }
+
+function cleanUpGlobalRecentlyPingedCards(cardList) {
+    global.recentlyPingedCards = global.recentlyPingedCards.filter(pingedCard => cardList.some(card => card === pingedCard));
+}
+
 async function scrapeLegendaryInfo() {
     const browser = await puppeteer.launch({ headless: 'shell' });
     const page = await browser.newPage();
@@ -40,6 +45,7 @@ function checkLegendaryCards(client) {
             try {
                 const cardList = await scrapeLegendaryInfo();
                 await pingCardRolesIfNecessary(cardList, client);
+                cleanUpGlobalRecentlyPingedCards(cardList);
             } catch (error) {
                 const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
                 logger.logError(notificationChannel.guild, error);
