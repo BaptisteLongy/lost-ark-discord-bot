@@ -7,11 +7,14 @@ const { delay } = require('../tools/delay.js');
 async function pingCardRolesIfNecessary(cardList, client) {
     for (const card in cardList) {
         if (!global.recentlyPingedCards.some(pingedCard => pingedCard === cardList[card])) {
-            const roleToPing = legendaryCardsInMerchants.find(legCard => legCard.name === cardList[card]).roleEnvVar;
-            const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
-            notificationChannel.send(`${await notificationChannel.guild.roles.fetch(process.env[roleToPing])} vient d'être ajouté sur https://lostmerchants.com. En route !`);
-            global.recentlyPingedCards.push(cardList[card]);
-            logger.logMessage(notificationChannel.guild, `Ping envoyé pour ${cardList[card]}`);
+            const legendaryCard = legendaryCardsInMerchants.find(legCard => legCard.name === cardList[card]);
+            if (legendaryCard !== undefined) {
+                const roleToPing = legendaryCard.roleEnvVar;
+                const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
+                notificationChannel.send(`${await notificationChannel.guild.roles.fetch(process.env[roleToPing])} vient d'être ajouté sur https://lostmerchants.com. En route !`);
+                global.recentlyPingedCards.push(cardList[card]);
+                logger.logMessage(notificationChannel.guild, `Ping envoyé pour ${cardList[card]}`);
+            }
         }
     }
 }
