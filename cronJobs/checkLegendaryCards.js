@@ -28,7 +28,7 @@ async function scrapeLegendaryInfo() {
     await page.select('select#severRegion', 'EUC');
     await page.waitForSelector('select#server');
     await page.select('select#server', 'Arcturus');
-    await delay(2000);
+    await delay(10000);
     const legendaryInfo = await page.$$eval('.rarity--Legendary', options => {
         return options.map(option => option.textContent);
     });
