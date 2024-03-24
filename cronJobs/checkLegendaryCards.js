@@ -50,8 +50,13 @@ function checkLegendaryCards(client) {
                 await pingCardRolesIfNecessary(cardList, client);
                 cleanUpGlobalRecentlyPingedCards(cardList);
             } catch (error) {
-                const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
-                logger.logError(notificationChannel.guild, error);
+                if (error instanceof puppeteer.TimeoutError) {
+                    const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
+                    logger.logMessage(notificationChannel.guild, 'Lost merchants en timeout, tout devrait aller mieux dans 5 minutes');
+                } else {
+                    const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
+                    logger.logError(notificationChannel.guild, error);
+                }
             }
         },
         null,
