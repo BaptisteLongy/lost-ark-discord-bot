@@ -108,5 +108,10 @@
         "label": "Soul Eater",
         "value": "Soul Eater",
         "baseClass": "Assassin"
+    },
+    {
+        "label": "Breaker",
+        "value": "Breaker",
+        "baseClass": "Martial Artist"
     }
 ]
