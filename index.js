@@ -15,6 +15,7 @@ const token = process.env.LOST_ARK_DISCORD_BOT_TOKEN;
 
 // Global var to store which cards have been pinged already
 global.recentlyPingedCardsForArcturus = [];
+global.recentlyPingedCardsForRatik = [];
 
 // Create a new client instance
 const client = new Client({
