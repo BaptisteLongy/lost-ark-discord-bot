@@ -4,14 +4,16 @@ const legendaryCardsInMerchants = require('../tools/legendaryCardsInMerchants.js
 const puppeteer = require('puppeteer');
 const { delay } = require('../tools/delay.js');
 
-async function pingCardRolesIfNecessary(cardList, client) {
+async function pingCardRolesIfNecessary(cardList, globalList, client, serverName) {
     for (const card in cardList) {
-        if (!global.recentlyPingedCards.some(pingedCard => pingedCard === cardList[card])) {
+        if (!globalList.some(pingedCard => pingedCard === cardList[card])) {
             const legendaryCard = legendaryCardsInMerchants.find(legCard => legCard.name === cardList[card]);
             if (legendaryCard !== undefined) {
                 const roleToPing = legendaryCard.roleEnvVar;
                 const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
                 notificationChannel.send(`${await notificationChannel.guild.roles.fetch(process.env[roleToPing])} vient d'être ajouté sur https://lostmerchants.com. En route !`);
+                globalList.push(cardList[card]);
+                logger.logMessage(notificationChannel.guild, `Ping envoyé pour ${cardList[card]} sur ${serverName}`);
                 global.recentlyPingedCards.push(cardList[card]);
                 logger.logMessage(notificationChannel.guild, `Ping envoyé pour ${cardList[card]}`);
             }
@@ -19,24 +21,30 @@ async function pingCardRolesIfNecessary(cardList, client) {
     }
 }
 
-function cleanUpGlobalRecentlyPingedCards(cardList) {
-    global.recentlyPingedCards = global.recentlyPingedCards.filter(pingedCard => cardList.some(card => card === pingedCard));
+function cleanUpGlobalRecentlyPingedCards(cardList, globalList) {
+    return globalList.filter(pingedCard => cardList.some(card => card === pingedCard));
 }
 
-async function scrapeLegendaryInfo() {
+async function scrapeLegendaryInfo(serverName) {
     const browser = await puppeteer.launch({ headless: 'shell' });
     const page = await browser.newPage();
     await page.goto('https://lostmerchants.com/');
     await page.waitForSelector('select#severRegion');
     await page.select('select#severRegion', 'EUC');
     await page.waitForSelector('select#server');
-    await page.select('select#server', 'Arcturus');
+    await page.select('select#server', serverName);
     await delay(10000);
     const legendaryInfo = await page.$$eval('.rarity--Legendary', options => {
         return options.map(option => option.textContent);
     });
     await browser.close();
     return legendaryInfo;
+}
+
+async function checkCardsForArcturus(client) {
+    const cardList = await scrapeLegendaryInfo('Arcturus');
+    await pingCardRolesIfNecessary(cardList, global.recentlyPingedCardsForArcturus, client, 'Arcturus');
+    global.recentlyPingedCardsForArcturus = cleanUpGlobalRecentlyPingedCards(cardList, global.recentlyPingedCardsForArcturus);
 }
 
 function checkLegendaryCards(client) {
@@ -46,9 +54,7 @@ function checkLegendaryCards(client) {
         // '*/10 * * * * *',
         async function() {
             try {
-                const cardList = await scrapeLegendaryInfo();
-                await pingCardRolesIfNecessary(cardList, client);
-                cleanUpGlobalRecentlyPingedCards(cardList);
+                await checkCardsForArcturus(client);
             } catch (error) {
                 if (error instanceof puppeteer.TimeoutError) {
                     const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);

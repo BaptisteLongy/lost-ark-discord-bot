@@ -14,7 +14,7 @@ const { initCronJobs } = require('./cronJobs/initCronJobs.js');
 const token = process.env.LOST_ARK_DISCORD_BOT_TOKEN;
 
 // Global var to store which cards have been pinged already
-global.recentlyPingedCards = [];
+global.recentlyPingedCardsForArcturus = [];
 
 // Create a new client instance
 const client = new Client({
