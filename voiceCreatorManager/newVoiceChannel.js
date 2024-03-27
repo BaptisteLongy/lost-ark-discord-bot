@@ -27,6 +27,7 @@ async function createNewVoiceChannelAndMoveUser(newState) {
                 allow: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.Connect],
             },
         ],
+        position: creationPosition,
     });
     await newChannel.edit({ position: creationPosition });
     await newState.member.voice.setChannel(newChannel.id);
