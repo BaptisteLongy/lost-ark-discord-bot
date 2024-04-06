@@ -8,7 +8,8 @@
             255
         ],
         "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_epic_09_3.png",
-        "maxPlayer": 8
+        "maxPlayer": 8,
+        "otherTag": true
     },
     {
         "name": "valtan",
@@ -272,6 +273,31 @@
             {
                 "name": "HM",
                 "value": "Hard Mode"
+            }
+        ]
+    },
+    {
+        "name": "thaemine",
+        "value": "Thaemine",
+        "color": [
+            49,
+            56,
+            156
+        ],
+        "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_legend_01_4.png",
+        "maxPlayer": 8,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "HM",
+                "value": "Hard Mode"
+            },
+            {
+                "name": "First",
+                "value": "First Mode"
             }
         ]
     }
