@@ -5,6 +5,7 @@ const puppeteer = require('puppeteer');
 const { delay } = require('../tools/delay.js');
 
 async function pingCardRolesIfNecessary(cardList, client) {
+    logger.logDebugInfo(client, 'Pinging for cards');
     for (const card in cardList) {
         if (!global.recentlyPingedCards.some(pingedCard => pingedCard === cardList[card])) {
             const legendaryCard = legendaryCardsInMerchants.find(legCard => legCard.name === cardList[card]);
@@ -17,13 +18,17 @@ async function pingCardRolesIfNecessary(cardList, client) {
             }
         }
     }
+    logger.logDebugInfo(client, 'Pinged succesfully');
 }
 
-function cleanUpGlobalRecentlyPingedCards(cardList) {
+function cleanUpGlobalRecentlyPingedCards(cardList, client) {
+    logger.logDebugInfo(client, 'Cleaning up card list');
     global.recentlyPingedCards = global.recentlyPingedCards.filter(pingedCard => cardList.some(card => card === pingedCard));
+    logger.logDebugInfo(client, 'Cleaned up successfully');
 }
 
-async function scrapeLegendaryInfo() {
+async function scrapeLegendaryInfo(client) {
+    logger.logDebugInfo(client, 'Scrapping Lost Merchant');
     const browser = await puppeteer.launch({ headless: 'shell' });
     const page = await browser.newPage();
     await page.goto('https://lostmerchants.com/');
@@ -36,6 +41,7 @@ async function scrapeLegendaryInfo() {
         return options.map(option => option.textContent);
     });
     await browser.close();
+    logger.logDebugInfo(client, 'Scrapped Lost Merchant successfully');
     return legendaryInfo;
 }
 
@@ -46,15 +52,17 @@ function checkLegendaryCards(client) {
         // '*/10 * * * * *',
         async function() {
             try {
-                const cardList = await scrapeLegendaryInfo();
+                logger.logDebugInfo(client, 'Scrapping is starting');
+                const cardList = await scrapeLegendaryInfo(client);
                 await pingCardRolesIfNecessary(cardList, client);
-                cleanUpGlobalRecentlyPingedCards(cardList);
+                cleanUpGlobalRecentlyPingedCards(cardList, client);
+                logger.logDebugInfo(client, 'Scrapping has ended');
             } catch (error) {
                 if (error instanceof puppeteer.TimeoutError) {
-                    const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
+                    const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
                     logger.logMessage(notificationChannel.guild, 'Lost merchants en timeout, tout devrait aller mieux dans 5 minutes');
                 } else {
-                    const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
+                    const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
                     logger.logError(notificationChannel.guild, error);
                 }
             }
