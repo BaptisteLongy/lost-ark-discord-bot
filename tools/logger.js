@@ -1,3 +1,5 @@
+const { RateLimitError } = require('discord.js');
+const { delay } = require('./delay.js');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -39,13 +41,20 @@ function logMessage(guild, message) {
         .catch(console.error);
 }
 
-function logDebugInfo(guild, message) {
+async function logDebugInfo(client, message) {
     if (logLevel === 'DEBUG') {
-        guild.channels.fetch(logChannelId)
-            .then(channel => {
-                channel.send(`DEBUG INFO\n${message}`);
-            })
-            .catch(console.error);
+        try {
+
+            const logChannel = await client.channels.cache.get(logChannelId);
+            await logChannel.send(`DEBUG INFO\n${message}`);
+        } catch (error) {
+            if (error instanceof RateLimitError) {
+                await delay(1000);
+                await logDebugInfo(client, message);
+            } else {
+                throw (error);
+            }
+        }
     }
 }
 
