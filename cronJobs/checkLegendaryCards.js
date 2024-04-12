@@ -5,7 +5,7 @@ const puppeteer = require('puppeteer');
 const { delay } = require('../tools/delay.js');
 
 async function pingCardRolesIfNecessary(cardList, client) {
-    logger.logDebugInfo(client, 'Pinging for cards');
+    // logger.logDebugInfo(client, 'Pinging for cards');
     for (const card in cardList) {
         if (!global.recentlyPingedCards.some(pingedCard => pingedCard === cardList[card])) {
             const legendaryCard = legendaryCardsInMerchants.find(legCard => legCard.name === cardList[card]);
@@ -18,28 +18,37 @@ async function pingCardRolesIfNecessary(cardList, client) {
             }
         }
     }
-    logger.logDebugInfo(client, 'Pinged succesfully');
+    // logger.logDebugInfo(client, 'Pinged succesfully');
 }
 
 function cleanUpGlobalRecentlyPingedCards(cardList, client) {
-    logger.logDebugInfo(client, 'Cleaning up card list');
+    // logger.logDebugInfo(client, 'Cleaning up card list');
     global.recentlyPingedCards = global.recentlyPingedCards.filter(pingedCard => cardList.some(card => card === pingedCard));
-    logger.logDebugInfo(client, 'Cleaned up successfully');
+    // logger.logDebugInfo(client, 'Cleaned up successfully');
 }
 
 async function scrapeLegendaryInfo(client) {
     logger.logDebugInfo(client, 'Scrapping Lost Merchant');
     const browser = await puppeteer.launch({ headless: 'shell' });
+    logger.logDebugInfo(client, 'Browser online');
     const page = await browser.newPage();
+    logger.logDebugInfo(client, 'Page online');
     await page.goto('https://lostmerchants.com/');
+    logger.logDebugInfo(client, 'Navigation successful');
     await page.waitForSelector('select#severRegion');
+    logger.logDebugInfo(client, 'Found region');
     await page.select('select#severRegion', 'EUC');
+    logger.logDebugInfo(client, 'Set region');
     await page.waitForSelector('select#server');
+    logger.logDebugInfo(client, 'Found server');
     await page.select('select#server', 'Arcturus');
+    logger.logDebugInfo(client, 'Set server');
     await delay(10000);
+    logger.logDebugInfo(client, 'Will search for cards');
     const legendaryInfo = await page.$$eval('.rarity--Legendary', options => {
         return options.map(option => option.textContent);
     });
+    logger.logDebugInfo(client, 'Searching done');
     await browser.close();
     logger.logDebugInfo(client, 'Scrapped Lost Merchant successfully');
     return legendaryInfo;
@@ -52,11 +61,11 @@ function checkLegendaryCards(client) {
         // '*/10 * * * * *',
         async function() {
             try {
-                logger.logDebugInfo(client, 'Scrapping is starting');
+                // logger.logDebugInfo(client, 'Scrapping is starting');
                 const cardList = await scrapeLegendaryInfo(client);
                 await pingCardRolesIfNecessary(cardList, client);
                 cleanUpGlobalRecentlyPingedCards(cardList, client);
-                logger.logDebugInfo(client, 'Scrapping has ended');
+                // logger.logDebugInfo(client, 'Scrapping has ended');
             } catch (error) {
                 if (error instanceof puppeteer.TimeoutError) {
                     const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
