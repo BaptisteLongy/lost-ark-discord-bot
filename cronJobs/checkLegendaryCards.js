@@ -73,8 +73,10 @@ function checkLegendaryCards(client) {
             try {
                 // logger.logDebugInfo(client, 'Scrapping is starting');
                 const cardList = await scrapeLegendaryInfo(client);
-                await pingCardRolesIfNecessary(cardList, client);
-                cleanUpGlobalRecentlyPingedCards(cardList, client);
+                if (Array.isArray(cardList)) {
+                    await pingCardRolesIfNecessary(cardList, client);
+                    cleanUpGlobalRecentlyPingedCards(cardList, client);
+                }
                 // logger.logDebugInfo(client, 'Scrapping has ended');
             } catch (error) {
                 const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
