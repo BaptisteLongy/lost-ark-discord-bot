@@ -47,7 +47,6 @@ function cleanUpGlobalRecentlyPingedCards(cardList, globalList) {
 
 
 async function scrapeLegendaryInfo(serverName, client) {
-    logger.logDebugInfo(client, 'Scrapping Lost Merchant');
     const browser = await puppeteer.launch({ headless: 'shell' });
     try {
         const page = await browser.newPage();
