@@ -1,57 +1,66 @@
 const CronJob = require('cron').CronJob;
 const logger = require('../tools/logger.js');
 const legendaryCardsInMerchants = require('../tools/legendaryCardsInMerchants.json');
+const ratikLegendaryCardPingList = require('../ratikLegendaryCardPingList.json');
 const puppeteer = require('puppeteer');
 const { delay } = require('../tools/delay.js');
 
-async function pingCardRolesIfNecessary(cardList, client) {
-    // logger.logDebugInfo(client, 'Pinging for cards');
+async function pingCardRolesIfNecessary(cardList, globalList, client, serverName) {
     for (const card in cardList) {
-        if (!global.recentlyPingedCards.some(pingedCard => pingedCard === cardList[card])) {
+        if (!globalList.some(pingedCard => pingedCard === cardList[card])) {
             const legendaryCard = legendaryCardsInMerchants.find(legCard => legCard.name === cardList[card]);
             if (legendaryCard !== undefined) {
                 const roleToPing = legendaryCard.roleEnvVar;
                 const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
                 notificationChannel.send(`${await notificationChannel.guild.roles.fetch(process.env[roleToPing])} vient d'être ajouté sur https://lostmerchants.com. En route !`);
-                global.recentlyPingedCards.push(cardList[card]);
-                logger.logMessage(notificationChannel.guild, `Ping envoyé pour ${cardList[card]}`);
+                globalList.push(cardList[card]);
+                logger.logMessage(notificationChannel.guild, `Ping envoyé pour ${cardList[card]} sur ${serverName}`);
             }
         }
     }
-    // logger.logDebugInfo(client, 'Pinged succesfully');
 }
 
-function cleanUpGlobalRecentlyPingedCards(cardList, client) {
-    // logger.logDebugInfo(client, 'Cleaning up card list');
-    global.recentlyPingedCards = global.recentlyPingedCards.filter(pingedCard => cardList.some(card => card === pingedCard));
-    // logger.logDebugInfo(client, 'Cleaned up successfully');
+async function pingUsersForCardIfNecessary(cardList, globalList, client, serverName, pingList) {
+    for (const card in cardList) {
+        if (!globalList.some(pingedCard => pingedCard === cardList[card])) {
+            const legendaryCard = legendaryCardsInMerchants.find(legCard => legCard.name === cardList[card]);
+            if (legendaryCard !== undefined) {
+                const legCardPingInfo = pingList.find(info => info.name === legendaryCard.name);
+
+                for (const user in legCardPingInfo.pingList) {
+                    const discordUser = await client.users.fetch(legCardPingInfo.pingList[user].discordId);
+                    const whisperChannel = await discordUser.createDM();
+                    await whisperChannel.send(`${legendaryCard.name} vient d'être ajouté sur https://lostmerchants.com. En route !`);
+                }
+
+                globalList.push(cardList[card]);
+                const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
+                logger.logMessage(notificationChannel.guild, `MP envoyé pour ${cardList[card]} sur ${serverName}`);
+            }
+        }
+    }
 }
 
-async function scrapeLegendaryInfo(client) {
+function cleanUpGlobalRecentlyPingedCards(cardList, globalList) {
+    return globalList.filter(pingedCard => cardList.some(card => card === pingedCard));
+}
+
+
+async function scrapeLegendaryInfo(serverName, client) {
     logger.logDebugInfo(client, 'Scrapping Lost Merchant');
     const browser = await puppeteer.launch({ headless: 'shell' });
     try {
-        logger.logDebugInfo(client, 'Browser online');
         const page = await browser.newPage();
-        logger.logDebugInfo(client, 'Page online');
         await page.goto('https://lostmerchants.com/');
-        logger.logDebugInfo(client, 'Navigation successful');
         await page.waitForSelector('select#severRegion');
-        logger.logDebugInfo(client, 'Found region');
         await page.select('select#severRegion', 'EUC');
-        logger.logDebugInfo(client, 'Set region');
         await page.waitForSelector('select#server');
-        logger.logDebugInfo(client, 'Found server');
-        await page.select('select#server', 'Arcturus');
-        logger.logDebugInfo(client, 'Set server');
+        await page.select('select#server', serverName);
         await delay(10000);
-        logger.logDebugInfo(client, 'Will search for cards');
         const legendaryInfo = await page.$$eval('.rarity--Legendary', options => {
             return options.map(option => option.textContent);
         });
-        logger.logDebugInfo(client, 'Searching done');
         await browser.close();
-        logger.logDebugInfo(client, 'Scrapped Lost Merchant successfully');
         return legendaryInfo;
     } catch (error) {
         await browser.close();
@@ -64,6 +73,22 @@ async function scrapeLegendaryInfo(client) {
     }
 }
 
+async function checkCardsForArcturus(client) {
+    const cardList = await scrapeLegendaryInfo('Arcturus', client);
+    if (Array.isArray(cardList)) {
+        await pingCardRolesIfNecessary(cardList, global.recentlyPingedCardsForArcturus, client, 'Arcturus');
+        global.recentlyPingedCardsForArcturus = cleanUpGlobalRecentlyPingedCards(cardList, global.recentlyPingedCardsForArcturus);
+    }
+}
+
+async function checkCardsForRatik(client) {
+    const cardList = await scrapeLegendaryInfo('Ratik');
+    if (Array.isArray(cardList)) {
+        await pingUsersForCardIfNecessary(cardList, global.recentlyPingedCardsForRatik, client, 'Ratik', ratikLegendaryCardPingList);
+        global.recentlyPingedCardsForRatik = cleanUpGlobalRecentlyPingedCards(cardList, global.recentlyPingedCardsForRatik);
+    }
+}
+
 function checkLegendaryCards(client) {
     new CronJob(
         '0 */5 * * * *',
@@ -71,13 +96,8 @@ function checkLegendaryCards(client) {
         // '*/10 * * * * *',
         async function() {
             try {
-                // logger.logDebugInfo(client, 'Scrapping is starting');
-                const cardList = await scrapeLegendaryInfo(client);
-                if (Array.isArray(cardList)) {
-                    await pingCardRolesIfNecessary(cardList, client);
-                    cleanUpGlobalRecentlyPingedCards(cardList, client);
-                }
-                // logger.logDebugInfo(client, 'Scrapping has ended');
+                await checkCardsForArcturus(client);
+                await checkCardsForRatik(client);
             } catch (error) {
                 const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
                 logger.logError(notificationChannel.guild, error);
