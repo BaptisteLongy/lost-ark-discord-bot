@@ -10,9 +10,11 @@ async function pingCardRolesIfNecessary(cardList, globalList, client, serverName
         if (!globalList.some(pingedCard => pingedCard === cardList[card])) {
             const legendaryCard = legendaryCardsInMerchants.find(legCard => legCard.name === cardList[card]);
             if (legendaryCard !== undefined) {
+                logger.logDebugInfo(client, 'Found a card');
                 const roleToPing = legendaryCard.roleEnvVar;
                 const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
                 notificationChannel.send(`${await notificationChannel.guild.roles.fetch(process.env[roleToPing])} vient d'être ajouté sur https://lostmerchants.com. En route !`);
+                logger.logDebugInfo(client, 'Card message should appear');
                 globalList.push(cardList[card]);
                 logger.logMessage(notificationChannel.guild, `Ping envoyé pour ${cardList[card]} sur ${serverName}`);
             }
@@ -64,7 +66,7 @@ async function scrapeLegendaryInfo(serverName, client) {
     } catch (error) {
         await browser.close();
         if (error instanceof puppeteer.TimeoutError) {
-            const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
+            const notificationChannel = await client.channels.cache.get(process.env.DISCORD_LOG_CHANNEL);
             logger.logMessage(notificationChannel.guild, 'Lost merchants en timeout, tout devrait aller mieux dans 5 minutes');
         } else {
             throw error;
@@ -90,9 +92,9 @@ async function checkCardsForRatik(client) {
 
 function checkLegendaryCards(client) {
     new CronJob(
-        '0 */5 * * * *',
+        // '0 */5 * * * *',
         // For Dev - every 10 seconds
-        // '*/10 * * * * *',
+        '*/10 * * * * *',
         async function() {
             try {
                 await checkCardsForArcturus(client);
