@@ -92,9 +92,9 @@ async function checkCardsForRatik(client) {
 
 function checkLegendaryCards(client) {
     new CronJob(
-        // '0 */5 * * * *',
+        '0 */5 * * * *',
         // For Dev - every 10 seconds
-        '*/10 * * * * *',
+        // '*/10 * * * * *',
         async function() {
             try {
                 await checkCardsForArcturus(client);
