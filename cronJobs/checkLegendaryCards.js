@@ -83,7 +83,7 @@ async function checkCardsForArcturus(client) {
 }
 
 async function checkCardsForRatik(client) {
-    const cardList = await scrapeLegendaryInfo('Ratik');
+    const cardList = await scrapeLegendaryInfo('Ratik', client);
     if (Array.isArray(cardList)) {
         await pingUsersForCardIfNecessary(cardList, global.recentlyPingedCardsForRatik, client, 'Ratik', ratikLegendaryCardPingList);
         global.recentlyPingedCardsForRatik = cleanUpGlobalRecentlyPingedCards(cardList, global.recentlyPingedCardsForRatik);
