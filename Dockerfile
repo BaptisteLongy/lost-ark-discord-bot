@@ -28,7 +28,9 @@ USER pptruser
 
 WORKDIR /home/pptruser
 
-# WORKDIR /usr/lost-ark-bot
+# Database persitency mount point
+RUN mkdir config
+VOLUME /config
 
 # Node dependencies / install
 COPY package*.json ./
