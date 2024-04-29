@@ -10,12 +10,15 @@ const { createCollection } = require('./tools/createCollection.js');
 const { createNewVoiceChannelAndMoveUser } = require('./voiceCreatorManager/newVoiceChannel.js');
 const { deleteVoiceChannel } = require('./voiceCreatorManager/deleteVoiceChannel.js');
 const { initCronJobs } = require('./cronJobs/initCronJobs.js');
+const pingConfig = require(process.env.DISCORD_BOT_CARD_NOTIFICATION_CONFIG_FILE);
 
 const token = process.env.LOST_ARK_DISCORD_BOT_TOKEN;
 
 // Global var to store which cards have been pinged already
-global.recentlyPingedCardsForArcturus = [];
-global.recentlyPingedCardsForRatik = [];
+global.recentlyPingedCards = {};
+for (const server of pingConfig) {
+	global.recentlyPingedCards[server.serverName] = [];
+}
 
 // Create a new client instance
 const client = new Client({
