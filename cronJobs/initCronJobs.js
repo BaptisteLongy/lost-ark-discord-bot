@@ -3,7 +3,7 @@ const { reminderJob } = require('./reminderJob.js');
 // const { reminderGVGRegistration } = require('./reminderGVGRegistration.js');
 const { reminderEventEndDate } = require('./reminderEventEndDate.js');
 const { checkLegendaryCards } = require('./checkLegendaryCards.js');
-const { reminderGoldIslandIsToday, reminderGoldIslandIsTomorrow } = require('./reminderGoldIsland.js');
+const { reminderGoldIslandIsToday, reminderGoldIslandIsTomorrowOnWeekDays, reminderGoldIslandIsTomorrowOnWeekEnds } = require('./reminderGoldIsland.js');
 
 function initCronJobs(client) {
     todoOfficersJob(client);
@@ -13,7 +13,8 @@ function initCronJobs(client) {
     reminderEventEndDate(client);
     checkLegendaryCards(client);
     reminderGoldIslandIsToday(client);
-    reminderGoldIslandIsTomorrow(client);
+    reminderGoldIslandIsTomorrowOnWeekDays(client);
+    reminderGoldIslandIsTomorrowOnWeekEnds(client);
 }
 
 module.exports = {
