@@ -16,6 +16,7 @@ function logError(guild, error, member, interaction) {
     guild.channels.fetch(logChannelId)
         .then(channel => {
             const errorMessage = ''.concat(
+                `Error type: ${error.constructor.name}\n`,
                 `Discord Error Code: ${error.code}\n`,
                 `URL: ${error.url}\n`,
                 `Method: ${error.method}\n`,
