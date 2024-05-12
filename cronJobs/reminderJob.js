@@ -13,7 +13,7 @@ function getTagIDForDayBefore(tagList, numberOfDaysBefore) {
 
 function reminderJob(client) {
     new CronJob(
-        '0 0 6 * * *',
+        '0 0 8 * * *',
         // For Dev - every 10 seconds
         // '0,10,20,30,40,50 * * * * *',
         async function() {

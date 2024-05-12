@@ -12,7 +12,10 @@ RUN apk add --no-cache \
       ca-certificates \
       ttf-freefont \
       nodejs \
-      npm
+      npm \
+      tzdata
+      
+ENV TZ=Europe/Paris
 
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 # ENV PUPPETEER_SKIP_DOWNLOAD true

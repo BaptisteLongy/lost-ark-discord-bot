@@ -31,7 +31,7 @@ function sendToDoMessageFromArray(channel, todoList) {
 
 function todoOfficersJob(client) {
 	new CronJob(
-		'0 0 8 * * *',
+		'0 0 10 * * *',
 		// For Dev - every 10 seconds
 		// '0,10,20,30,40,50 * * * * *',
 		async function() {
