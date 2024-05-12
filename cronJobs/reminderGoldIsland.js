@@ -78,7 +78,7 @@ function reminderGoldIslandIsTomorrowOnWeekEnds(client) {
             try {
                 const goldIslandDateArray = fs.readFileSync(process.env.DISCORD_BOT_GOLD_ISLAND_CONFIG_FILE).toString().split('\n');
                 const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 5);
+                tomorrow.setDate(tomorrow.getDate() + 1);
 
                 for (const i in goldIslandDateArray) {
                     const loopDate = new Date(goldIslandDateArray[i]).toDateString();
