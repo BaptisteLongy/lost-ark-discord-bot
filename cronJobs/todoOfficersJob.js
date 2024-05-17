@@ -18,6 +18,17 @@ async function generateArrayWithMessages(guild) {
 		todoList.push(`   :white_check_mark:   Il y a ${awaitingRole.members.size} membre${awaitingRole.members.size === 1 ? '' : 's'} parmis les ${awaitingRole}. Vérifiez ce qu'on doit en faire.`);
 	}
 
+	// Bump recruiting posts
+	const today = new Date();
+	if (today.getDay() === 3 || today.getDay() === 6) {
+		const bumpListConfig = require(process.env.DISCORD_BOT_RECRUITING_BUMP_CONFIG_FILE);
+		const bumpMessage = bumpListConfig.reduce((prev, current) => {
+			return `${prev}\n       :arrow_right: ${current.label} : ${current.postLink}`;
+		}, '   :white_check_mark:   Relances à faire pour le recrutement :');
+
+		todoList.push(bumpMessage);
+	}
+
 	// Return to do list
 	return todoList;
 }
