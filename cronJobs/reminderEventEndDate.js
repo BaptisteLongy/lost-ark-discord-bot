@@ -1,36 +1,34 @@
 const CronJob = require('cron').CronJob;
 const logger = require('../tools/logger.js');
+const fs = require('fs');
 
 function reminderEventEndDate(client) {
+	new CronJob(
+		'0 0 17 * * 2',
+        // For Dev - every 5 seconds
+        // '*/5 * * * * *',
+		async function() {
+			try {
+				const eventEndDateArray = fs.readFileSync(process.env.DISCORD_BOT_EVENT_END_DATE_CONFIG_FILE).toString().split('\n');
+				const tomorrow = new Date();
+				tomorrow.setDate(tomorrow.getDate() + 1);
 
-	// 5pm the day before the end of the event
-	// Don't forget to substract 1 to month - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date#monthindex
-	const d = new Date(2024, 4, 21, 17);
+				for (const i in eventEndDateArray) {
+					const loopDate = new Date(eventEndDateArray[i]).toDateString();
+					if (loopDate === tomorrow.toDateString()) {
+						const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
+						notificationChannel.send('@here **L\'event se finit demain, n\'oubliez pas d\'échanger toutes les pièces qu\'il vous reste  !!!**');
+					}
 
-	try {
-		new CronJob(
-			d,
-			// For Dev - every 10 seconds
-			// '0,10,20,30,40,50 * * * * *',
-			async function() {
-				try {
-					const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
-					notificationChannel.send('@here **L\'event se finit demain, n\'oubliez pas d\'échanger toutes les pièces qu\'il vous reste  !!!**');
-				} catch (error) {
-					const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
-					logger.logError(notificationChannel.guild, error);
 				}
-			},
-			null,
-			true,
-		);
-	} catch (e) {
-		if (e.message === 'WARNING: Date in past. Will never be fired.') {
-			console.log(e.message);
-		} else {
-			throw e;
-		}
-	}
+			} catch (error) {
+				const logChannel = await client.channels.cache.get(process.env.DISCORD_LOG_CHANNEL);
+				logger.logError(logChannel.guild, error);
+			}
+		},
+		null,
+		true,
+	);
 }
 
 module.exports = {
