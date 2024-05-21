@@ -17,8 +17,8 @@ function vocalCleanUp(client) {
                     }
                 }
             } catch (error) {
-                const officerChannel = await client.channels.cache.get(process.env.DISCORD_OFFICER_CHANNEL);
-                logger.logError(officerChannel.guild, error);
+                const logChannel = await client.channels.cache.get(process.env.DISCORD_LOG_CHANNEL);
+                logger.logError(logChannel.guild, error);
             }
         },
         null,

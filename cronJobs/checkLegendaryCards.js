@@ -98,8 +98,8 @@ function checkLegendaryCards(client) {
                     }
                 }
             } catch (error) {
-                const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
-                logger.logError(notificationChannel.guild, error);
+                const logChannel = await client.channels.cache.get(process.env.DISCORD_LOG_CHANNEL);
+                logger.logError(logChannel.guild, error);
             }
         },
         null,

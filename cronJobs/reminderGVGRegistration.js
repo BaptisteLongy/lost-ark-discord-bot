@@ -11,8 +11,8 @@ function reminderGVGRegistration(client) {
 				const officerChannel = await client.channels.cache.get(process.env.DISCORD_OFFICER_CHANNEL);
                 officerChannel.send('@here **Si ce n\'est déjà fait, n\'oubliez pas d\'inscrire la guilde en GVG !!!**');
 			} catch (error) {
-				const officerChannel = await client.channels.cache.get(process.env.DISCORD_OFFICER_CHANNEL);
-				logger.logError(officerChannel.guild, error);
+				const logChannel = await client.channels.cache.get(process.env.DISCORD_LOG_CHANNEL);
+				logger.logError(logChannel.guild, error);
 			}
 		},
 		null,
