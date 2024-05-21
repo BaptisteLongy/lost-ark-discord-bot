@@ -3,7 +3,7 @@ dotenv.config();
 
 const { REST, Routes } = require('discord.js');
 const clientId = process.env.DISCORD_APPLICATION_ID;
-const guildId = process.env.DISCORD_DEVELOPMENT_SERVER_ID;
+const guildId = process.env.DISCORD_GUILD_ID;
 const token = process.env.LOST_ARK_DISCORD_BOT_TOKEN;
 const fs = require('node:fs');
 const path = require('node:path');
