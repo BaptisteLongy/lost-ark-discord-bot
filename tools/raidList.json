@@ -33,16 +33,9 @@
             {
                 "name": "Hell",
                 "value": "Hell Mode"
-            },
-            {
-                "name": "Extreme NM",
-                "value": "Extreme Normal"
-            },
-            {
-                "name": "Extreme HM",
-                "value": "Extreme Hard"
             }
-        ]
+        ],
+        "otherTag": true
     },
     {
         "name": "vykas",
@@ -298,6 +291,27 @@
             {
                 "name": "First",
                 "value": "First Mode"
+            }
+        ]
+    },
+    {
+        "name": "echidna",
+        "value": "Echidna",
+        "color": [
+            184,
+            33,
+            148
+        ],
+        "img": "https://www.cjoint.com/doc/24_06/NFfsfUilpDq_i-drew-echidna-v0-a08r7f31pitc1.png",
+        "maxPlayer": 8,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "HM",
+                "value": "Hard Mode"
             }
         ]
     }
