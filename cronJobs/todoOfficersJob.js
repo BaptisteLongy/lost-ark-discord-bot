@@ -1,5 +1,6 @@
 const CronJob = require('cron').CronJob;
 const logger = require('../tools/logger.js');
+const fs = require('fs');
 
 async function generateArrayWithMessages(guild) {
 	const todoList = [];
@@ -21,7 +22,7 @@ async function generateArrayWithMessages(guild) {
 	// Bump recruiting posts
 	const today = new Date();
 	if (today.getDay() === 3 || today.getDay() === 6) {
-		const bumpListConfig = require(process.env.DISCORD_BOT_RECRUITING_BUMP_CONFIG_FILE);
+		const bumpListConfig = JSON.parse(fs.readFileSync(process.env.DISCORD_BOT_RECRUITING_BUMP_CONFIG_FILE));
 		const bumpMessage = bumpListConfig.reduce((prev, current) => {
 			return `${prev}\n       :arrow_right: ${current.label} : ${current.postLink}`;
 		}, '   :white_check_mark:   Relances à faire pour le recrutement :');
