@@ -10,7 +10,7 @@ async function notifyBugs(client, message) {
 
 function scrapeHellfestInfo(client) {
     new CronJob(
-        '0 */5 * * * *',
+        '0 */8 * * * *',
         // For Dev - every 10 seconds
         // '*/10 * * * * *',
         async function() {
