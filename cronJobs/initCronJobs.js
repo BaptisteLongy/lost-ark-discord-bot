@@ -4,6 +4,8 @@ const { reminderJob } = require('./reminderJob.js');
 const { reminderEventEndDate } = require('./reminderEventEndDate.js');
 const { checkLegendaryCards } = require('./checkLegendaryCards.js');
 const { reminderGoldIslandIsToday, reminderGoldIslandIsTomorrowOnWeekDays, reminderGoldIslandIsTomorrowOnWeekEnds } = require('./reminderGoldIsland.js');
+const { scrapeHellfestInfo } = require('./checkHellfest.js');
+
 
 function initCronJobs(client) {
     todoOfficersJob(client);
@@ -15,6 +17,7 @@ function initCronJobs(client) {
     reminderGoldIslandIsToday(client);
     reminderGoldIslandIsTomorrowOnWeekDays(client);
     reminderGoldIslandIsTomorrowOnWeekEnds(client);
+    scrapeHellfestInfo(client);
 }
 
 module.exports = {
