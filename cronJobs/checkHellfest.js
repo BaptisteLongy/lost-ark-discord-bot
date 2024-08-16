@@ -14,8 +14,8 @@ function scrapeHellfestInfo(client) {
         // For Dev - every 10 seconds
         // '*/10 * * * * *',
         async function() {
-            // const browser = await puppeteer.launch({ headless: 'shell' });
-            const browser = await puppeteer.launch({ headless: false });
+            const browser = await puppeteer.launch({ headless: 'shell' });
+            // const browser = await puppeteer.launch({ headless: false });
 
             try {
                 const page = await browser.newPage();
