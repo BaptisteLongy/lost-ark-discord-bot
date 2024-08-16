@@ -17,7 +17,7 @@ function initCronJobs(client) {
     reminderGoldIslandIsToday(client);
     reminderGoldIslandIsTomorrowOnWeekDays(client);
     reminderGoldIslandIsTomorrowOnWeekEnds(client);
-    scrapeHellfestInfo(client);
+    // scrapeHellfestInfo(client);
 }
 
 module.exports = {
