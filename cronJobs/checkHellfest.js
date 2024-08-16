@@ -26,10 +26,12 @@ function scrapeHellfestInfo(client) {
                 const ticketMessage = await frame.$eval('.wz-message-description', (message) => {
                     return (message.innerText.startsWith('Aucun billet disponible'));
                 });
+                await browser.close();
                 if (!ticketMessage) {
                     await notifyBugs(client, 'Des place peut-être ? Faut aller voir https://tickets.hellfest.fr/revente.html');
                 }
             } catch (error) {
+                await browser.close();
                 if (error.message.startsWith('Error: failed to find element matching selector')) {
                     await notifyBugs(client, '.wz-message-description not found');
                     await notifyBugs(client, 'Faut aller voir https://tickets.hellfest.fr/revente.html');

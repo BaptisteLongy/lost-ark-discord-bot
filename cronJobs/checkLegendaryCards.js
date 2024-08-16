@@ -41,6 +41,7 @@ function cleanUpGlobalRecentlyPingedCards(cardList, globalList) {
 
 async function scrapeLegendaryInfo(serverName, client) {
     const browser = await puppeteer.launch({ headless: 'shell' });
+    let legendaryInfo;
     try {
         const page = await browser.newPage();
         await page.goto('https://lostmerchants.com/');
@@ -49,11 +50,10 @@ async function scrapeLegendaryInfo(serverName, client) {
         await page.waitForSelector('select#server');
         await page.select('select#server', serverName);
         await delay(10000);
-        const legendaryInfo = await page.$$eval('.rarity--Legendary', options => {
+        legendaryInfo = await page.$$eval('.rarity--Legendary', options => {
             return options.map(option => option.textContent);
         });
         await browser.close();
-        return legendaryInfo;
     } catch (error) {
         await browser.close();
         if (error instanceof puppeteer.TimeoutError || error instanceof puppeteer.ProtocolError) {
@@ -62,7 +62,10 @@ async function scrapeLegendaryInfo(serverName, client) {
         } else {
             throw error;
         }
+    } finally {
+        await browser.close();
     }
+    return legendaryInfo;
 }
 
 async function checkCardsForServer(serverConfig, client) {
