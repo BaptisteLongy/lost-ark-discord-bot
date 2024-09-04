@@ -135,8 +135,9 @@ class RaidMessage extends Message {
 
   generateEmbed() {
     const supportField = this.supports.reduce(this.reduceClassList, '');
-    const dpsFirstField = this.dps.slice(0, 3).reduce(this.reduceClassList, '');
-    const dpsSecondField = this.dps.length > 3 ? this.dps.slice(3).reduce(this.reduceClassList, '') : '';
+    const dpsLimit = this.raid.maxPlayer > 8 ? 6 : 3;
+    const dpsFirstField = this.dps.slice(0, dpsLimit).reduce(this.reduceClassList, '');
+    const dpsSecondField = this.dps.length > dpsLimit ? this.dps.slice(dpsLimit).reduce(this.reduceClassList, '') : '';
     const flexField = this.flex.reduce(this.reduceMemberList, '');
     const benchField = this.bench.reduce(this.reduceMemberList, '');
 

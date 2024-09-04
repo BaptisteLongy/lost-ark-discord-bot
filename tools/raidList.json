@@ -61,6 +61,7 @@
                 "value": "Hell Mode"
             }
         ],
+        "otherTag": true,
         "G1": {
             "cheatsheet": "https://cdnportal.mobalytics.gg/production/2022/06/ec26f1df-vykas2-1.png"
         },
@@ -302,7 +303,7 @@
             33,
             148
         ],
-        "img": "https://www.cjoint.com/doc/24_06/NFfsfUilpDq_i-drew-echidna-v0-a08r7f31pitc1.png",
+        "img": "https://lostarkcodex.com/icons/card_legend_03_6.webp",
         "maxPlayer": 8,
         "modes": [
             {
@@ -312,6 +313,23 @@
             {
                 "name": "HM",
                 "value": "Hard Mode"
+            }
+        ]
+    },
+    {
+        "name": "behemoth",
+        "value": "Behemoth",
+        "color": [
+            40,
+            50,
+            62
+        ],
+        "img": "https://lostarkcodex.com/icons/card_epic_13_4.webp",
+        "maxPlayer": 16,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
             }
         ]
     }
