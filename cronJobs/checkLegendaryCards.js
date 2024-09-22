@@ -40,7 +40,10 @@ function cleanUpGlobalRecentlyPingedCards(cardList, globalList) {
 }
 
 async function scrapeLegendaryInfo(serverName, client) {
-    const browser = await puppeteer.launch({ headless: 'shell' });
+    const browser = await puppeteer.launch({
+        headless: 'shell',
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+     });
     let legendaryInfo;
     try {
         const page = await browser.newPage();
