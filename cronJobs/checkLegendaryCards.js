@@ -44,7 +44,7 @@ async function scrapeLegendaryInfo(serverName, client) {
     let legendaryInfo;
     try {
         const page = await browser.newPage();
-        await page.goto('https://lostmerchants.com/');
+        await page.goto('https://lostmerchants.com/', { waitUntil: 'networkidle0', timeout: 120000 });
         await page.waitForSelector('select#severRegion');
         await page.select('select#severRegion', 'EUC');
         await page.waitForSelector('select#server');
