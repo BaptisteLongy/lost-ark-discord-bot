@@ -44,7 +44,7 @@ async function scrapeLegendaryInfo(serverName, client) {
     let legendaryInfo;
     try {
         const page = await browser.newPage();
-        await page.goto('https://lostmerchants.com/', { waitUntil: 'networkidle0', timeout: 120000 });
+        await page.goto('https://lostmerchants.com/', { waitUntil: 'networkidle0', timeout: 300000 });
         await page.waitForSelector('select#severRegion');
         await page.select('select#severRegion', 'EUC');
         await page.waitForSelector('select#server');
@@ -86,7 +86,7 @@ async function checkCardsForUsers(serverConfig, client) {
 
 function checkLegendaryCards(client) {
     new CronJob(
-        '0 */5 * * * *',
+        '0 0,15,30,45 * * * *',
         // For Dev - every 10 seconds
         // '*/10 * * * * *',
         async function() {
