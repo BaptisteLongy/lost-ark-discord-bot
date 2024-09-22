@@ -59,6 +59,7 @@ async function scrapeLegendaryInfo(serverName, client) {
         if (error instanceof puppeteer.TimeoutError || error instanceof puppeteer.ProtocolError) {
             const notificationChannel = await client.channels.cache.get(process.env.DISCORD_LOG_CHANNEL);
             logger.logMessage(notificationChannel.guild, 'Lost merchants en timeout, tout devrait aller mieux dans 5 minutes');
+            logger.logError(notificationChannel.guild, error);
         } else {
             throw error;
         }
