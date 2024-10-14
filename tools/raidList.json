@@ -79,6 +79,7 @@
         ],
         "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_legend_00_7.png",
         "maxPlayer": 4,
+        "otherTag": true,
         "modes": [
             {
                 "name": "NM",
@@ -330,6 +331,27 @@
             {
                 "name": "NM",
                 "value": "Normal Mode"
+            }
+        ]
+    },
+    {
+        "name": "aegir",
+        "value": "Aegir",
+        "color": [
+            147,
+            17,
+            14
+        ],
+        "img": "https://images.ctfassets.net/umhrp0op95v1/1XGjYvmdV82U8TH59jLVtZ/654a99b03c33bb35c7748393665c28e5/LA_Roadmap_OCT_KeyArt_580x330.jpg",
+        "maxPlayer": 8,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "HM",
+                "value": "Hard Mode"
             }
         ]
     }
