@@ -39,7 +39,7 @@ function cleanUpGlobalRecentlyPingedCards(cardList, globalList) {
     return globalList.filter(pingedCard => cardList.some(card => card === pingedCard));
 }
 
-async function scrapeLegendaryInfo(serverName, client) {
+async function scrapeLegendaryInfo(serverName) {
     const browser = await puppeteer.launch({
         headless: 'shell',
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -60,9 +60,7 @@ async function scrapeLegendaryInfo(serverName, client) {
     } catch (error) {
         await browser.close();
         if (error instanceof puppeteer.TimeoutError || error instanceof puppeteer.ProtocolError) {
-            const notificationChannel = await client.channels.cache.get(process.env.DISCORD_LOG_CHANNEL);
-            logger.logMessage(notificationChannel.guild, 'Lost merchants en timeout, tout devrait aller mieux dans 5 minutes');
-            logger.logError(notificationChannel.guild, error);
+            return undefined;
         } else {
             throw error;
         }
@@ -73,7 +71,7 @@ async function scrapeLegendaryInfo(serverName, client) {
 }
 
 async function checkCardsForServer(serverConfig, client) {
-    const cardList = await scrapeLegendaryInfo(serverConfig.serverName, client);
+    const cardList = await scrapeLegendaryInfo(serverConfig.serverName);
     if (Array.isArray(cardList)) {
         await pingCardRolesIfNecessary(cardList, serverConfig, client);
         global.recentlyPingedCards[serverConfig.serverName] = cleanUpGlobalRecentlyPingedCards(cardList, global.recentlyPingedCards[serverConfig.serverName]);
@@ -81,7 +79,7 @@ async function checkCardsForServer(serverConfig, client) {
 }
 
 async function checkCardsForUsers(serverConfig, client) {
-    const cardList = await scrapeLegendaryInfo(serverConfig.serverName, client);
+    const cardList = await scrapeLegendaryInfo(serverConfig.serverName);
     if (Array.isArray(cardList)) {
         await pingUsersForCardIfNecessary(cardList, serverConfig, client);
         global.recentlyPingedCards[serverConfig.serverName] = cleanUpGlobalRecentlyPingedCards(cardList, global.recentlyPingedCards[serverConfig.serverName]);
