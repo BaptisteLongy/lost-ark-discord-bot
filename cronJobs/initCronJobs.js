@@ -3,8 +3,8 @@ const { reminderJob } = require('./reminderJob.js');
 // const { reminderGVGRegistration } = require('./reminderGVGRegistration.js');
 const { reminderEventEndDate } = require('./reminderEventEndDate.js');
 const { checkLegendaryCards } = require('./checkLegendaryCards.js');
-const { reminderGoldIslandIsToday, reminderGoldIslandIsTomorrowOnWeekDays, reminderGoldIslandIsTomorrowOnWeekEnds } = require('./reminderGoldIsland.js');
-const { scrapeHellfestInfo } = require('./checkHellfest.js');
+// const { reminderGoldIslandIsToday, reminderGoldIslandIsTomorrowOnWeekDays, reminderGoldIslandIsTomorrowOnWeekEnds } = require('./reminderGoldIsland.js');
+// const { scrapeHellfestInfo } = require('./checkHellfest.js');
 
 
 function initCronJobs(client) {
@@ -14,9 +14,9 @@ function initCronJobs(client) {
     // reminderGVGRegistration(client);
     reminderEventEndDate(client);
     checkLegendaryCards(client);
-    reminderGoldIslandIsToday(client);
-    reminderGoldIslandIsTomorrowOnWeekDays(client);
-    reminderGoldIslandIsTomorrowOnWeekEnds(client);
+    // reminderGoldIslandIsToday(client);
+    // reminderGoldIslandIsTomorrowOnWeekDays(client);
+    // reminderGoldIslandIsTomorrowOnWeekEnds(client);
     // scrapeHellfestInfo(client);
 }
 
