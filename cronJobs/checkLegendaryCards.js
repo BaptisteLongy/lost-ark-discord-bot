@@ -9,7 +9,7 @@ async function pingCardRolesIfNecessary(cardList, serverConfig, client) {
         if (legendaryCard !== undefined) {
             if (!global.recentlyPingedCards[serverConfig.serverName].some(pingedCard => pingedCard === cardList[card])) {
                 const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_CARD_NOTIFICATION_CHANNEL);
-                notificationChannel.send(`${await notificationChannel.guild.roles.fetch(legendaryCard.roleEnvVar)} vient d'être ajouté sur https://lostmerchants.com. En route !`);
+                await notificationChannel.send(`${await notificationChannel.guild.roles.fetch(legendaryCard.roleEnvVar)} vient d'être ajouté sur https://lostmerchants.com. En route !`);
                 global.recentlyPingedCards[serverConfig.serverName].push(cardList[card]);
                 logger.logMessage(notificationChannel.guild, `Ping envoyé pour ${cardList[card]} sur ${serverConfig.serverName}`);
             }
