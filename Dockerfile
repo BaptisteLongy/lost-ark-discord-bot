@@ -1,7 +1,7 @@
-# FROM arm64v8/node:latest
+FROM arm64v8/node:alpine3.20
 # FROM node:latest
 # FROM alpine
-FROM arm64v8/alpine:latest
+# FROM arm64v8/alpine:latest
 
 # Database persitency mount point
 RUN mkdir config
