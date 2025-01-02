@@ -17,7 +17,11 @@ const token = process.env.LOST_ARK_DISCORD_BOT_TOKEN;
 // Global var to store which cards have been pinged already
 global.recentlyPingedCards = {};
 for (const server of pingConfig) {
-	global.recentlyPingedCards[server.serverName] = [];
+	global.recentlyPingedCards[server.serverName] =
+	{
+		lastLostMerchantTimer: '00:00:00',
+		pingedCards: [],
+	};
 }
 
 // Create a new client instance
