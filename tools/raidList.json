@@ -119,8 +119,8 @@
         }
     },
     {
-        "name": "brelshaza",
-        "value": "Brelshaza",
+        "name": "brelshaza-1490",
+        "value": "Brelshaza-1490",
         "color": [
             96,
             101,
@@ -153,7 +153,8 @@
         },
         "G4": {
             "cheatsheet": "https://cdn.mobalytics.gg/assets/lost-ark/images/boss-cheatsheats/brel-gate6-new.jpg"
-        }
+        },
+        "otherTag": true
     },
     {
         "name": "kayangel",
@@ -239,18 +240,6 @@
         "otherTag": true
     },
     {
-        "name": "platine",
-        "value": "Gisement de platine",
-        "color": [
-            115,
-            135,
-            54
-        ],
-        "img": "https://static.invenglobal.com/img/lostark/dataninfo/cardimage/card_uncommon_04_1.png",
-        "maxPlayer": 4,
-        "otherTag": true
-    },
-    {
         "name": "ivorytower",
         "value": "Ivory Tower",
         "color": [
@@ -325,7 +314,7 @@
             50,
             62
         ],
-        "img": "https://lostarkcodex.com/icons/card_epic_13_4.webp",
+        "img": "https://assets-ng.maxroll.gg/laplanner/webp/card_legend_03_7.webp",
         "maxPlayer": 16,
         "modes": [
             {
@@ -342,7 +331,28 @@
             17,
             14
         ],
-        "img": "https://images.ctfassets.net/umhrp0op95v1/1XGjYvmdV82U8TH59jLVtZ/654a99b03c33bb35c7748393665c28e5/LA_Roadmap_OCT_KeyArt_580x330.jpg",
+        "img": "https://lostarkcodex.com/icons/card_legend_04_5.webp",
+        "maxPlayer": 8,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "HM",
+                "value": "Hard Mode"
+            }
+        ]
+    },
+    {
+        "name": "brelshaza",
+        "value": "Brelshaza",
+        "color": [
+            96,
+            101,
+            137
+        ],
+        "img": "https://lostarkcodex.com/icons/card_legend_04_7.webp",
         "maxPlayer": 8,
         "modes": [
             {
