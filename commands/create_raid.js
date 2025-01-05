@@ -87,6 +87,13 @@ const thirdButtonRow = new ActionRowBuilder()
 			.setStyle(ButtonStyle.Danger),
 	);
 
+async function sendMessageIfLearning(thread, type) {
+	if (type === 'learning' || type === 'progress') {
+		const learningMessage = '**Rappels pour un bon learning**\n- Proportions idéales du groupe : 1 learner pour 3 vétérans\n- Chaque learner doit avoir lu/vu un guide\n- Ne pas hésiter à passer en vocal pour demander la participation des vétérans';
+		thread.send(learningMessage);
+	}
+}
+
 async function execute(interaction) {
 	await interaction.deferReply({ ephemeral: true });
 
@@ -136,7 +143,7 @@ async function execute(interaction) {
 	const tags = [
 		getIDForTag(await interaction.options.getString('jour'), forum.availableTags),
 		getIDForTag(chosenRaid.otherTag ? 'autre' : chosenRaid.name, forum.availableTags),
-		getIDForTag(await interaction.options.getString('type'), forum.availableTags),
+		getIDForTag(raidType, forum.availableTags),
 	];
 
 	await forum.threads.create(
@@ -153,6 +160,8 @@ async function execute(interaction) {
 		const message = await response.fetch();
 		const messageId = message.id;
 		logger.logAction(interaction, `Id: ${messageId} : ${interaction.member.displayName} a créé un raid ${raidMessage.raid.value} - Nom : ${threadName}`);
+
+		await sendMessageIfLearning(message, raidType);
 
 		const registrationManager = new RaidRegistrationManager(interaction, true, response);
 		registrationManager.initCreationInteraction();
