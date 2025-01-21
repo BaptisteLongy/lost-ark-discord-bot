@@ -1,11 +1,12 @@
 FROM arm64v8/node:alpine3.20
-# FROM node:latest
-# FROM alpine
-# FROM arm64v8/alpine:latest
+# FROM node:alpine3.20
 
+USER node
+RUN mkdir /home/node/la-bot
+WORKDIR /home/node/la-bot
 # Database persitency mount point
 RUN mkdir config
-VOLUME /config
+VOLUME /home/node/la-bot/config
 
 # Node dependencies / install
 COPY package*.json ./

@@ -4,7 +4,7 @@ const fs = require('fs');
 
 function reminderEventEndDate(client) {
 	new CronJob(
-		'0 0 17 * * 2',
+		'0 0 19 * * 2',
         // For Dev - every 5 seconds
         // '*/5 * * * * *',
 		async function() {
