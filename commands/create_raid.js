@@ -150,7 +150,7 @@ async function execute(interaction) {
 		{
 			name: threadName,
 			message: {
-				content: `<@&${process.env.DISCORD_RAID_PING_ROLE}> Nouveau raid créé par ${interaction.member}`,
+				content: `Nouveau raid créé par ${interaction.member}`,
 				embeds: [raidEmbed], components: components,
 				allowedMentions: { parse: ['everyone', 'roles'] },
 			},
