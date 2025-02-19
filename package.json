@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "start:dev": "nodemon index.js",
     "update:commands": "node deploy-commands.js",
     "test": "jest"
   },
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "eslint": "^8.32.0",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9"
   }
 }
