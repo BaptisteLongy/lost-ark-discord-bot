@@ -113,6 +113,8 @@ client.on(Events.InteractionCreate, async interaction => {
 	if (!button) {
 		if (interaction.customId.startsWith('special_role_')) {
 			button = interaction.client.buttonHandlers.get('special_role');
+		} else if (interaction.customId.startsWith('learning_role_')) {
+			button = interaction.client.buttonHandlers.get('learning_role');
 		} else {
 			console.error(`No button matching ${interaction.customId} was found.`);
 			return;
