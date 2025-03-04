@@ -2,7 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 
 const { RaidMessage } = require('../tools/message/RaidMessage.js');
 const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
-const { LearningMessage } = require('../tools/message/LearningMessage.js');
+// const { LearningMessage } = require('../tools/message/LearningMessage.js');
 const raids = require('../tools/raidList.json');
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');
@@ -102,8 +102,8 @@ async function execute(interaction) {
 	const raidType = interaction.options.getString('type');
 	if (raidType === 'card run') {
 		raidMessage = new CardRunMessage();
-	} else if (raidType === 'learning') {
-		raidMessage = new LearningMessage();
+	// } else if (raidType === 'learning') {
+	// 	raidMessage = new LearningMessage();
 	} else {
 		raidMessage = new RaidMessage();
 	}
@@ -128,20 +128,20 @@ async function execute(interaction) {
 		components.push(fourthButtonRow);
 	}
 
-	if (raidType === 'learning') {
-		const learningButtonRow = new ActionRowBuilder()
-		.addComponents([
-			new ButtonBuilder()
-			.setCustomId('learning_role_learner')
-			.setLabel('Elève')
-			.setStyle(ButtonStyle.Secondary),
-			new ButtonBuilder()
-			.setCustomId('learning_role_veteran')
-			.setLabel('Accompagnant')
-			.setStyle(ButtonStyle.Secondary),
-		]);
-		components.push(learningButtonRow);
-	}
+	// if (raidType === 'learning') {
+	// 	const learningButtonRow = new ActionRowBuilder()
+	// 	.addComponents([
+	// 		new ButtonBuilder()
+	// 		.setCustomId('learning_role_learner')
+	// 		.setLabel('Elève')
+	// 		.setStyle(ButtonStyle.Secondary),
+	// 		new ButtonBuilder()
+	// 		.setCustomId('learning_role_veteran')
+	// 		.setLabel('Accompagnant')
+	// 		.setStyle(ButtonStyle.Secondary),
+	// 	]);
+	// 	components.push(learningButtonRow);
+	// }
 
 	raidMessage.raid = chosenRaid;
 	if (Array.isArray(chosenRaid.modes)) {
