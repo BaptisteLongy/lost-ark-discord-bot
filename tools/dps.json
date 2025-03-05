@@ -113,5 +113,10 @@
         "label": "Breaker",
         "value": "Breaker",
         "baseClass": "Martial Artist"
+    },
+    {
+        "label": "Wildsoul",
+        "value": "Wildsoul",
+        "baseClass": "Specialist"
     }
 ]
