@@ -2,13 +2,13 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = re
 
 const { RaidMessage } = require('../tools/message/RaidMessage.js');
 const { CardRunMessage } = require('../tools/message/CardRunMessage.js');
-// const { LearningMessage } = require('../tools/message/LearningMessage.js');
+const { LearningMessage } = require('../tools/message/LearningMessage.js');
 const raids = require('../tools/raidList.json');
 const days = require('../tools/days.json');
 const logger = require('../tools/logger.js');
 const rairTypes = require('../tools/raidTypes.json');
 const { getIDForTag } = require('../tools/getIDForTag.js');
-const { RaidRegistrationManager } = require('../tools/RaidRegistrationManager.js');
+const { RaidRegistrationManager } = require('../tools/registrationManagers/RaidRegistrationManager.js');
 
 const data = new SlashCommandBuilder()
 	.setName('creer')
@@ -52,42 +52,6 @@ raids.forEach(raid => {
 	});
 });
 
-const firstButtonRow = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId('subscribeToRaid')
-			.setLabel('Je viens/Je change')
-			.setStyle(ButtonStyle.Primary),
-		new ButtonBuilder()
-			.setCustomId('unsubscribe')
-			.setLabel('Se désinscrire')
-			.setStyle(ButtonStyle.Secondary),
-	);
-
-const secondButtonRow = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId('warn')
-			.setLabel('On part !')
-			.setStyle(ButtonStyle.Success),
-		new ButtonBuilder()
-			.setCustomId('dice_for_all')
-			.setLabel('Un dé pour tous')
-			.setStyle(ButtonStyle.Danger),
-	);
-
-const thirdButtonRow = new ActionRowBuilder()
-	.addComponents(
-		new ButtonBuilder()
-			.setCustomId('update')
-			.setLabel('Modifier le raid')
-			.setStyle(ButtonStyle.Primary),
-		new ButtonBuilder()
-			.setCustomId('deleteRaid')
-			.setLabel('Supprimer le raid')
-			.setStyle(ButtonStyle.Danger),
-	);
-
 async function sendMessageIfLearning(thread, type) {
 	if (type === 'learning' || type === 'progress') {
 		const learningMessage = '**Rappels pour un bon learning**\n- Proportions idéales du groupe : 1 learner pour 3 vétérans\n- Chaque learner doit avoir lu/vu un guide\n- Ne pas hésiter à passer en vocal pour demander la participation des vétérans';
@@ -102,12 +66,67 @@ async function execute(interaction) {
 	const raidType = interaction.options.getString('type');
 	if (raidType === 'card run') {
 		raidMessage = new CardRunMessage();
-	// } else if (raidType === 'learning') {
-	// 	raidMessage = new LearningMessage();
+	} else if (raidType === 'learning') {
+		raidMessage = new LearningMessage();
 	} else {
 		raidMessage = new RaidMessage();
 	}
 	const chosenRaid = raids.find(raid => raid.name === interaction.options.getSubcommand());
+
+	let firstButtonRow;
+	if (raidType === 'learning') {
+		firstButtonRow = new ActionRowBuilder()
+			.addComponents([
+				new ButtonBuilder()
+					.setCustomId('learning_role_learner')
+					.setLabel('Elève')
+					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder()
+					.setCustomId('learning_role_veteran')
+					.setLabel('Vétéran')
+					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder()
+					.setCustomId('unsubscribe')
+					.setLabel('Se désinscrire')
+					.setStyle(ButtonStyle.Secondary),
+			]);
+	} else {
+		firstButtonRow = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId('subscribeToRaid')
+					.setLabel('Je viens/Je change')
+					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder()
+					.setCustomId('unsubscribe')
+					.setLabel('Se désinscrire')
+					.setStyle(ButtonStyle.Secondary),
+			);
+	}
+
+	const secondButtonRow = new ActionRowBuilder()
+		.addComponents(
+			new ButtonBuilder()
+				.setCustomId('warn')
+				.setLabel('On part !')
+				.setStyle(ButtonStyle.Success),
+			new ButtonBuilder()
+				.setCustomId('dice_for_all')
+				.setLabel('Un dé pour tous')
+				.setStyle(ButtonStyle.Danger),
+		);
+
+	const thirdButtonRow = new ActionRowBuilder()
+		.addComponents(
+			new ButtonBuilder()
+				.setCustomId('update')
+				.setLabel('Modifier le raid')
+				.setStyle(ButtonStyle.Primary),
+			new ButtonBuilder()
+				.setCustomId('deleteRaid')
+				.setLabel('Supprimer le raid')
+				.setStyle(ButtonStyle.Danger),
+		);
 
 	const components = [
 		firstButtonRow,
@@ -127,21 +146,6 @@ async function execute(interaction) {
 		}
 		components.push(fourthButtonRow);
 	}
-
-	// if (raidType === 'learning') {
-	// 	const learningButtonRow = new ActionRowBuilder()
-	// 	.addComponents([
-	// 		new ButtonBuilder()
-	// 		.setCustomId('learning_role_learner')
-	// 		.setLabel('Elève')
-	// 		.setStyle(ButtonStyle.Secondary),
-	// 		new ButtonBuilder()
-	// 		.setCustomId('learning_role_veteran')
-	// 		.setLabel('Accompagnant')
-	// 		.setStyle(ButtonStyle.Secondary),
-	// 	]);
-	// 	components.push(learningButtonRow);
-	// }
 
 	raidMessage.raid = chosenRaid;
 	if (Array.isArray(chosenRaid.modes)) {

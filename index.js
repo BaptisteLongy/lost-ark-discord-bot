@@ -84,11 +84,17 @@ client.on(Events.InteractionCreate, async interaction => {
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isStringSelectMenu()) return;
 
-	const selectMenu = interaction.client.selectMenuHandlers.get(interaction.customId);
+	let selectMenu = interaction.client.selectMenuHandlers.get(interaction.customId);
 
 	if (!selectMenu) {
-		console.error(`No select menu matching ${interaction.customId} was found.`);
-		return;
+		if (interaction.customId.startsWith('baseClassSelect_')) {
+			selectMenu = interaction.client.selectMenuHandlers.get('baseClassSelect');
+		} else if (interaction.customId.startsWith('classSelect_')) {
+			selectMenu = interaction.client.selectMenuHandlers.get('classSelect');
+		} else {
+			console.error(`No select menu matching ${interaction.customId} was found.`);
+			return;
+		}
 	}
 
 	try {
@@ -115,6 +121,10 @@ client.on(Events.InteractionCreate, async interaction => {
 			button = interaction.client.buttonHandlers.get('special_role');
 		} else if (interaction.customId.startsWith('learning_role_')) {
 			button = interaction.client.buttonHandlers.get('learning_role');
+		} else if (interaction.customId.startsWith('register_flex_')) {
+			button = interaction.client.buttonHandlers.get('register_flex');
+		} else if (interaction.customId.startsWith('register_bench_')) {
+			button = interaction.client.buttonHandlers.get('register_bench');
 		} else {
 			console.error(`No button matching ${interaction.customId} was found.`);
 			return;

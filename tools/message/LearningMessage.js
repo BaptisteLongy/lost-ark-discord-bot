@@ -7,6 +7,25 @@ class LearningMessage extends RaidMessage {
         this.veterans = [];
     }
 
+    addToLearningRole(player, learningRole) {
+        this.learners = this.learners.filter(listPlayer => listPlayer.player !== player.toString());
+        this.veterans = this.veterans.filter(listPlayer => listPlayer.player !== player.toString());
+
+        if (learningRole === 'learner') {
+            this.learners.push({ player: player });
+        }
+        if (learningRole === 'veteran') {
+            this.veterans.push({ player: player });
+        }
+    }
+
+    removePlayer(player) {
+        super.removePlayer(player);
+
+        this.learners = this.removePlayerFromList(player, this.learners);
+        this.veterans = this.removePlayerFromList(player, this.veterans);
+    }
+
     toggleLearningRole(player, learningRole) {
         const isLearner = this.learners.find(listPlayer => listPlayer.player === player.toString()) !== undefined;
         const isVeteran = this.veterans.find(listPlayer => listPlayer.player === player.toString()) !== undefined;

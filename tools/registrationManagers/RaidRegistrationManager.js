@@ -1,31 +1,29 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
-const { RaidMessage } = require('./message/RaidMessage.js');
-const logger = require('./logger.js');
-const { getIDForTag } = require('./getIDForTag.js');
-const baseClassList = require('./baseClasses.json');
-const supports = require('./supports.json');
-const dps = require('./dps.json');
+const { RaidMessage } = require('../message/RaidMessage.js');
+const logger = require('../logger.js');
+const { getIDForTag } = require('../getIDForTag.js');
+const baseClassList = require('../baseClasses.json');
+const supports = require('../supports.json');
+const dps = require('../dps.json');
+const { RegistrationManager } = require('./RegistrationManager.js');
 
-class RaidRegistrationManager {
-    constructor(interaction, isRaidCreationInteraction, raidThread) {
-        this.interaction = interaction;
-        this.isRaidCreationInteraction = isRaidCreationInteraction;
-
-        if (interaction.message && interaction.message.mentions && interaction.message.mentions.channels && interaction.message.mentions.channels.size > 0) {
-            this.thread = interaction.message.mentions.channels.values().next().value;
-        } else {
-            this.thread = raidThread;
-        }
+class RaidRegistrationManager extends RegistrationManager {
+    constructor(interaction, isRaidCreationInteraction, thread) {
+        super(interaction, isRaidCreationInteraction, thread);
     }
 
     generateBaseClassSelectRow() {
         return new ActionRowBuilder()
             .addComponents(
                 new StringSelectMenuBuilder()
-                    .setCustomId('baseClassSelect')
+                    .setCustomId(`baseClassSelect_${this.generateSelectHandlerSuffix()}`)
                     .setPlaceholder('Archetype')
                     .addOptions(...baseClassList),
             );
+    }
+
+    generateSelectHandlerSuffix() {
+        return 'reclear';
     }
 
     generateSelectMenuForBaseClass(baseClass) {
@@ -37,7 +35,7 @@ class RaidRegistrationManager {
         return new ActionRowBuilder()
             .addComponents(
                 new StringSelectMenuBuilder()
-                    .setCustomId('classSelect')
+                    .setCustomId(`classSelect_${this.generateSelectHandlerSuffix()}`)
                     .setPlaceholder(baseClass.label)
                     .addOptions(...selectOptions),
             );
@@ -47,11 +45,11 @@ class RaidRegistrationManager {
         return new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId('register_flex')
+                    .setCustomId(`register_flex_${this.generateSelectHandlerSuffix()}`)
                     .setLabel('Flex')
                     .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()
-                    .setCustomId('register_bench')
+                    .setCustomId(`register_bench_${this.generateSelectHandlerSuffix()}`)
                     .setLabel('Banc de touche')
                     .setStyle(ButtonStyle.Primary),
             );
@@ -96,15 +94,17 @@ class RaidRegistrationManager {
 
     async initCreationInteraction() {
         const cardRunTagId = getIDForTag('card run', this.thread.parent.availableTags);
+        const learningTagId = getIDForTag('learning', this.thread.parent.availableTags);
+        const isLearningOrCardRun = this.thread.appliedTags.find((tag) => { return tag === cardRunTagId || tag === learningTagId; }) !== undefined;
 
-        if (this.thread.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
+        if (!isLearningOrCardRun) {
             await this.interaction.followUp({
                 content: `Ton raid est là => ${this.thread}\nTu viens avec quoi ? (n'oublie pas de cliquer sur "Cacher le message" une fois que tu as fini)`,
                 components: [this.generateBaseClassSelectRow(), this.generateButtonsRow()],
             });
         } else {
             await this.interaction.followUp({
-                content: `Ton raid est là => ${this.thread}\nN'oubile pas d'aller inscrire ton roster pour le card run`,
+                content: `Ton raid est là => ${this.thread}\nN'oubile pas d'aller t'inscrire`,
             });
         }
     }
@@ -120,7 +120,7 @@ class RaidRegistrationManager {
         const cardRunTagId = getIDForTag('card run', this.thread.parent.availableTags);
 
         if (this.thread.appliedTags.find((tag) => { return tag === cardRunTagId; }) === undefined) {
-            await this.interaction.reply({
+            await this.interaction.editReply({
                 content: 'Tu viens avec quoi ? (n\'oublie pas de cliquer sur "Cacher le message" une fois que tu as fini)',
                 ephemeral: true, components: [this.generateBaseClassSelectRow(), this.generateButtonsRow()],
             });
