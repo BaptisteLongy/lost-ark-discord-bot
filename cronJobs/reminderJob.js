@@ -35,7 +35,7 @@ function reminderJob(client) {
                         await channel.delete();
                         logger.logMessage(channel.guild, `Id: ${channel.id} : raid supprimé automatiquement pour délai dépassé + inactivité`);
                     } else if (channel.appliedTags.find(tag => tag === dayBeforeTagId)) {
-                        channel.send('@here Vous avez toujours besoin de ce raid ?\nSans activité d\'ici demain, je le supprimerai automatiquement.\nPour empécher la suppression, il suffit d\'envoyer un message sur le thread.\nLe créateur ou un admin peut également utiliser /update pour mettre à jour la date et l\'heure');
+                        channel.send('@everyone Vous avez toujours besoin de ce raid ?\nSans activité d\'ici demain, je le supprimerai automatiquement.\nPour empécher la suppression, il suffit d\'envoyer un message sur le thread.\nLe créateur ou un admin peut également utiliser /update pour mettre à jour la date et l\'heure');
                         logger.logMessage(channel.guild, `Id: ${channel.id} : message de suppression programmée envoyé`);
                     }
                 }

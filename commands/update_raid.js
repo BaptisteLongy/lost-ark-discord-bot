@@ -151,7 +151,7 @@ async function execute(interaction) {
                 async () => {
                     const changelog = generateChangelog(interaction);
                     await interaction.reply({
-                        content: `@here: ${interaction.member} a modifié le raid\n${changelog}`,
+                        content: `@everyone: ${interaction.member} a modifié le raid\n${changelog}`,
                         allowedMentions: { parse: ['everyone'] },
                     });
                     logger.logAction(interaction, `Id: ${initialMessage.id} : ${interaction.member.displayName} a modifié le raid\n${changelog}`);

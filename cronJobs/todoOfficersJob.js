@@ -37,7 +37,7 @@ async function generateArrayWithMessages(guild) {
 function sendToDoMessageFromArray(channel, todoList) {
 	const message = todoList.reduce((prev, current) => {
 		return `${prev}\n${current}`;
-	}, '@here **P\'tite liste des trucs à faire :**');
+	}, '@everyone **P\'tite liste des trucs à faire :**');
 	channel.send(message);
 }
 

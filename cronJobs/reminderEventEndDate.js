@@ -17,7 +17,7 @@ function reminderEventEndDate(client) {
 					const loopDate = new Date(eventEndDateArray[i]).toDateString();
 					if (loopDate === tomorrow.toDateString()) {
 						const notificationChannel = await client.channels.cache.get(process.env.DISCORD_SERVER_NOTIFICATION_CHANNEL);
-						notificationChannel.send('@here **L\'event se finit demain, n\'oubliez pas d\'échanger toutes les pièces qu\'il vous reste  !!!**');
+						notificationChannel.send('@everyone **L\'event se finit demain, n\'oubliez pas d\'échanger toutes les pièces qu\'il vous reste  !!!**');
 					}
 
 				}
