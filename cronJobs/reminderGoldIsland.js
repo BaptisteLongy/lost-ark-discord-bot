@@ -4,7 +4,7 @@ const fs = require('fs');
 
 function reminderGoldIslandIsToday(client) {
     new CronJob(
-        '0 30 10 * * *',
+        '0 45 10 * * *',
         // For Dev - every 5 seconds
         // '*/5 * * * * *',
         async function() {
@@ -37,7 +37,7 @@ function reminderGoldIslandIsToday(client) {
 
 function reminderGoldIslandIsTomorrowOnWeekDays(client) {
     new CronJob(
-        '0 30 12 * * 1-5',
+        '0 45 12 * * 1-5',
         // For Dev - every 5 seconds
         // '*/5 * * * * *',
         async function() {
