@@ -1,5 +1,6 @@
 const CronJob = require('cron').CronJob;
 const logger = require('../tools/logger.js');
+const { GoogleAuth } = require('google-auth-library');
 
 async function pingCardRolesIfNecessary(cardList, serverConfig, client) {
     for (const card in cardList) {
@@ -42,10 +43,13 @@ function setupNewTimer(cardList, globalList) {
 }
 
 async function scrapeLegendaryInfo(serverName) {
+    const auth = new GoogleAuth();
+    const client = await auth.getIdTokenClient(process.env.LEGENDARY_CARD_SNIFFER_ENDPOINT);
+
     let legendaryInfo;
-    const legendaryInfoResponse = await fetch(`https://legendary-card-sniffer-365082089403.europe-west9.run.app/${serverName}`);
+    const legendaryInfoResponse = await client.request({ url: `${process.env.LEGENDARY_CARD_SNIFFER_ENDPOINT}/${serverName}` });
     if (legendaryInfoResponse.status === 200) {
-        legendaryInfo = JSON.parse(await legendaryInfoResponse.text());
+        legendaryInfo = legendaryInfoResponse.data;
     }
 
     return legendaryInfo;
