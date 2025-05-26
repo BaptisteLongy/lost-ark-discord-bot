@@ -166,6 +166,7 @@
         ],
         "img": "https://lostarkcodex.com/icons/card_epic_11_1.webp",
         "maxPlayer": 4,
+        "otherTag": true,
         "modes": [
             {
                 "name": "NM",
@@ -353,6 +354,27 @@
             137
         ],
         "img": "https://lostarkcodex.com/icons/card_legend_04_7.webp",
+        "maxPlayer": 8,
+        "modes": [
+            {
+                "name": "NM",
+                "value": "Normal Mode"
+            },
+            {
+                "name": "HM",
+                "value": "Hard Mode"
+            }
+        ]
+    },
+    {
+        "name": "mordum",
+        "value": "Mordum",
+        "color": [
+            36,
+            148,
+            165
+        ],
+        "img": "https://lostarkcodex.com/icons/card_epic_07_2.webp",
         "maxPlayer": 8,
         "modes": [
             {
